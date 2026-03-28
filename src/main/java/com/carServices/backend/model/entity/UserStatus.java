@@ -1,4 +1,4 @@
-package com.mechanictracker.backend.model.entity;
+package com.carServices.backend.model.entity;
 
 public enum UserStatus {
     ACTIVE,

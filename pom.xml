@@ -8,10 +8,10 @@
 		<version>4.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mechanictracker</groupId>
+	<groupId>com.carServices</groupId>
 	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name> mechanic-tracker-backend</name>
+	<name>car-services-backend</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

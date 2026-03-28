@@ -1,10 +1,10 @@
-package com.mechanictracker.backend;
+package com.carServices.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MechanicTrackerBackendApplicationTests {
+class CarServiceBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
