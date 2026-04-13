@@ -1,4 +1,4 @@
-package com.carServices.backend.model.entity;
+package com.carServices.backend.model;
 
 public enum UserStatus {
     ACTIVE,

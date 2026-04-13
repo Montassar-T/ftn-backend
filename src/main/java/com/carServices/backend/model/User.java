@@ -1,5 +1,6 @@
-package com.carServices.backend.model.entity;
+package com.carServices.backend.model;
 
+import com.carServices.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,0 +1,42 @@
+package com.carServices.backend.utils;
+
+import com.carServices.backend.dtos.JpaQueryDto;
+import com.carServices.backend.model.Client;
+import com.carServices.backend.model.Vehicle;
+import com.carServices.backend.model.VehicleBrand;
+import com.carServices.backend.model.VehicleModel;
+import java.util.Map;
+
+public class JpaQueryUtils {
+
+    private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(Map.entry(
+            Vehicle.class,
+            Map.of(
+                    "model_id", new JpaQueryDto("model", "name", VehicleModel.class, null),
+                    "brand_id", new JpaQueryDto("model.brand", "name", VehicleBrand.class, null),
+                    "client_id", new JpaQueryDto("client", "name", Client.class, null))));
+
+    // This class MUST remain immutable
+    // spotless:off
+    // @formatter:off
+
+    // [         KEY      : [       KEY     : [                     VALUE1                     |              VALUE2
+    //           |    VALUE3     |  VALUE4]]
+    // [ Principal entity : [Param from URL : [ joinColumn between Principal and joined entity | column to filter in
+    // joined entity | Joined entity | next join]]
+
+    private JpaQueryUtils() {
+        // Utility class
+    }
+
+    // @formatter:on
+    // spotless:off
+    public static JpaQueryDto getParameterMapping(Class<?> clazz, String param) {
+        Map<String, JpaQueryDto> entityMap = correspondanceEntityMap.get(clazz);
+        if (entityMap != null) {
+            return entityMap.get(param);
+        } else {
+            return null;
+        }
+    }
+}

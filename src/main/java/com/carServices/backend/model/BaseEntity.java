@@ -1,11 +1,14 @@
-package com.carServices.backend.model.entity;
+package com.carServices.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
 import java.util.Date;
+import lombok.*;
 
-public class BaseEntity {
+@MappedSuperclass
+@Getter
+@Setter
+public abstract class BaseEntity {
     @Column(name = "created_at")
     @JsonProperty("created_at")
     private Date createdAt;

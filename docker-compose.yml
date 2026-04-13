@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: car-services
+      POSTGRES_DB: car_services
     ports:
       - "5432:5432"
     volumes:
@@ -22,6 +22,7 @@ services:
       - .env
     depends_on:
       - db
+    restart: always
 
 volumes:
   postgres_data:
