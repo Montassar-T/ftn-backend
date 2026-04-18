@@ -6,48 +6,48 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-<!--    <changeSet id="1-create-user-table" author="MontassarTayari">-->
-<!--        <createTable tableName="users">-->
-<!--            <column name="id" type="BIGINT" autoIncrement="true">-->
-<!--                <constraints primaryKey="true" nullable="false"/>-->
-<!--            </column>-->
+    <changeSet id="1-create-user-table" author="MontassarTayari">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-<!--            <column name="first_name" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="last_name" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="email" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false" unique="true"/>-->
-<!--            </column>-->
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
 
-<!--            <column name="password" type="VARCHAR(100)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="password" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="role" type="VARCHAR(50)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="role" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="status" type="VARCHAR(50)" defaultValue="ACTIVEuth">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="status" type="VARCHAR(50)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            &lt;!&ndash; Timestamps &ndash;&gt;-->
-<!--            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <!-- Timestamps -->
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
+            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
 
-<!--            <column name="deleted_at" type="TIMESTAMP"/>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
 
     <changeSet id="2-create-client-table" author="MontassarTayari">
         <createTable tableName="clients">

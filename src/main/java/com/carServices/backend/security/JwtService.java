@@ -19,9 +19,6 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(properties.getSecret().getBytes());
         this.accessExpiration = properties.getAccessExpiration();
         this.refreshExpiration = properties.getRefreshExpiration();
-        System.out.println("ACCESS EXP: " + properties.getAccessExpiration());
-        System.out.println("REFRESH EXP: " + properties.getRefreshExpiration());
-        System.out.println("SECRET: " + properties.getSecret());
     }
 
     public String generateAccessToken(String email) {

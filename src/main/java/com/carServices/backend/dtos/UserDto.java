@@ -1,6 +1,7 @@
 package com.carServices.backend.dtos;
 
 import com.carServices.backend.enums.Role;
+import com.carServices.backend.model.UserStatus;
 import lombok.*;
 
 @Builder
@@ -19,5 +20,5 @@ public class UserDto {
 
     private Role role;
 
-    private String status;
+    private UserStatus status;
 }

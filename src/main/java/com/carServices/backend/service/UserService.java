@@ -1,9 +1,7 @@
 package com.carServices.backend.service;
 
-import com.carServices.backend.dtos.MechanicDto;
-import com.carServices.backend.dtos.NewUserDto;
-import com.carServices.backend.dtos.PageDto;
-import com.carServices.backend.dtos.UserDto;
+import com.carServices.backend.dtos.*;
+import com.carServices.backend.exception.auth.AuthenticationException;
 import com.carServices.backend.exception.business.ConflictException;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.Mechanic;
@@ -15,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +52,7 @@ public class UserService {
                 .build());
     }
 
+    @Transactional
     public UserDto createUser(NewUserDto request) {
 
         if (userRepository.findByEmailAndDeletedAtIsNull(request.getEmail()).isPresent()) {
@@ -74,10 +74,11 @@ public class UserService {
                 .firstName(saved.getFirstName())
                 .lastName(saved.getLastName())
                 .email(saved.getEmail())
-                .status(saved.getStatus().name())
+                .status(saved.getStatus())
                 .build();
     }
 
+    @Transactional
     public UserDto updateUser(Long id, NewUserDto request) {
 
         User user = userRepository.findById(id)
@@ -87,6 +88,52 @@ public class UserService {
         user.setLastName(request.getLastName());
 
         return mapToDto(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserDto updateCurrentUser(UpdateUserDto dto) {
+
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new AuthenticationException("User not found"));
+
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+
+        userRepository.save(user);
+
+        return mapToDto(user);
+    }
+
+    @Transactional
+    public void resetPassword(Long userId, ResetPasswordDto dto) {
+
+        User user = userRepository.findByIdAndDeletedAtIsNull(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordDto dto) {
+
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new AuthenticationException("User not found"));
+
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+            throw new AuthenticationException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+
+        userRepository.save(user);
     }
 
     @Transactional
@@ -111,7 +158,8 @@ public class UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .status(user.getStatus().name())
+                .status(user.getStatus())
+                .role(user.getRole())
                 .build();
     }
 }

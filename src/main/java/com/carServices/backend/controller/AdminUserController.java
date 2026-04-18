@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/admin/users")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminUserController {
 
     private final UserService userService;
@@ -48,6 +48,19 @@ public class AdminUserController {
 
         return ResponseEntity.ok(
                 new SingleResultDto<>(userService.updateUser(id, dto))
+        );
+    }
+
+    @PostMapping("/{id}/reset-password")
+    public ResponseEntity<InformativeMessage> resetPassword(
+            @PathVariable Long id,
+            @RequestBody ResetPasswordDto dto
+    ) {
+
+        userService.resetPassword(id, dto);
+
+        return ResponseEntity.ok(
+                new InformativeMessage("Password reset successfully")
         );
     }
 

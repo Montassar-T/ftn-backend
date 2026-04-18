@@ -4,9 +4,12 @@ import com.carServices.backend.exception.auth.AuthException;
 import com.carServices.backend.exception.business.ConflictException;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -60,6 +63,22 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.builder()
                         .message(message)
                         .status(HttpStatus.BAD_REQUEST.value())
+                        .timestamp(LocalDateTime.now())
+                        .path(request.getRequestURI())
+                        .build());
+    }
+
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleMethodSecurityDenied(
+            AuthorizationDeniedException ex,
+            HttpServletRequest request
+    ) {
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponse.builder()
+                        .status(403)
+                        .message("Access denied: ADMIN role required")
                         .timestamp(LocalDateTime.now())
                         .path(request.getRequestURI())
                         .build());
