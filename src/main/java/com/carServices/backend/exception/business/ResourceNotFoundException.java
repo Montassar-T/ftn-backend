@@ -1,4 +1,4 @@
-package com.carServices.backend.exception;
+package com.carServices.backend.exception.business;
 
 public class ResourceNotFoundException extends RuntimeException {
 

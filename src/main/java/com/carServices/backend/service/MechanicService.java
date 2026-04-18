@@ -1,7 +1,7 @@
 package com.carServices.backend.service;
 
 import com.carServices.backend.dtos.*;
-import com.carServices.backend.exception.ResourceNotFoundException;
+import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.Mechanic;
 import com.carServices.backend.repository.MechanicRepository;
 import com.carServices.backend.utils.JpaQueryFilters;

@@ -4,7 +4,7 @@ import com.carServices.backend.dtos.InformativeMessage;
 import com.carServices.backend.dtos.NewVehicleDto;
 import com.carServices.backend.dtos.PageDto;
 import com.carServices.backend.dtos.VehicleDto;
-import com.carServices.backend.exception.ResourceNotFoundException;
+import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.Client;
 import com.carServices.backend.model.Vehicle;
 import com.carServices.backend.model.VehicleModel;

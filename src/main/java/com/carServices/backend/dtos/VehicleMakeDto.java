@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VehicleModelDto {
+public class VehicleMakeDto {
     private Long id;
     private String name;
-    private VehicleMakeDto make;
+    private boolean systemAttribute;
 }

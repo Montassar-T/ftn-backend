@@ -1,5 +1,8 @@
-package com.carServices.backend.exception;
+package com.carServices.backend.exception.global;
 
+import com.carServices.backend.exception.auth.AuthException;
+import com.carServices.backend.exception.business.ConflictException;
+import com.carServices.backend.exception.business.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,29 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.NOT_FOUND.value())
+                        .timestamp(LocalDateTime.now())
+                        .path(request.getRequestURI())
+                        .build());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(ConflictException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.CONFLICT.value())
+                        .timestamp(LocalDateTime.now())
+                        .path(request.getRequestURI())
+                        .build());
+    }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorResponse> handleAuth(AuthException ex, HttpServletRequest request) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.UNAUTHORIZED.value())
                         .timestamp(LocalDateTime.now())
                         .path(request.getRequestURI())
                         .build());

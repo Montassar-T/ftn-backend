@@ -2,14 +2,10 @@ package com.carServices.backend.controller;
 
 import com.carServices.backend.dtos.*;
 import com.carServices.backend.service.MechanicService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.Explode;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.enums.ParameterStyle;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,36 +17,45 @@ public class MechanicController {
 
     private final MechanicService mechanicService;
 
-    @GetMapping("")
-    public ResponseEntity<PageDto<MechanicDto>> getMechanics(
-            @Parameter(
-                            name = "params",
-                            in = ParameterIn.QUERY,
-                            schema = @Schema(implementation = MechanicDto.class),
-                            style = ParameterStyle.FORM,
-                            explode = Explode.TRUE)
-                    @RequestParam
-                    Map<String, String> params) {
-        return mechanicService.getMechanics(params);
+    @GetMapping
+    public ResponseEntity<SingleResultDto<PageDto<MechanicDto>>> getMechanics(
+            @RequestParam Map<String, String> params) {
+
+        PageDto<MechanicDto> result = mechanicService.getMechanics(params).getBody();
+
+        return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MechanicDto> getMechanicById(@PathVariable Long id) {
-        return mechanicService.getMechanicById(id);
+    public ResponseEntity<SingleResultDto<MechanicDto>> getMechanicById(@PathVariable Long id) {
+
+        MechanicDto result = mechanicService.getMechanicById(id).getBody();
+
+        return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @PostMapping
-    public ResponseEntity<MechanicDto> createMechanic(@RequestBody NewMechanicDto dto) {
-        return mechanicService.createMechanic(dto);
+    public ResponseEntity<SingleResultDto<MechanicDto>> createMechanic(@RequestBody NewMechanicDto dto) {
+
+        MechanicDto result = mechanicService.createMechanic(dto).getBody();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MechanicDto> updateMechanic(@PathVariable Long id, @RequestBody NewMechanicDto dto) {
-        return mechanicService.updateMechanic(id, dto);
+    public ResponseEntity<SingleResultDto<MechanicDto>> updateMechanic(
+            @PathVariable Long id, @RequestBody NewMechanicDto dto) {
+
+        MechanicDto result = mechanicService.updateMechanic(id, dto).getBody();
+
+        return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<InformativeMessage> deleteMechanic(@PathVariable Long id) {
-        return mechanicService.deleteMechanic(id);
+    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteMechanic(@PathVariable Long id) {
+
+        InformativeMessage result = mechanicService.deleteMechanic(id).getBody();
+
+        return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 }

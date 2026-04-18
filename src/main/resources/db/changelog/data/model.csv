@@ -1,0 +1,1951 @@
+name;make_id;system_attribute
+Model S;49;true
+Phantom;46;true
+Ghost;46;true
+Wraith;46;true
+Quattroporte;31;true
+Granturismo;31;true
+Sprinter;35;true
+128i;4;true
+135i;4;true
+328i;4;true
+M3;4;true
+335i;4;true
+335is;4;true
+335d;4;true
+X6;4;true
+528i;4;true
+535i;4;true
+X5;4;true
+550i;4;true
+X3;4;true
+740i;4;true
+740Li;4;true
+750i;4;true
+750Li;4;true
+760Li;4;true
+Z4;4;true
+750xi;4;true
+750Lxi;4;true
+M6;4;true
+528xi;4;true
+640i;4;true
+650i;4;true
+650xi;4;true
+Veyron;5;true
+G 450 X;4;true
+F 800 S;4;true
+F 800 ST;4;true
+F 800 GS;4;true
+F 800 R;4;true
+HP2;4;true
+S 1000 RR;4;true
+R 1200 GS;4;true
+R 1200 R;4;true
+R 1200 RT;4;true
+K 1300 S;4;true
+K 1300 GT;4;true
+K 1300 R;4;true
+F 650 GS;4;true
+G 650 GS;4;true
+R 900 RT;4;true
+K 1600 GT;4;true
+K 1600 GTL;4;true
+F 700 GS;4;true
+F 800 GT;4;true
+C 600;4;true
+C 650 GT;4;true
+HP4;4;true
+S 1000 R;4;true
+R nineT;4;true
+Cooper;37;true
+Clubman;37;true
+Crown Victoria;16;true
+Focus;16;true
+Fusion;16;true
+Mustang;16;true
+Taurus;16;true
+Grand Marquis;36;true
+Milan;36;true
+E-150;16;true
+Edge;16;true
+Escape;16;true
+Expedition;16;true
+Explorer;16;true
+F-150;16;true
+Flex;16;true
+Ranger;16;true
+Explorer Sport Trac;16;true
+F-250;16;true
+F-350;16;true
+F-450;16;true
+F-550;16;true
+F-650;16;true
+F-750;16;true
+Transit Connect;16;true
+Mariner;36;true
+Mountaineer;36;true
+E-250;16;true
+E-350;16;true
+E-450;16;true
+Expedition MAX;16;true
+ATS;7;true
+CTS;7;true
+ELR;7;true
+XTS;7;true
+Aveo;8;true
+Camaro;8;true
+Caprice Police Vehicle;8;true
+Corvette;8;true
+Cruze;8;true
+Impala;8;true
+Malibu;8;true
+Sonic;8;true
+Spark;8;true
+SS;8;true
+Volt;8;true
+Ampera;40;true
+Escalade;7;true
+SRX;7;true
+Captiva Sport;8;true
+Equinox;8;true
+Express;8;true
+Orlando;8;true
+Silverado;8;true
+Suburban;8;true
+Tahoe;8;true
+Traverse;8;true
+Tracker;8;true
+Acadia;18;true
+Savana;18;true
+Sierra;18;true
+Terrain;18;true
+Yukon;18;true
+Tribute;33;true
+Hardtop;37;true
+Cirrus;9;true
+Sebring;9;true
+300;9;true
+Countryman;37;true
+Cooper Coupe;37;true
+GT-R;39;true
+Avenger;12;true
+Challenger;12;true
+Versa;39;true
+Charger;12;true
+Caliber;12;true
+Viper;12;true
+Versa Note;39;true
+QX50;20;true
+Q40;20;true
+Q50;20;true
+Q60;20;true
+Q70;20;true
+Altima;39;true
+Leaf;39;true
+370Z;39;true
+Sentra;39;true
+QX70;20;true
+QX80;20;true
+QX60;20;true
+Pathfinder;39;true
+Juke;39;true
+Rogue;39;true
+Murano;39;true
+Armada;39;true
+Xterra;39;true
+Quest;39;true
+NV200;39;true
+Frontier;39;true
+Titan;39;true
+City Express;8;true
+NV;39;true
+Cooper Roadster;37;true
+Paceman;37;true
+Town and Country;9;true
+Grand Voyager;9;true
+Ram;12;true
+Journey;12;true
+Nitro;12;true
+Dakota;12;true
+Caravan/Grand Caravan;12;true
+Wrangler;24;true
+Liberty;24;true
+Cherokee;24;true
+Compass;24;true
+Patriot;24;true
+Commander;24;true
+Grand Cherokee;24;true
+Raider;38;true
+Routan;51;true
+Ram Chassis Cab;12;true
+S60;52;true
+S80;52;true
+V60;52;true
+XC60;52;true
+XC70;52;true
+1M;4;true
+ActiveE;4;true
+M5;4;true
+4C;1;true
+500L;15;true
+Q70L;20;true
+200;9;true
+Dart;12;true
+500;15;true
+Equus;19;true
+Santa Fe;19;true
+Tucson;19;true
+Murcielago;26;true
+Gallardo;26;true
+Roadster;49;true
+MX-5;33;true
+RX-8;33;true
+Mazda3;33;true
+Mazda5;33;true
+CX-7;33;true
+CX-9;33;true
+Mazda6;33;true
+SL-Class;35;true
+SLK-Class;35;true
+E-Class;35;true
+CLS-Class;35;true
+CLA-Class;35;true
+GLA-Class;35;true
+C-Class;35;true
+S-Class;35;true
+SLS-Class;35;true
+DR200SE;48;true
+GZ250;48;true
+AN400 / AN400S;48;true
+DR-Z400SL;48;true
+GSX600F/GSX600FT;48;true
+GSX-R600L;48;true
+GSF650S;48;true
+GSF650SA;48;true
+DR650SEL;48;true
+SV650/SV650S/SV650SF;48;true
+AN650L;48;true
+AN650A;48;true
+LS650L;48;true
+DL650L;48;true
+GSX750F/GSX750FT;48;true
+B-Class;35;true
+VS800;48;true
+VZ800/VZ800Z;48;true
+VL800 / VL800T / VL800C/VL800B;48;true
+DL1000;48;true
+SV1000 / SV1000S;48;true
+GSX-R1000L;48;true
+GSF1250S;48;true
+GSX1300R;48;true
+VS1400/VS1400GL;48;true
+VL1500 / VL1500T;48;true
+VZR1800/VZR1800Z/VZR1800N;48;true
+M-Class;35;true
+GL-Class;35;true
+G-Class;35;true
+GLK-Class;35;true
+LT-Z50/LT-Z50Z;48;true
+LT-Z250/ LT-Z250Z;48;true
+LT-F400F;48;true
+LT-Z400L/LT-Z400ZL;48;true
+LT-R450/LT-R450Z;48;true
+LT-F500F;48;true
+LT-A500F;48;true
+Mazda2;33;true
+Outlander;38;true
+Lancer;38;true
+Galant;38;true
+Eclipse;38;true
+Endeavor;38;true
+228i;4;true
+M235i;4;true
+320i;4;true
+328d;4;true
+i3;4;true
+i8;4;true
+GS;28;true
+LS;28;true
+SC;28;true
+IS;28;true
+Scion xA;50;true
+Scion tC;50;true
+Corolla;50;true
+Prius;50;true
+Scion xB;50;true
+Land Cruiser;50;true
+LX;28;true
+Highlander;50;true
+RX;28;true
+GX;28;true
+4Runner;50;true
+RAV4;50;true
+ActiveHybrid 3;4;true
+428i;4;true
+Tacoma;50;true
+435i;4;true
+535d;4;true
+Legacy;47;true
+Outback;47;true
+Forester;47;true
+Impreza;47;true
+XV CrossTrek;47;true
+WRX;47;true
+BRZ;47;true
+ActiveHybrid 5;4;true
+Discovery Sport;27;true
+XJ;23;true
+LR2;27;true
+Range Rover Evoque;27;true
+LR4;27;true
+Range Rover Sport;27;true
+Range Rover;27;true
+1 series;17;true
+2 series;17;true
+3 series;17;true
+4 series;17;true
+5 series;17;true
+6 series;17;true
+7 series;17;true
+8 series;17;true
+9 series;17;true
+10 series;17;true
+11 series;17;true
+12 series;17;true
+13 series;17;true
+14 series;17;true
+XF;23;true
+XK;23;true
+Veloster;19;true
+Rio;25;true
+X1;4;true
+LR3;27;true
+Maxima;39;true
+350Z;39;true
+Q45;20;true
+G35;20;true
+M35;20;true
+M45;20;true
+X-Type;23;true
+S-Type;23;true
+Scion FR-S;50;true
+Montero;38;true
+Baja;47;true
+B9 Tribeca;47;true
+MPV;33;true
+X-Trail;39;true
+FX35;20;true
+FX45;20;true
+QX56;20;true
+RVR;38;true
+G37;20;true
+EX35;20;true
+i-MiEV;38;true
+Cube;39;true
+Mirage;38;true
+FX50;20;true
+8C Competizione Spider;1;true
+Thunderbird;16;true
+GT;16;true
+Five Hundred;16;true
+R 1150 GS;4;true
+R 1200 S;4;true
+R 1200 ST;4;true
+K 1200 R;4;true
+K 1200 S;4;true
+K 1200 LT;4;true
+M56;20;true
+M37;20;true
+G25;20;true
+K 1200 GT;4;true
+R 1150 R;4;true
+R 850 R;4;true
+Sable;36;true
+Montego;36;true
+M35h;20;true
+CX-5;33;true
+Excursion;16;true
+FX37;20;true
+JX35;20;true
+F-TYPE;23;true
+535xi;4;true
+328xi;4;true
+335xi;4;true
+Freestyle;16;true
+Freestar;16;true
+Genesis Coupe;19;true
+Sonata;19;true
+Soul;25;true
+Borrego;25;true
+Forte;25;true
+FJ Cruiser;50;true
+Yaris;50;true
+Avalon;50;true
+Corolla Matrix;50;true
+Tundra;50;true
+Sienna;50;true
+Camry;50;true
+ES;28;true
+Monterey;36;true
+525i;4;true
+530i;4;true
+530xi;4;true
+525xi;4;true
+CL-Class;35;true
+Elantra;19;true
+Entourage;19;true
+Motorhome Chassis;16;true
+Rondo;25;true
+Optima;25;true
+Sedona;25;true
+B-Series;33;true
+325Ci;4;true
+330Ci;4;true
+325i;4;true
+325xi;4;true
+Sorento;25;true
+Sportage;25;true
+Azera;19;true
+Veracruz;19;true
+Accent;19;true
+Genesis;19;true
+62;32;true
+330i;4;true
+330xi;4;true
+Camry Solara;50;true
+760i;4;true
+Trooper;21;true
+Rodeo;21;true
+VehiCross;21;true
+CLK-Class;35;true
+Sequoia;50;true
+Scion xD;50;true
+SLR McLaren;35;true
+R-Class;35;true
+Venza;50;true
+545i;4;true
+645Ci;4;true
+745i;4;true
+745Li;4;true
+Cadenza;25;true
+Sprinter;12;true
+S40;52;true
+V50;52;true
+C70;52;true
+V70;52;true
+XC90;52;true
+Golf;51;true
+Passat;51;true
+Phaeton;51;true
+Touareg;51;true
+Jetta;51;true
+Aerio;48;true
+GTI;51;true
+R32;51;true
+Jetta Wagon;51;true
+XL7;48;true
+C30;52;true
+TT;2;true
+A4;2;true
+S4;2;true
+A6;2;true
+RS 6;2;true
+allroad;2;true
+A8;2;true
+SX4;48;true
+CT;28;true
+FCHV-adv;50;true
+Equator;48;true
+Kizashi;48;true
+Taurus X;16;true
+K900;25;true
+HS;28;true
+Fiesta;16;true
+RC;28;true
+Commercial Chassis;16;true
+C-Max;16;true
+Freemont;15;true
+Durango;12;true
+Chassis with Powertrain;12;true
+9700;52;true
+Geo Prizm;8;true
+PT Cruiser;9;true
+Crossfire;9;true
+612 Scaglietti;14;true
+599;14;true
+599 GTB Fiorano;14;true
+430;14;true
+F430;14;true
+Transit;16;true
+Pacifica;9;true
+Aspen;9;true
+NPR/NPR-HD;21;true
+NQR/NRR;21;true
+Tercel;50;true
+Celica;50;true
+Supra;50;true
+MR2;50;true
+Paseo;50;true
+Echo;50;true
+LFA;28;true
+NX;28;true
+Cressida;50;true
+Cargo Van;50;true
+RS 4;2;true
+A3;2;true
+S6;2;true
+S8;2;true
+Q7;2;true
+Magnum;12;true
+A5;2;true
+S5;2;true
+R8;2;true
+TTS;2;true
+Q5;2;true
+Avalanche;8;true
+RS 5;2;true
+A7;2;true
+TT RS;2;true
+Matiz;8;true
+Q3;2;true
+SQ5;2;true
+Rabbit;51;true
+Colorado;8;true
+Canyon;18;true
+Eos;51;true
+Cobalt;8;true
+Optra;8;true
+Kalos;8;true
+STS;7;true
+DTS;7;true
+XLR;7;true
+e6;6;true
+Envoy;18;true
+Trailblazer;8;true
+Yukon XL;18;true
+HHR;8;true
+Uplander;8;true
+Limousine;7;true
+Hearse;7;true
+Ascender;21;true
+W4;8;true
+W5;8;true
+Monte Carlo;8;true
+Roadster;40;true
+SSR;8;true
+Escalade ESV;7;true
+Epica;8;true
+Golf SportWagen;51;true
+K 1100 RS;4;true
+K75;4;true
+K75S;4;true
+K75RT;4;true
+K 1100 LT;4;true
+R 100;4;true
+R 100 R;4;true
+R 100 RT;4;true
+R 100 GS;4;true
+R 1100 R;4;true
+R 1100 RS;4;true
+R 1100 GS;4;true
+F 650;4;true
+F 650 S;4;true
+R 1100 RT;4;true
+K 1200 RS;4;true
+R 1200 C;4;true
+F 650 CS;4;true
+R 1100 S;4;true
+R 1150 RS;4;true
+R 1150 RT;4;true
+R 1200 CL;4;true
+318i;4;true
+Escort;16;true
+ZX2;16;true
+318iS;4;true
+318iC;4;true
+325iS;4;true
+325iC;4;true
+Cougar;36;true
+540i;4;true
+840Ci;4;true
+850Ci;4;true
+850CSi;4;true
+318ti;4;true
+328iC;4;true
+328iS;4;true
+Z3;4;true
+323i;4;true
+323is;4;true
+323iC;4;true
+Villager;36;true
+Windstar;16;true
+Z8;4;true
+E-550;16;true
+525iA;4;true
+B-750;16;true
+530iA;4;true
+540iA;4;true
+Oasis;21;true
+Alpina;4;true
+F-800;16;true
+645i;4;true
+Protege;33;true
+Expo;38;true
+3000GT;38;true
+Diamante;38;true
+Truck;38;true
+Millenia;33;true
+626;33;true
+323;33;true
+MX-3;33;true
+929;33;true
+RX-7;33;true
+Sephia;25;true
+Spectra;25;true
+Amanti;25;true
+240SX;39;true
+300ZX;39;true
+J30;20;true
+G20;20;true
+eBUS;6;true
+Pickup;39;true
+Montero Sport;38;true
+Altra-EV;39;true
+Lancer SportBack;38;true
+Lancer Evolution;38;true
+I35;20;true
+Tiburon;19;true
+Explorer Sport;16;true
+Elantra Touring;19;true
+XG350;19;true
+Concorde;9;true
+Intrepid;9;true
+Intrepid;12;true
+Stratus;12;true
+Neon;12;true
+AMG GT;35;true
+GLC-Class;35;true
+GLE-Class;35;true
+Mahindra TR40;30;true
+Mahindra TR20;30;true
+Mahindra MPV;30;true
+Pickup;21;true
+W4;18;true
+X4;4;true
+Axiom;21;true
+MP4-12C;34;true
+SVX;47;true
+Swift;48;true
+Forenza;48;true
+Reno;48;true
+Renegade;24;true
+Colt;12;true
+Stealth;12;true
+Ramcharger;12;true
+Vanden Plas;23;true
+New Yorker;9;true
+LHS;9;true
+Vision;9;true
+Stratus;9;true
+Viper;9;true
+Neon;9;true
+Shadow;9;true
+Aspire;16;true
+Probe;16;true
+Contour;16;true
+Tracer;36;true
+Mystique;36;true
+Prowler;9;true
+Bronco;16;true
+Aerostar;16;true
+Caravan;9;true
+F-150 Heritage;16;true
+MX-6;33;true
+911;44;true
+Boxster;44;true
+Cayenne;44;true
+Cayman;44;true
+Panamera;44;true
+918;44;true
+Macan;44;true
+Golf III;51;true
+Corrado;51;true
+EuroVan;51;true
+90;2;true
+100;2;true
+V8;2;true
+Cabriolet;2;true
+e-Golf;51;true
+Beetle;51;true
+CC;51;true
+Tiguan;51;true
+S3;2;true
+S7;2;true
+Jetta SportWagen;51;true
+Cabrio;51;true
+Esteem;48;true
+Vitara;48;true
+Sidekick;48;true
+Sidekick Sport;48;true
+X-90;48;true
+Diablo;26;true
+147;26;true
+RS 7;2;true
+I30;20;true
+QX4;20;true
+Opel;40;true
+Cavalier;8;true
+U100;8;true
+Deville;7;true
+Safari;18;true
+3 ton;8;true
+Astro Van;8;true
+Venture;8;true
+Panoz Roadster;42;true
+Eldorado;7;true
+B7;8;true
+Catera;7;true
+Electric Vehicle;18;true
+Lumina;8;true
+Alero;8;true
+Seville;7;true
+Caprice;8;true
+Corsica;8;true
+Beretta;8;true
+Commercial Chassis;7;true
+Fleetwood;7;true
+Hearse/Limo;8;true
+L8501;16;true
+LT8501;16;true
+L9501;16;true
+LT9501;16;true
+L8511;16;true
+LT8511;16;true
+L9511;16;true
+LT9511;16;true
+L8513;16;true
+LT8513;16;true
+L9513;16;true
+LT9513;16;true
+L9522;16;true
+LT9522;16;true
+A8513;16;true
+AT8513;16;true
+A9513;16;true
+AT9513;16;true
+A9522;16;true
+AT9522;16;true
+Excel;19;true
+Scoupe;19;true
+335;4;true
+B800;16;true
+F-Super Duty;16;true
+F-700;16;true
+P700;16;true
+P800;16;true
+FT900;16;true
+L8000;16;true
+L9000;16;true
+LL9000;16;true
+LLA9000;16;true
+LLS9000;16;true
+LS8000;16;true
+LS9000;16;true
+LT8000;16;true
+LT9000;16;true
+LTS8000;16;true
+LTS9000;16;true
+LTL9000;16;true
+LTLA9000;16;true
+LTLS9000;16;true
+LA8000;16;true
+LA9000;16;true
+LTA9000;16;true
+LN7000;16;true
+LN8000;16;true
+LN9000;16;true
+LNT8000;16;true
+LNT9000;16;true
+CF8000;16;true
+CFT8000;16;true
+CF7000;16;true
+XG300;19;true
+Discovery;27;true
+Freelander;27;true
+XK8;23;true
+XJR;23;true
+940 Series;52;true
+960 Series;52;true
+850 Series;52;true
+Defender;27;true
+Previa;50;true
+T100;50;true
+Rodeo/Amigo;21;true
+740iL;4;true
+750iL;4;true
+M3Ci;4;true
+M2;4;true
+340i;4;true
+330e;4;true
+M4;4;true
+Electric Bus;6;true
+Coupe;31;true
+Spyder;31;true
+Silver Dawn;46;true
+Brooklands;3;true
+Azure;3;true
+Silver Spur;46;true
+Turbo;3;true
+Silver Spirit;46;true
+Touring Limousine;46;true
+Mulsanne;3;true
+Flying Spur;3;true
+Eight;3;true
+Corniche;46;true
+Park Ward;46;true
+Arnage;3;true
+Silver Seraph;46;true
+Aventador;26;true
+Huracan;26;true
+360;14;true
+575M Maranello;14;true
+456M;14;true
+Enzo;14;true
+164;1;true
+F355;14;true
+550 Maranello;14;true
+Metro;8;true
+S 1000 XR;4;true
+R 1200 RS;4;true
+C 650;4;true
+Mirai;50;true
+Model X;49;true
+CX-3;33;true
+V60CC;52;true
+S60 Cross Country;52;true
+P1;34;true
+Scion iQ;50;true
+Dawn;46;true
+Grand Vitara;48;true
+Grand Vitara XL-7;48;true
+CT6;7;true
+Giulia (952);1;true
+Festiva;16;true
+500X;15;true
+15 Series;17;true
+16 Series;17;true
+17 Series;17;true
+18 Series;17;true
+19 Series;17;true
+20 Series;17;true
+21 Series;17;true
+22 Series;17;true
+23 Series;17;true
+24 Series;17;true
+25 Series;17;true
+26 Series;17;true
+27 Series;17;true
+28 Series;17;true
+29 Series;17;true
+30 Series;17;true
+31 Series;17;true
+Huayra;41;true
+328Ci;4;true
+Ram Van;12;true
+Ram Wagon;12;true
+GMT-400;8;true
+Military Truck;8;true
+Forward Control;8;true
+GMT-400;18;true
+Trax;8;true
+Sonoma;18;true
+Verona;48;true
+XE;23;true
+F-PACE;23;true
+XT5;7;true
+Funeral Coach;7;true
+Armored Vehicle;7;true
+Ghibli;31;true
+Levante;31;true
+Elantra GT;19;true
+124 Spider;15;true
+Metris;35;true
+SLC-Class;35;true
+i-280;21;true
+S-10 Pickup;8;true
+Hombre;21;true
+Sintra;40;true
+Suburban;18;true
+C/K Pickup;8;true
+C/K Pickup;18;true
+P - Series;8;true
+Lumina APV;8;true
+Scion iM;50;true
+Blazer;8;true
+Jimmy Utility;18;true
+NX;39;true
+Stanza;39;true
+Axxess;39;true
+M30;20;true
+Samurai;48;true
+Low Cab Forward;16;true
+Electric Truck;6;true
+RV200L7;48;true
+SV650L7;48;true
+SV650AL7;48;true
+GSX-S1000AL7;48;true
+GSX-S1000FAL7;48;true
+GSX-R1000R;48;true
+DL650XAL7;48;true
+Forte Koup;25;true
+DL650XAL/DL650AAL/DL650AL;48;true
+DL1000AL/DL1000AAL;48;true
+DL650AAL/DL650AL;48;true
+ARMOURED ARNAGE;3;true
+VZR1800BZL/VZR1800L/VZR1800ZL;48;true
+GSX1300RAL/GSX1300RAZL;48;true
+GW250L;48;true
+VL800TL;48;true
+VL800BL/VL800CL/VL800L/VL800TL;48;true
+RM85LL;48;true
+DR200SEL;48;true
+DL650AL;48;true
+VL800CL/VL800L/VL800TL;48;true
+VZR1800L/VZR1800ZL;48;true
+DL1000L;48;true
+GSX1250FAL;48;true
+GSX1300RL/GSX1300RZL;48;true
+DL650A;48;true
+GSX1300RL;48;true
+AN400L;48;true
+LT-A500;48;true
+LT-F250;48;true
+LT-F400FU;48;true
+LT-R450;48;true
+LT-R450Z;48;true
+LT-Z400/LT-Z400Z;48;true
+LT-Z90;48;true
+RM-Z250;48;true
+RM-Z450;48;true
+DR-Z400S;48;true
+DR650SE;48;true
+DR-Z125;48;true
+RMX450;48;true
+DL650;48;true
+GSX-R600;48;true
+GSX-R750;48;true
+GSX1250FA;48;true
+GS500(GS500H)/GS500F(GS500FH);48;true
+GSX650FA;48;true
+LS650;48;true
+SFV650;48;true
+SFV650A;48;true
+TU250X;48;true
+VZ1500;48;true
+VL800/VL800C/VL800T;48;true
+VZR1800/VZR1800Z;48;true
+AN400A;48;true
+AN650;48;true
+AN650AL;48;true
+UZ125C;48;true
+LT-F500F/QUADRUNNER;48;true
+GSX-R1000;48;true
+VS1400;48;true
+LT-Z250;48;true
+LT-Z50;48;true
+VZ800/VZ800B/VZ800Z;48;true
+SV650A/SV650SA;48;true
+VZ800;48;true
+SV1000S;48;true
+VZR1800;48;true
+LT-Z250K;48;true
+Roll Royce Silver Seraph;3;true
+Rolls-Royce Park Ward;3;true
+LT-F400F/LT-F400FC;48;true
+LT-A400F/LT-A400FC/LT-A400FH;48;true
+LT-A500F/LT-A500FC;48;true
+GSF1200;48;true
+GSF1200S/GSF1200SZ;48;true
+LT-A400F/LT-A400FZ;48;true
+LT-Z400Z;48;true
+QUV620F;48;true
+VL800/VL800T/VL800Z;48;true
+GSX600FK;48;true
+LT-V700F;48;true
+VZ1600;48;true
+GS500FK;48;true
+GSX-R600K;48;true
+GSX750FK;48;true
+GSX-R750K;48;true
+GSX-R1000K;48;true
+GSF1200SK;48;true
+GSX1300RK;48;true
+GZ250K;48;true
+LS650PK;48;true
+DL650K;48;true
+VS800GLK;48;true
+VZ800K;48;true
+VL800K;48;true
+DL1000K;48;true
+VS1400GLPK;48;true
+VL1500K;48;true
+DR200SEK;48;true
+DR-Z400SK;48;true
+DR650SEK;48;true
+AN400K;48;true
+AN650K;48;true
+JR80K;48;true
+JR50K;48;true
+DR-Z125K;48;true
+DR-Z125LK;48;true
+DR-Z250K;48;true
+DR-Z400K;48;true
+DR-Z400EK;48;true
+RM85K;48;true
+RM125K;48;true
+RM85LK;48;true
+RM250K;48;true
+LT80K;48;true
+LT160K;48;true
+LT-F250FK;48;true
+LT-F250K;48;true
+LT-F400K;48;true
+LT-A400K;48;true
+LT-F400FK;48;true
+LT-A400FK;48;true
+LT-Z400K;48;true
+LT-F500FK;48;true
+LT-A500FK;48;true
+RM60K;48;true
+RM65K;48;true
+RM100K;48;true
+DR-Z110K;48;true
+RM-Z250K;48;true
+VZ1600K;48;true
+GSF600SK;48;true
+GSF1200SK/GSF1200K;48;true
+SV650K/SV650SK;48;true
+TL1000RK;48;true
+SV1000K / SV1000SK;48;true
+GS500K;48;true
+RM80;48;true
+DS80;48;true
+DR350;48;true
+GN125E;48;true
+RMX250;48;true
+LT-F4WDX;48;true
+LT-F4WD;48;true
+RF600R;48;true
+DR125SE;48;true
+DR250SE;48;true
+GSX-R750W;48;true
+R 100 GSPD;4;true
+735i;4;true
+735iL;4;true
+850i;4;true
+325ix;4;true
+325/325e;4;true
+635CSi;4;true
+535i/535is;4;true
+L7;4;true
+524td;4;true
+528e;4;true
+325i/325is;4;true
+PULSAR;39;true
+XJ8;23;true
+Crosstrek;47;true
+86;50;true
+Scion iA;50;true
+Impala Limited;8;true
+Stretch Limousine;7;true
+Golf GTI;51;true
+Bolt EV;8;true
+3500HD;8;true
+5500HD;8;true
+3500/4500;8;true
+4500HD;8;true
+4500XD;8;true
+5500XD;8;true
+A4 allroad;2;true
+S90;52;true
+V90;52;true
+V90CC;52;true
+ML-Class;35;true
+QX30;20;true
+Prius V;50;true
+Prius C;50;true
+230i;4;true
+M240i;4;true
+430i;4;true
+440i;4;true
+B7;4;true
+740e;4;true
+GLC;33;true
+Mirage G4;38;true
+F12 Berlinetta;14;true
+Golf R;51;true
+944;44;true
+928;44;true
+924;44;true
+California T;14;true
+FF;14;true
+La Ferrari;14;true
+458 Italia;14;true
+458;14;true
+California;14;true
+T-Series;18;true
+Outlander Sport;38;true
+750i, Alpina B7;4;true
+Navajo;33;true
+Tempo;16;true
+Capri;36;true
+Topaz;36;true
+Ampera-e;40;true
+B600;16;true
+B700;16;true
+F-600;16;true
+Recreational Vehicle;16;true
+F-590;16;true
+P600;16;true
+GLS-Class;35;true
+Bentayga;3;true
+190;35;true
+300;35;true
+500;35;true
+348 tb;14;true
+348 ts;14;true
+C4;18;true
+C5;18;true
+512 TR;14;true
+C6;18;true
+C7;18;true
+C8;18;true
+355 Berlinetta;14;true
+355 GTS;14;true
+348 Spider;14;true
+456;14;true
+355 Spider;14;true
+W5;18;true
+W7;18;true
+Mondial T;14;true
+T-Series;8;true
+C4;8;true
+C5;8;true
+C6;8;true
+C7;8;true
+C8;8;true
+Testarossa;14;true
+F40;14;true
+W7;8;true
+T6F;21;true
+T7F;21;true
+T8F;21;true
+328 GTB;14;true
+328 GTS;14;true
+3.2 Mondial;14;true
+328;14;true
+308GTB Quattrovalvole;14;true
+308GTS Quattrovalvole;14;true
+Mondial 8;14;true
+308 Convertible;14;true
+968;44;true
+L1013;35;true
+L1113;35;true
+L1116;35;true
+L1316;35;true
+L1418;35;true
+L1117;35;true
+L1317;35;true
+L1419;35;true
+LP1419;35;true
+LPS1525;35;true
+LP1219;35;true
+L1319;35;true
+F12 Special Series;14;true
+F60 America;14;true
+240 Series;52;true
+740 Series;52;true
+780 Series;52;true
+760 Series;52;true
+B10M;52;true
+V40;52;true
+S70;52;true
+Cab Over Engine HT;52;true
+Cab Over Engine LT;52;true
+F12 w/F7 Cab;52;true
+F6 w/F7 Cab;52;true
+FRR;21;true
+NQR;21;true
+Cab Behind Engine;52;true
+6000 Series Medium Duty;21;true
+7000 Series Medium Duty;21;true
+Volvo Trailers;52;true
+XJ6;23;true
+CL9000;16;true
+CLT9000;16;true
+Bronco II;16;true
+FT800;16;true
+CT8000;16;true
+C800;16;true
+C8000;16;true
+Hearse/Limo Commercial Chassis;8;true
+60 Special;7;true
+Allante;7;true
+Brougham;7;true
+Pony;19;true
+Stellar;19;true
+Lynx;36;true
+Laser;16;true
+LTD;16;true
+MARQUIS;36;true
+NPR;21;true
+H-Series;21;true
+W3;18;true
+W3;8;true
+Justy;47;true
+CABRIOLET;51;true
+FOX;51;true
+Loyale;47;true
+Brat;47;true
+Camargue;46;true
+Quantum;51;true
+Scirocco;51;true
+Pick-Up;50;true
+Van;50;true
+Vanagon;51;true
+Van;39;true
+F6;21;true
+F7;21;true
+B7;18;true
+Spider;1;true
+Milano;1;true
+Stanza Wagon;39;true
+GTV6;1;true
+5000;2;true
+4000;2;true
+TC;9;true
+505;43;true
+405;43;true
+80;2;true
+200;2;true
+LeBaron;9;true
+Concorde/LHS;9;true
+Coupe;2;true
+Spirit;12;true
+IMPULSE;21;true
+I-Mark;21;true
+Shadow;12;true
+Daytona;9;true
+Dynasty;9;true
+Imperial;9;true
+Dynasty;12;true
+Daytona;12;true
+200SX;39;true
+Monaco;12;true
+Low Speed Vehicle;48;true
+SALON;9;true
+OMNI;12;true
+LASER;9;true
+NEWPORT;9;true
+FIFTH AVENUE;9;true
+Shelby Charger;12;true
+ARIES;12;true
+600;12;true
+DIPLOMAT;12;true
+LANCER;12;true
+Conquest;12;true
+Precis;38;true
+FSR;21;true
+FTR/FVR;21;true
+Conquest;9;true
+W6;18;true
+Space Wagon;38;true
+Wagon;38;true
+P6S;18;true
+Sigma;38;true
+Starion;38;true
+D7;18;true
+Van;38;true
+W6;8;true
+D7;8;true
+P6S;8;true
+FTR/FVR/EVR;21;true
+Tredia;38;true
+Cordia;38;true
+S-10 Blazer;8;true
+P Truck Forward;8;true
+Stylus;21;true
+Celebrity;8;true
+Geo Spectrum;8;true
+G-Series;8;true
+Cutaway Chassis;8;true
+Motorhome Chassis;8;true
+P Truck Forward;18;true
+Motorhome Chassis;18;true
+Cutaway Chassis;18;true
+Chevette;8;true
+S15 Utility;18;true
+Vandura;18;true
+Cutaway Van;18;true
+Rally;18;true
+Cimarron;7;true
+Magna Van;18;true
+Typhoon;18;true
+Value Van;18;true
+Hi-Cube;18;true
+Hi-Cube;8;true
+Cutaway Van;8;true
+533i;4;true
+633 csi;4;true
+733i;4;true
+S7;8;true
+S7;18;true
+Trooper II;21;true
+Starlet;50;true
+Geo Sprint;8;true
+Nova;8;true
+Geo Tracker;18;true
+S6;18;true
+Jimmy;18;true
+R Conventional;18;true
+V Conventional;18;true
+S6;8;true
+R Conventional;8;true
+V Conventional;8;true
+Citation;8;true
+Corona;50;true
+S15 Pickup;18;true
+Forward Control;18;true
+Dasher;51;true
+KOMBI;51;true
+Aluminum Tilt;18;true
+Mighty Max;38;true
+SPX;38;true
+EXECUTIVE;9;true
+E-CLASS;9;true
+Amigo;21;true
+SP;38;true
+R 100 RS;4;true
+K 100 LT;4;true
+K 100 RS;4;true
+K1;4;true
+NRR;21;true
+K100;4;true
+K 100 RT;4;true
+R 65;4;true
+R 80;4;true
+R 80 RT;4;true
+R 80 GS;4;true
+R 65 LS;4;true
+R 80 ST;4;true
+GSX-R600W;48;true
+GSF400;48;true
+GSX1100G;48;true
+DR650S;48;true
+VX800;48;true
+Heavy Conventional;18;true
+Forsa;48;true
+308GTBi;14;true
+308GTSi;14;true
+308GTB;14;true
+308GTS;14;true
+Bus Chassis;18;true
+Spider 2000;15;true
+X 1/9;15;true
+Brava;15;true
+Strada;15;true
+GSX-R1100;48;true
+GS550L;48;true
+GS700E;48;true
+GS1150;48;true
+SP600;48;true
+GV700GL;48;true
+GV1200GL;48;true
+Fairmont;16;true
+XJS;23;true
+Bus Chassis;8;true
+Heavy Conventional;8;true
+Granada;16;true
+Aluminum Tilt;8;true
+Zephyr;36;true
+Merak;31;true
+Biturbo;31;true
+604;43;true
+504;43;true
+Caballero;18;true
+Transit Coach;18;true
+Articulated Coach;18;true
+El Camino;8;true
+260 Series;52;true
+Cordoba;9;true
+400;12;true
+Mirada;12;true
+ST.REGIS;12;true
+280;35;true
+240;35;true
+380;35;true
+Business;48;true
+Family;48;true
+Touring;48;true
+Leisure;48;true
+Enduro;48;true
+Off Road Play;48;true
+Mini-Leisure;48;true
+Moto-Cross;48;true
+R 100 CS;4;true
+Caravan;12;true
+Grand Caravan;12;true
+RAM 50;12;true
+D-Series;12;true
+W-Series;12;true
+Grand Wagoneer;24;true
+Comanche;24;true
+Wagoneer;24;true
+'34;16;true
+Raider;12;true
+Mini Ram;12;true
+J-10;24;true
+J-20;24;true
+Z100;22;true
+Z110;22;true
+Z220;22;true
+Z220T;22;true
+Z230T;22;true
+Z120TA;22;true
+Royal Mini Ram Van;12;true
+D50;12;true
+CJ-7;24;true
+CJ-8 Scrambler;24;true
+Rampage;12;true
+CJ-5;24;true
+CJ-6;24;true
+RD200 / RD250;12;true
+Voyager;9;true
+CF6000;16;true
+B7000;16;true
+C7000;16;true
+F7000;16;true
+F8000;16;true
+FT8000;16;true
+Courier;16;true
+B6000;16;true
+C600;16;true
+C700;16;true
+F6000;16;true
+LN600;16;true
+LN700;16;true
+L800;16;true
+LT800;16;true
+LN800;16;true
+LNT800;16;true
+E-100;16;true
+F-100;16;true
+CT800;16;true
+LUV;8;true
+Niro;25;true
+COROLLA iM;50;true
+FTR;21;true
+Santa Fe Sport;19;true
+RS 3;2;true
+C-HR;50;true
+Rogue Sport;39;true
+Malibu Classic;8;true
+400;35;true
+600;35;true
+350;35;true
+420;35;true
+560;35;true
+260;35;true
+Sentra Classic;39;true
+Altra;39;true
+Eclipse Cross;38;true
+Atlas;51;true
+Ecosport;16;true
+Micra;39;true
+Model 3;49;true
+XT;47;true
+XT6;47;true
+Stelvio;1;true
+DL;47;true
+GL;47;true
+GL-10;47;true
+RX;47;true
+Standard;47;true
+GLF;47;true
+Rogue Select;39;true
+LS650BL7;48;true
+Boulevard M109R B.O.S.S.(VZR1800BZL8);48;true
+Boulevard M90(VZ1500L8);48;true
+Boulevard M50(VZ800L8);48;true
+Boulevard S40(LS650BL8 );48;true
+GSX-S750ZAL8 / GSX-S750L8;48;true
+GSX-S750L8;48;true
+RV200L8;48;true
+TU250XL8;48;true
+GSX250R;48;true
+SV650L8;48;true
+SV650AL8;48;true
+GSX-S1000FAL8;48;true
+GSX-S1000AL8 / GSX-S1000ZAL8;48;true
+Hayabusa(GSX1300RAL8);48;true
+Boulevard C90 B.O.S.S. (VL1500BL8)  / Boulevard C90T(VL1500TL8);48;true
+Boulevard C50(VL800L8) / Boulevard C50T(VL800TL8);48;true
+V-Strom 650XT Adventure;48;true
+V-Strom 650XT;48;true
+V-Strom 1000 ABS(DL1000AL8) / V-Strom 1000 XT ABS(DL100XAL8);48;true
+DR650SEL8;48;true
+DR-Z400SL8;48;true
+DR200SL8;48;true
+DR-Z400SML8;48;true
+Burgman 650;48;true
+Ampera-e EV;40;true
+Range Rover Velar;27;true
+730i;4;true
+Chiron;5;true
+540d;4;true
+530e;4;true
+M550i;4;true
+M760i;4;true
+Stinger;25;true
+Common Motorcycle;17;true
+Seat Motorcycle;17;true
+Special Motorcycle;17;true
+650i, Alpina B6;4;true
+750Li, Alpina B7;4;true
+750Lxi, Alpina B7;4;true
+750xi, Alpina B7;4;true
+750i, B7;4;true
+650i, B6;4;true
+Prius Prime (PHEV);50;true
+Ioniq;19;true
+Kona;19;true
+E-PACE;23;true
+3500;8;true
+4500;8;true
+NPR-HD;21;true
+NPR-XD;21;true
+Kicks;39;true
+TC;31;true
+430;31;true
+228;31;true
+EB110;5;true
+XC40;52;true
+Golf Alltrack;51;true
+Tiguan Limited;51;true
+Bolt Incomplete;8;true
+Z340T;22;true
+Z335T;22;true
+Z435T;22;true
+Z450T;22;true
+FTR / 6500XD;8;true
+Santa Fe XL;19;true
+Boulevard M109R B.O.S.S. (VZR1800BZL9);48;true
+Boulevard M90 (VZ1500L9);48;true
+Boulevard M50 (VZ800L9);48;true
+Boulevard C90 B.O.S.S. (VL1500BL9) / Boulevard C90T (VL1500TL9);48;true
+Boulevard C50 (VL800L9) / Boulevard C50T (VL800TL9);48;true
+Boulevard S40 (LS650BL9);48;true
+GSX-Z750ZAL9 (50st) / GSX-S750YAL9 (50st) / GSX-S750ZL9 (50st);48;true
+GSX-S750ZL9 (49st);48;true
+RV200L9;48;true
+TU250XL9;48;true
+SV650L9;48;true
+SV650AL9 / SV650XAL9;48;true
+GSX-S1000AL9/GSXS1000ZAL9/GSXS1000YAL9;48;true
+GSXS1000FZL9;48;true
+GSX1300RAL9 (Hayabusa);48;true
+DR650SEL9;48;true
+DR-Z400SL9;48;true
+DR200SL9;48;true
+DR-Z400SML9;48;true
+Ascent;47;true
+6500XD;8;true
+A-Class;35;true
+I-PACE;23;true
+RMX450ZL;48;true
+Silverado HD;8;true
+Sierra HD;18;true
+Sierra Limited;18;true
+DR-Z125LL/DR-Z125L;48;true
+LT-Z90L/QuadSport Z90;48;true
+LT-Z50L;48;true
+X2;4;true
+LC;28;true
+640xi;4;true
+XT4;7;true
+Yaris iA;50;true
+UX;28;true
+URUS;26;true
+Ducato;15;true
+Marauder;36;true
+F12 tdf (Tour de France);14;true
+GTC4Lusso;14;true
+Nexo;19;true
+Wrangler JK;24;true
+Electric Truck Chassis;6;true
+Fuel Cell Truck;6;true
+Fuel Cell Truck Chassis;6;true
+Electric Bus Chassis;6;true
+Fuel Cell Bus;6;true
+Fuel Cell Bus Chassis;6;true
+Silverado LD;8;true
+Q8;2;true
+DL650XAAL9 (V-Strom 650XT Touring);48;true
+DL1000XAAL9 (V-Strom 1000XT Adventure);48;true
+7500XD;8;true
+FVR;21;true
+Expedition EL;16;true
+300C;9;true
+Telluride;25;true
+XJ12;23;true
+i-350;21;true
+i-290;21;true
+i-370;21;true
+Palisade;19;true
+XT6;7;true
+Arteon;51;true
+e-tron;2;true
+Cullinan;46;true
+X7;4;true
+Gladiator;24;true
+GLI;51;true
+GSXS1000SM0;48;true
+GSX1300RAM0 (Hayabusa);48;true
+Boulevard C50T;48;true
+Burgman 400;48;true
+Burgman 200;48;true
+Venue;19;true
+M340i;4;true
+745e;4;true
+840i;4;true
+M850i;4;true
+M8;4;true
+488;14;true
+Portofino;14;true
+GLB-Class;35;true
+EQC-Class;35;true
+CT4;7;true
+CT5;7;true
+G 310 R;4;true
+G 310 GS;4;true
+C 400 GT;4;true
+C 400 X;4;true
+F 750 GS;4;true
+F 850 GS;4;true
+R 1250 GS;4;true
+R 1250 RT;4;true
+R 1250 R;4;true
+R 1250 RS;4;true
+K 1600 B;4;true
+C Evolution;4;true
+625C;34;true
+650S;34;true
+675LT;34;true
+540C;34;true
+570S;34;true
+570GT;34;true
+600LT;34;true
+720S;34;true
+SENNA;34;true
+SENNA GTR;34;true
+GT;34;true
+GV1400;48;true
+VS700;48;true
+VS750 Intruder;48;true
+GSX1100;48;true
+GS750;48;true
+G 650;4;true
+SP200;48;true
+GS450;48;true
+GSX1300 RK5;48;true
+Seltos;25;true
+CX-30;33;true
+W3500/W4500;8;true
+W5500/W5500 HD;8;true
+W3500/W4500;18;true
+W5500/W5500 HD;18;true
+Model Y;49;true
+A6 allroad;2;true
+Q5 e;2;true
+A8 e;2;true
+Atlas Cross Sport;51;true
+VT;52;true
+VS;52;true
+Low Speed Vehicle;38;true
+F 900;4;true
+DR-Z400SM;48;true
+DR200S;48;true
+V-Strom 1050;48;true
+V-Strom 1050XT;48;true
+Roadster;26;true
+SQ7;2;true
+SQ8;2;true
+RS Q8;2;true
+Bronco Sport;16;true
+Mustang Mach-E;16;true
+Onix;8;true
+Suzuki Boulevard M109R B.O.S.S.;48;true
+GSX-S750;48;true
+V-Strom 650;48;true
+620R;34;true
+K5;25;true
+Flying Spur;46;true
+Electric Truck Tractor;6;true
+Fuel Cell Truck Tractor;6;true
+e-tron Sportback;2;true
+812;14;true
+F8;14;true
+Roma;14;true
+Grand Caravan;9;true
+GSXS1000SM1;48;true
+RAV4 Prime (PHEV);50;true
+Veloster N;19;true
+Taycan;44;true
+R 18 Classic;4;true
+R 18;4;true
+M440i;4;true
+ID.4;51;true
+Carnival;25;true
+QX55;20;true
+C70 / C30;52;true
+Air;29;true
+Taos;51;true
+GSX1300RRM2 / GSX1300RRZM2;48;true
+UH200AM2;48;true
+Santa Cruz;19;true
+C40;52;true
+Maverick;16;true
+MC20;31;true
+Ioniq 5;19;true
+RS e-tron GT;2;true
+EQS-Class Sedan;35;true
+M760Li;4;true
+745Le;4;true
+Silverado LTD;8;true
+Hummer EV SUV;18;true
+MX-30;33;true
+Elantra N;19;true
+Corolla Cross;50;true
+Q4;2;true
+GR86;50;true
+CE 04;4;true
+M 1000;4;true
+EV6;25;true
+Boulevard;48;true
+GSX;48;true
+New Range Rover;27;true
+iX;4;true
+i4;4;true
+765LT;34;true
+ELVA;34;true
+Jetta GLI;51;true
+A8 L;2;true
+NEIBOR;10;true
+METRO;10;true
+Logistar;10;true
+e-tron GT;2;true
+Bolt EUV;8;true
+Lyriq;7;true
+Nissan Z;39;true
+bZ4X;50;true
+CX-50;33;true
+Solterra;47;true
+EQE-Class Sedan;35;true
+EQB-Class;35;true
+EQS-Class SUV;35;true
+DR250F;48;true
+Grecale;31;true
+DR-Z50;48;true
+i7;4;true
+XM;4;true
+Hayabusa;48;true
+Katana;48;true
+Hornet;12;true
+Xcient;19;true
+DL1050;48;true
+REACH;21;true
+Semi;49;true
+Ariya Hatchback;39;true
+Crown;50;true
+GR Corolla;50;true
+EQE-Class SUV;35;true
+718 Boxster;44;true
+718 Spyder;44;true
+718 Cayman;44;true
+Ioniq 6;19;true
+RZ;28;true
+B12R;52;true
+B7R;52;true
+B12B;52;true
+B12M;52;true
+B9TL;52;true
+B9R;52;true
+B9S;52;true
+B9L;52;true
+BXR;52;true
+B5R;52;true
+BRLH;52;true
+BXXR;52;true
+BFE;52;true
+BXRB;52;true
+B8R;52;true
+BRH;52;true
+B5TL;52;true
+BE;52;true
+B8L;52;true
+B13R;52;true
+V-Strom 800DE / V-Strom 800DE Adventure;48;true
+GSX-8S;48;true
+ActiveHybrid 7;4;true
+Grancabrio;31;true
+GT MKII;16;true
+57;32;true
+Challenge Stradale;14;true
+MetaCycle;17;true
+Alpina B8;4;true
+Tonale;1;true
+3500HG;8;true
+4500HG;8;true
+5500HG;8;true
+5500XG;8;true
+JL50QT;17;true
+JL150T;17;true
+JL175ZK;17;true
+JM300ZD;17;true
+Portofino M;14;true
+SF90;14;true
+CX-90;33;true
+550 Barchetta;14;true
+F50;14;true
+Purosangue;14;true
+Monza SP1/SP2;14;true
+Daytona SP3;14;true
+296;14;true
+Cruise Origin AV;18;true
+Hummer EV Pickup;18;true
+Chiron Pur Sport;5;true
+Chiron Supersport;5;true
+ARTURA;34;true
+Grand Highlander;50;true
+750e;4;true
+i5;4;true
+Spectre;46;true
+Kona N;19;true
+Revuelto;26;true
+Grand Cherokee L;24;true
+Wagoneer L;24;true
+Grand Wagoneer L;24;true
+Citroen;11;true
+GSX-S1000GT/GSX-S1000GT+;48;true
+K7M;6;true
+K7MER;6;true
+K8M;6;true
+K9M;6;true
+K9MD;6;true
+K11M;6;true
+C8M;6;true
+C8MS;6;true
+C10M;6;true
+C10MS;6;true
+Type-A Electric School Bus;6;true
+Type-C Electric School Bus;6;true
+Type-D Electric School Bus;6;true
+EV9;25;true
+TX;28;true
+eSprinter;35;true
+6F/6R;6;true
+8TT;6;true
+8Y;6;true
+Cybertruck;49;true
+V-Strom 800;48;true
+DR-Z12LM;48;true
+GSX-8R;48;true
+CE 02;4;true
+R 18 Roctane;4;true
+R 18 B;4;true
+R 18 Transcontinental;4;true
+F 900 GS;4;true
+F 900 GS Adventure;4;true
+F 900 R;4;true
+F 900 XR;4;true
+M 1000 XR;4;true
+M 1000 R;4;true
+M 1000 RR;4;true
+R 1250 GS Adventure;4;true
+R 1300 GS;4;true
+R 12;4;true
+R 12 nineT;4;true
+750S;34;true
+Ioniq 5 N;19;true
+Traverse Limited;8;true
+325/325eS;4;true
+CLE;35;true
+Continental;3;true
+500e;15;true
+CX-70;33;true
+Escalade IQ;7;true
+A7 e;2;true
+A8 L e;2;true
+Cruze Limited;8;true
+12Cilindri;14;true
+Wagoneer S;24;true
+Malibu Limited;8;true
+Celestiq;7;true
+EX30;52;true
+EX90;52;true
+EC40;52;true
+EX40;52;true
+GTS;34;true
+550e;4;true
+BrightDrop;8;true
+K4;25;true
+Q6;2;true
+SQ6;2;true
+Optiq;7;true
+Deepstar;10;true
+Crown Signia;50;true
+Suburban HD;8;true
+ID. Buzz;51;true
+RS 6 Avant;2;true
+Gravity;29;true
+Vistiq;7;true
+Mustang GTD;16;true
+Kicks Play;39;true
+Achiever;6;true
+Creator;6;true
+Dreamer;6;true
+8R;6;true
+Kicks MPV;39;true
+F 900 GS-P;4;true
+R 1300 GS Adventure;4;true
+228;4;true
+S e-tron GT;2;true
+Escalade IQL;7;true
+Mistral;5;true
+Ioniq 9;19;true
+EX30 CC;52;true
+M235;4;true
+LeCar;45;true
+18i;45;true
+Fuego;45;true
+Alliance;45;true
+Encore;45;true
+R 1300 RT;4;true
+R 1300 R;4;true
+R 1300 RS;4;true
+R 12 G/S;4;true
+Ariya MPV;39;true
+GSX-8T;48;true
+GSX-8TT;48;true
+KingQuad;48;true
+Bolt;8;true
+Ioniq 6 N;19;true
+Utopia;41;true
+DR-Z4S;48;true
+bZ;50;true
+Recon;24;true
+Temerario;26;true
+Trailseeker;47;true
+bZ Woodland;50;true
+Uncharted;47;true

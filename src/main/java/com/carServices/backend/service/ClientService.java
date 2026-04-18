@@ -4,7 +4,7 @@ import com.carServices.backend.dtos.ClientDto;
 import com.carServices.backend.dtos.InformativeMessage;
 import com.carServices.backend.dtos.NewClientDto;
 import com.carServices.backend.dtos.PageDto;
-import com.carServices.backend.exception.ResourceNotFoundException;
+import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.Client;
 import com.carServices.backend.repository.ClientRepository;
 import com.carServices.backend.utils.JpaQueryFilters;

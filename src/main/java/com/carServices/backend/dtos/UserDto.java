@@ -1,7 +1,6 @@
 package com.carServices.backend.dtos;
 
 import com.carServices.backend.enums.Role;
-import com.carServices.backend.model.UserStatus;
 import lombok.*;
 
 @Builder
@@ -10,11 +9,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private String email;
+    private Long id;
 
-    private String password;
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
 
     private Role role;
 
-    private UserStatus status;
+    private String status;
 }

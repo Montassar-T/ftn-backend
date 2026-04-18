@@ -1,7 +1,10 @@
 package com.carServices.backend.repository;
 
 import com.carServices.backend.model.User;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {}
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+    Optional<User> findByEmailAndDeletedAtIsNull(String email);
+}

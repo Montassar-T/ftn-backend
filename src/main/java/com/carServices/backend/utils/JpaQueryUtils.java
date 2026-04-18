@@ -3,7 +3,6 @@ package com.carServices.backend.utils;
 import com.carServices.backend.dtos.JpaQueryDto;
 import com.carServices.backend.model.Client;
 import com.carServices.backend.model.Vehicle;
-import com.carServices.backend.model.VehicleBrand;
 import com.carServices.backend.model.VehicleModel;
 import java.util.Map;
 
@@ -12,10 +11,9 @@ public class JpaQueryUtils {
     private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(Map.entry(
             Vehicle.class,
             Map.of(
-                    "model_id", new JpaQueryDto("model", "name", VehicleModel.class, null),
-                    "brand_id", new JpaQueryDto("model.brand", "name", VehicleBrand.class, null),
-                    "client_id", new JpaQueryDto("client", "name", Client.class, null))));
-
+                    "model_id", new JpaQueryDto("model", "id", VehicleModel.class, null),
+                    "client_id", new JpaQueryDto("client", "id", Client.class, null))));
+    // FIXME THE MAP ABOCE IS WRONG
     // This class MUST remain immutable
     // spotless:off
     // @formatter:off
