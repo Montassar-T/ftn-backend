@@ -24,8 +24,9 @@ public class VehicleModel extends BaseEntity {
     @JoinColumn(name = "make_id")
     private VehicleMake make;
 
+    @Builder.Default
     @Column(nullable = false)
-    private Boolean systemAttribute;
+    private Boolean systemAttribute = false;
 
     @OneToMany(mappedBy = "model", fetch = FetchType.LAZY)
     private List<Vehicle> vehicles;

@@ -18,7 +18,11 @@ public class RolePermissions {
             Permission.MECHANIC_CREATE,
             Permission.MECHANIC_UPDATE,
             Permission.MECHANIC_READ,
-            Permission.MECHANIC_DELETE);
+            Permission.MECHANIC_DELETE,
+            Permission.REPAIR_CREATE,
+            Permission.REPAIR_READ,
+            Permission.REPAIR_UPDATE,
+            Permission.REPAIR_DELETE);
 
     public static final Set<Permission> ADMIN_PERMISSIONS;
 

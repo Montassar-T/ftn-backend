@@ -19,6 +19,7 @@ public class VehicleMake extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Builder.Default
     @Column(nullable = false)
-    private Boolean systemAttribute;
+    private Boolean systemAttribute = false;
 }

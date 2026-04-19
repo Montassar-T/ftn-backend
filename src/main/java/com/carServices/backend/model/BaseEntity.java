@@ -30,9 +30,4 @@ public abstract class BaseEntity {
     protected void onUpdate() {
         modifiedAt = new Date();
     }
-
-    @PreRemove
-    public void onDelete() {
-        deletedAt = new Date();
-    }
 }

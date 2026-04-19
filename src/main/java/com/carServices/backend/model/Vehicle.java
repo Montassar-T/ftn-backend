@@ -29,7 +29,7 @@ public class Vehicle extends BaseEntity {
     private String vin;
 
     @Column(nullable = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.TIMESTAMP_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DATE_FORMAT)
     private LocalDateTime registrationDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

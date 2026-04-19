@@ -18,17 +18,15 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<SingleResultDto<PageDto<VehicleDto>>> getVehicles(@RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<VehicleDto>> getVehicles(@RequestParam Map<String, String> params) {
 
-        PageDto<VehicleDto> result = vehicleService.getVehicles(params).getBody();
-
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(vehicleService.getVehicles(params));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<VehicleDto>> getVehicleById(@PathVariable Long id) {
 
-        VehicleDto result = vehicleService.getVehicleById(id).getBody();
+        VehicleDto result = vehicleService.getVehicleById(id);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
@@ -36,7 +34,7 @@ public class VehicleController {
     @PostMapping
     public ResponseEntity<SingleResultDto<VehicleDto>> createVehicle(@RequestBody NewVehicleDto vehicleDto) {
 
-        VehicleDto result = vehicleService.createVehicle(vehicleDto).getBody();
+        VehicleDto result = vehicleService.createVehicle(vehicleDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
@@ -45,16 +43,16 @@ public class VehicleController {
     public ResponseEntity<SingleResultDto<VehicleDto>> updateVehicle(
             @PathVariable Long id, @RequestBody NewVehicleDto vehicleDto) {
 
-        VehicleDto result = vehicleService.updateVehicle(id, vehicleDto).getBody();
+        VehicleDto result = vehicleService.updateVehicle(id, vehicleDto);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteVehicle(@PathVariable Long id) {
+    public ResponseEntity<InformativeMessage> deleteVehicle(@PathVariable Long id) {
 
-        InformativeMessage result = vehicleService.deleteVehicle(id).getBody();
+        vehicleService.deleteVehicle(id);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(new InformativeMessage("Vehicle deleted successfully"));
     }
 }

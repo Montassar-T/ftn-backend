@@ -4,8 +4,6 @@ import com.carServices.backend.exception.auth.AuthException;
 import com.carServices.backend.exception.business.ConflictException;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,12 +66,9 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponse> handleMethodSecurityDenied(
-            AuthorizationDeniedException ex,
-            HttpServletRequest request
-    ) {
+            AuthorizationDeniedException ex, HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.builder()

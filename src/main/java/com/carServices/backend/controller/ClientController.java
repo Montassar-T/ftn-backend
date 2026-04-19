@@ -18,17 +18,15 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<SingleResultDto<PageDto<ClientDto>>> getClients(@RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<ClientDto>> getClients(@RequestParam Map<String, String> params) {
 
-        PageDto<ClientDto> result = clientService.getClients(params).getBody();
-
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(clientService.getClients(params));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<ClientDto>> getClientById(@PathVariable Long id) {
 
-        ClientDto result = clientService.getClientById(id).getBody();
+        ClientDto result = clientService.getClientById(id);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
@@ -36,7 +34,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<SingleResultDto<ClientDto>> createClient(@RequestBody NewClientDto clientDto) {
 
-        ClientDto result = clientService.createClient(clientDto).getBody();
+        ClientDto result = clientService.createClient(clientDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
@@ -45,16 +43,16 @@ public class ClientController {
     public ResponseEntity<SingleResultDto<ClientDto>> updateClient(
             @PathVariable Long id, @RequestBody NewClientDto clientDto) {
 
-        ClientDto result = clientService.updateClient(id, clientDto).getBody();
+        ClientDto result = clientService.updateClient(id, clientDto);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteClient(@PathVariable Long id) {
+    public ResponseEntity<InformativeMessage> deleteClient(@PathVariable Long id) {
 
-        InformativeMessage result = clientService.deleteClient(id).getBody();
+        clientService.deleteClient(id);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(new InformativeMessage("Client deleted successfully"));
     }
 }

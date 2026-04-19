@@ -41,9 +41,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
         </createTable>
@@ -75,9 +73,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
 
@@ -112,9 +108,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
 
@@ -149,9 +143,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
 
@@ -209,9 +201,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
 
@@ -274,9 +264,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="modified_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
 
             <column name="deleted_at" type="TIMESTAMP"/>
 
@@ -350,9 +338,232 @@
 
     </changeSet>
 
+    <changeSet id="add-role-check-constraint-users" author="MontassarTayari">
+        <sql>
+            ALTER TABLE users
+                ADD CONSTRAINT chk_users_role
+                    CHECK (role IN ('ADMIN', 'EMPLOYEE'));
+        </sql>
+    </changeSet>
+
     <changeSet id="add-unaccent-extension" author="MontassarTayari">
         <sql>
-            create extension unaccent
+            CREATE SCHEMA IF NOT EXISTS extensions;
+
+            CREATE EXTENSION IF NOT EXISTS unaccent
+        SCHEMA extensions;
+        </sql>
+    </changeSet>
+
+    <changeSet id="5-create-repairs-table" author="MontassarTayari">
+        <createTable tableName="repairs">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vehicle_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="mechanic_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="mileage" type="INT"/>
+            <column name="fuel_level" type="VARCHAR(50)"/>
+            <column name="has_tools" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="has_spare_wheel" type="BOOLEAN" defaultValueBoolean="false"/>
+
+            <!-- Dates -->
+            <column name="scheduled_at" type="TIMESTAMP"/>
+            <column name="received_at" type="TIMESTAMP"/>
+            <column name="expected_delivery_at" type="TIMESTAMP"/>
+            <column name="started_at" type="TIMESTAMP"/>
+            <column name="completed_at" type="TIMESTAMP"/>
+
+            <!-- Timestamps -->
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="repairs"
+                baseColumnNames="vehicle_id"
+                constraintName="fk_repairs_vehicle"
+                referencedTableName="vehicles"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="repairs"
+                baseColumnNames="mechanic_id"
+                constraintName="fk_repairs_mechanic"
+                referencedTableName="mechanics"
+                referencedColumnNames="id"/>
+
+        <createIndex indexName="idx_repairs_vehicle_id"
+                     tableName="repairs">
+            <column name="vehicle_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_mechanic_id"
+                     tableName="repairs">
+            <column name="mechanic_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_status"
+                     tableName="repairs">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_scheduled_at"
+                     tableName="repairs">
+            <column name="scheduled_at"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_received_at"
+                     tableName="repairs">
+            <column name="received_at"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_vehicle_status"
+                     tableName="repairs">
+            <column name="vehicle_id"/>
+            <column name="scheduled_at"/>
+        </createIndex>
+
+        <sql>
+            ALTER TABLE repairs
+                ADD CONSTRAINT chk_repairs_fuel_level
+                    CHECK (fuel_level IN ('EMPTY', 'QUARTER', 'HALF', 'THREE_QUARTERS', 'FULL'));
+        </sql>
+
+        <sql>
+            ALTER TABLE repairs
+                ADD CONSTRAINT chk_repairs_status
+                    CHECK (status IN ('RDV', 'IN_PROGRESS', 'FINISHED', 'CANCELLED'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="add-missing-performance-indexes" author="MontassarTayari">
+
+        <!-- VEHICLES -->
+        <createIndex indexName="idx_vehicle_registration" tableName="vehicles">
+            <column name="registration"/>
+        </createIndex>
+
+        <createIndex indexName="idx_vehicle_client_model" tableName="vehicles">
+            <column name="client_id"/>
+            <column name="model_id"/>
+        </createIndex>
+
+        <!-- CLIENTS -->
+        <createIndex indexName="idx_clients_type" tableName="clients">
+            <column name="type"/>
+        </createIndex>
+
+        <!-- MECHANICS -->
+        <createIndex indexName="idx_mechanics_status" tableName="mechanics">
+            <column name="status"/>
+        </createIndex>
+
+        <!-- REPAIRS -->
+        <createIndex indexName="idx_repairs_status_created" tableName="repairs">
+            <column name="status"/>
+            <column name="created_at"/>
+        </createIndex>
+
+        <createIndex indexName="idx_repairs_vehicle_created" tableName="repairs">
+            <column name="vehicle_id"/>
+            <column name="created_at"/>
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet id="8-create-activity-logs-table" author="montassar">
+
+        <createTable tableName="activity_logs">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="action" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="entity_type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="entity_id" type="BIGINT"/>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="metadata" type="TEXT"/>
+
+            <!-- BaseEntity fields -->
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+
+        </createTable>
+
+        <!-- FK to users -->
+        <addForeignKeyConstraint
+                baseTableName="activity_logs"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_activity_logs_user"/>
+
+        <!-- INDEXES (VERY IMPORTANT for logs filtering) -->
+
+        <createIndex indexName="idx_activity_logs_user_id"
+                     tableName="activity_logs">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_activity_logs_action"
+                     tableName="activity_logs">
+            <column name="action"/>
+        </createIndex>
+
+        <createIndex indexName="idx_activity_logs_entity"
+                     tableName="activity_logs">
+            <column name="entity_type"/>
+            <column name="entity_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_activity_logs_created_at"
+                     tableName="activity_logs">
+            <column name="created_at"/>
+        </createIndex>
+
+    </changeSet>
+    
+    <changeSet id="reset-pk-seq-vehicle-makes" author="MontassarTayari">
+        <sql>
+            SELECT setval(
+                           'vehicle_makes_id_seq',
+                           (SELECT MAX(id) FROM vehicle_makes)
+                   );
         </sql>
     </changeSet>
 

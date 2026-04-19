@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:15
     container_name: car-services-db
+    restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
@@ -12,17 +13,24 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   backend:
     build: .
     container_name: car-services-backend
+    restart: always
     ports:
       - "8080:8080"
     env_file:
-      - .env
+      - .env.docker
     depends_on:
       - db
-    restart: always
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:

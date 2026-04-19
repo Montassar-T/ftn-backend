@@ -2,7 +2,6 @@ package com.carServices.backend.controller;
 
 import com.carServices.backend.dtos.*;
 import com.carServices.backend.service.VehicleModelService;
-import io.swagger.v3.oas.annotations.enums.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Map;
@@ -20,36 +19,34 @@ public class VehicleModelController {
     private final VehicleModelService vehicleModelService;
 
     @GetMapping
-    public ResponseEntity<SingleResultDto<PageDto<VehicleModelDto>>> getAllModels(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<VehicleModelDto>> getAllModels(@RequestParam Map<String, String> params) {
 
-        PageDto<VehicleModelDto> result =
-                vehicleModelService.getAllModels(params).getBody();
-
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(vehicleModelService.getAllModels(params));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<VehicleModelDto>> getModelById(@PathVariable Long id) {
 
-        VehicleModelDto result = vehicleModelService.getModelById(id).getBody();
+        VehicleModelDto result = vehicleModelService.getModelById(id);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @GetMapping("/by-make/{makeId}")
-    public ResponseEntity<SingleResultDto<List<VehicleModelLiteDto>>> getModelsByMake(@PathVariable Long makeId) {
+    public ResponseEntity<PageDto<VehicleModelLiteDto>> getModelsByMake(@PathVariable Long makeId) {
 
-        List<VehicleModelLiteDto> result =
-                vehicleModelService.getModelsByMake(makeId).getBody();
+        List<VehicleModelLiteDto> modelsList = vehicleModelService.getModelsByMake(makeId);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(PageDto.<VehicleModelLiteDto>builder()
+                .data(modelsList)
+                .total(modelsList.size())
+                .build());
     }
 
     @PostMapping
     public ResponseEntity<SingleResultDto<VehicleModelDto>> createModel(@RequestBody NewVehicleModelDto dto) {
 
-        VehicleModelDto result = vehicleModelService.createModel(dto).getBody();
+        VehicleModelDto result = vehicleModelService.createModel(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
@@ -58,16 +55,16 @@ public class VehicleModelController {
     public ResponseEntity<SingleResultDto<VehicleModelDto>> updateModel(
             @PathVariable Long id, @RequestBody NewVehicleModelDto dto) {
 
-        VehicleModelDto result = vehicleModelService.updateModel(id, dto).getBody();
+        VehicleModelDto result = vehicleModelService.updateModel(id, dto);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteModel(@PathVariable Long id) {
+    public ResponseEntity<InformativeMessage> deleteModel(@PathVariable Long id) {
 
-        InformativeMessage result = vehicleModelService.deleteModel(id).getBody();
+        vehicleModelService.deleteModel(id);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(new InformativeMessage("Vehicle model deleted successfully"));
     }
 }

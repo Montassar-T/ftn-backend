@@ -1,18 +1,18 @@
 package com.carServices.backend.utils;
 
 import com.carServices.backend.dtos.JpaQueryDto;
-import com.carServices.backend.model.Client;
-import com.carServices.backend.model.Vehicle;
-import com.carServices.backend.model.VehicleModel;
+import com.carServices.backend.model.*;
 import java.util.Map;
 
 public class JpaQueryUtils {
 
-    private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(Map.entry(
-            Vehicle.class,
-            Map.of(
-                    "model_id", new JpaQueryDto("model", "id", VehicleModel.class, null),
-                    "client_id", new JpaQueryDto("client", "id", Client.class, null))));
+    private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(
+            Map.entry(
+                    Vehicle.class,
+                    Map.of(
+                            "model_id", new JpaQueryDto("model", "id", VehicleModel.class, null),
+                            "client_id", new JpaQueryDto("client", "id", Client.class, null))),
+            Map.entry(ActivityLog.class, Map.of("user_id", new JpaQueryDto("user", "id", User.class, null))));
     // FIXME THE MAP ABOCE IS WRONG
     // This class MUST remain immutable
     // spotless:off

@@ -1,19 +1,20 @@
 package com.carServices.backend.service;
 
 import com.carServices.backend.dtos.ClientDto;
-import com.carServices.backend.dtos.InformativeMessage;
 import com.carServices.backend.dtos.NewClientDto;
 import com.carServices.backend.dtos.PageDto;
+import com.carServices.backend.enums.ActivityLogAction;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.Client;
 import com.carServices.backend.repository.ClientRepository;
+import com.carServices.backend.security.aop.TrackActivity;
 import com.carServices.backend.utils.JpaQueryFilters;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class ClientService {
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PageDto<ClientDto>> getClients(Map<String, String> params) {
+    public PageDto<ClientDto> getClients(Map<String, String> params) {
         JpaQueryFilters<Client> filters = new JpaQueryFilters<>(params, Client.class);
         Page<Client> page = clientRepository.findAll(filters.getSpecification(), filters.getPageable());
 
@@ -33,33 +34,35 @@ public class ClientService {
                 .map(clients -> this.modelMapper.map(clients, ClientDto.class))
                 .toList();
 
-        return ResponseEntity.ok(PageDto.<ClientDto>builder()
+        return PageDto.<ClientDto>builder()
                 .data(filteredClients)
                 .total(page.getTotalElements())
-                .build());
+                .build();
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ClientDto> getClientById(Long id) {
+    public ClientDto getClientById(Long id) {
         Client client = clientRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 
-        return ResponseEntity.ok(modelMapper.map(client, ClientDto.class));
+        return modelMapper.map(client, ClientDto.class);
     }
 
     @Transactional
-    public ResponseEntity<ClientDto> createClient(NewClientDto dto) {
+    @TrackActivity(action = ActivityLogAction.CLIENT_CREATED, entityType = "CLIENT")
+    public ClientDto createClient(NewClientDto dto) {
 
         Client client = modelMapper.map(dto, Client.class);
 
         Client saved = clientRepository.save(client);
 
-        return ResponseEntity.ok(modelMapper.map(saved, ClientDto.class));
+        return modelMapper.map(saved, ClientDto.class);
     }
 
     @Transactional
-    public ResponseEntity<ClientDto> updateClient(Long id, NewClientDto dto) {
+    @TrackActivity(action = ActivityLogAction.CLIENT_UPDATED, entityType = "CLIENT")
+    public ClientDto updateClient(Long id, NewClientDto dto) {
 
         Client existing = clientRepository
                 .findByIdAndDeletedAtIsNull(id)
@@ -69,17 +72,18 @@ public class ClientService {
 
         Client updated = clientRepository.save(existing);
 
-        return ResponseEntity.ok(modelMapper.map(updated, ClientDto.class));
+        return modelMapper.map(updated, ClientDto.class);
     }
 
     @Transactional
-    public ResponseEntity<InformativeMessage> deleteClient(Long id) {
+    @TrackActivity(action = ActivityLogAction.CLIENT_DELETED, entityType = "CLIENT")
+    public void deleteClient(Long id) {
 
         Client client =
                 clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 
-        clientRepository.delete(client);
+        client.setDeletedAt(new Date());
 
-        return ResponseEntity.ok().body(new InformativeMessage("Client deleted successfully"));
+        clientRepository.save(client);
     }
 }

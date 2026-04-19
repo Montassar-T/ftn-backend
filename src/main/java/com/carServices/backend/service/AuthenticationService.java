@@ -3,10 +3,12 @@ package com.carServices.backend.service;
 import com.carServices.backend.dtos.AuthResponse;
 import com.carServices.backend.dtos.LoginDto;
 import com.carServices.backend.dtos.LoginResult;
+import com.carServices.backend.enums.ActivityLogAction;
 import com.carServices.backend.exception.auth.AuthenticationException;
 import com.carServices.backend.model.User;
 import com.carServices.backend.repository.UserRepository;
 import com.carServices.backend.security.JwtService;
+import com.carServices.backend.security.aop.TrackActivity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     @Transactional
+    @TrackActivity(action = ActivityLogAction.LOGIN, entityType = "SYSTEM")
     public LoginResult login(LoginDto request) {
 
         User user = userRepository

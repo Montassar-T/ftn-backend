@@ -19,44 +19,41 @@ public class VehicleMakeController {
     private final VehicleMakeService vehicleMakeService;
 
     @GetMapping
-    public ResponseEntity<SingleResultDto<PageDto<VehicleMakeDto>>> getAllMakes(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<VehicleMakeDto>> getAllMakes(@RequestParam Map<String, String> params) {
 
-        PageDto<VehicleMakeDto> result = vehicleMakeService.getAllMakes(params).getBody();
-
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(vehicleMakeService.getAllMakes(params));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<VehicleMakeDto>> getMakeById(@PathVariable Long id) {
 
-        VehicleMakeDto result = vehicleMakeService.getMakeById(id).getBody();
+        VehicleMakeDto result = vehicleMakeService.getMakeById(id);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<VehicleMakeDto>> createMake(@RequestBody VehicleMakeDto dto) {
+    public ResponseEntity<SingleResultDto<VehicleMakeDto>> createMake(@RequestBody NewVehicleMakeDto dto) {
 
-        VehicleMakeDto result = vehicleMakeService.createMake(dto).getBody();
+        VehicleMakeDto result = vehicleMakeService.createMake(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SingleResultDto<VehicleMakeDto>> updateMake(
-            @PathVariable Long id, @RequestBody VehicleMakeDto dto) {
+            @PathVariable Long id, @RequestBody NewVehicleMakeDto dto) {
 
-        VehicleMakeDto result = vehicleMakeService.updateMake(id, dto).getBody();
+        VehicleMakeDto result = vehicleMakeService.updateMake(id, dto);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteMake(@PathVariable Long id) {
+    public ResponseEntity<InformativeMessage> deleteMake(@PathVariable Long id) {
 
-        InformativeMessage result = vehicleMakeService.deleteMake(id).getBody();
+        vehicleMakeService.deleteMake(id);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(new InformativeMessage("Vehicle Make deleted successfully"));
     }
 }

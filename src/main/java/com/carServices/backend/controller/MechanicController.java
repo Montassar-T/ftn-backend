@@ -18,18 +18,15 @@ public class MechanicController {
     private final MechanicService mechanicService;
 
     @GetMapping
-    public ResponseEntity<SingleResultDto<PageDto<MechanicDto>>> getMechanics(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<MechanicDto>> getMechanics(@RequestParam Map<String, String> params) {
 
-        PageDto<MechanicDto> result = mechanicService.getMechanics(params).getBody();
-
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(mechanicService.getMechanics(params));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<MechanicDto>> getMechanicById(@PathVariable Long id) {
 
-        MechanicDto result = mechanicService.getMechanicById(id).getBody();
+        MechanicDto result = mechanicService.getMechanicById(id);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
@@ -37,7 +34,7 @@ public class MechanicController {
     @PostMapping
     public ResponseEntity<SingleResultDto<MechanicDto>> createMechanic(@RequestBody NewMechanicDto dto) {
 
-        MechanicDto result = mechanicService.createMechanic(dto).getBody();
+        MechanicDto result = mechanicService.createMechanic(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResultDto<>(result));
     }
@@ -46,16 +43,16 @@ public class MechanicController {
     public ResponseEntity<SingleResultDto<MechanicDto>> updateMechanic(
             @PathVariable Long id, @RequestBody NewMechanicDto dto) {
 
-        MechanicDto result = mechanicService.updateMechanic(id, dto).getBody();
+        MechanicDto result = mechanicService.updateMechanic(id, dto);
 
         return ResponseEntity.ok(new SingleResultDto<>(result));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SingleResultDto<InformativeMessage>> deleteMechanic(@PathVariable Long id) {
+    public ResponseEntity<InformativeMessage> deleteMechanic(@PathVariable Long id) {
 
-        InformativeMessage result = mechanicService.deleteMechanic(id).getBody();
+        mechanicService.deleteMechanic(id);
 
-        return ResponseEntity.ok(new SingleResultDto<>(result));
+        return ResponseEntity.ok(new InformativeMessage("Mechanic deleted successfully"));
     }
 }

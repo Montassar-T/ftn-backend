@@ -1,23 +1,16 @@
 package com.carServices.backend.service;
 
-import com.carServices.backend.dtos.InformativeMessage;
-import com.carServices.backend.dtos.NewVehicleDto;
-import com.carServices.backend.dtos.PageDto;
-import com.carServices.backend.dtos.VehicleDto;
+import com.carServices.backend.dtos.*;
+import com.carServices.backend.enums.ActivityLogAction;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
-import com.carServices.backend.model.Client;
-import com.carServices.backend.model.Vehicle;
-import com.carServices.backend.model.VehicleModel;
-import com.carServices.backend.repository.ClientRepository;
-import com.carServices.backend.repository.VehicleModelRepository;
-import com.carServices.backend.repository.VehicleRepository;
+import com.carServices.backend.model.*;
+import com.carServices.backend.repository.*;
+import com.carServices.backend.security.aop.TrackActivity;
 import com.carServices.backend.utils.JpaQueryFilters;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +24,7 @@ public class VehicleService {
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PageDto<VehicleDto>> getVehicles(Map<String, String> params) {
+    public PageDto<VehicleDto> getVehicles(Map<String, String> params) {
 
         JpaQueryFilters<Vehicle> filters = new JpaQueryFilters<>(params, Vehicle.class);
         Page<Vehicle> page = vehicleRepository.findAll(filters.getSpecification(), filters.getPageable());
@@ -40,35 +33,37 @@ public class VehicleService {
                 .map(vehicle -> modelMapper.map(vehicle, VehicleDto.class))
                 .toList();
 
-        return ResponseEntity.ok(PageDto.<VehicleDto>builder()
+        return PageDto.<VehicleDto>builder()
                 .data(data)
                 .total(page.getTotalElements())
-                .build());
+                .build();
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<VehicleDto> getVehicleById(Long id) {
+    public VehicleDto getVehicleById(Long id) {
 
         Vehicle vehicle = vehicleRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found"));
 
-        return ResponseEntity.ok(modelMapper.map(vehicle, VehicleDto.class));
+        return modelMapper.map(vehicle, VehicleDto.class);
     }
 
     @Transactional
-    public ResponseEntity<VehicleDto> createVehicle(NewVehicleDto dto) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_CREATED, entityType = "VEHICLE")
+    public VehicleDto createVehicle(NewVehicleDto dto) {
         Vehicle vehicle = modelMapper.map(dto, Vehicle.class);
 
         buildBaseVehicle(vehicle, dto);
 
         Vehicle saved = vehicleRepository.save(vehicle);
 
-        return ResponseEntity.ok(modelMapper.map(saved, VehicleDto.class));
+        return modelMapper.map(saved, VehicleDto.class);
     }
 
     @Transactional
-    public ResponseEntity<VehicleDto> updateVehicle(Long id, NewVehicleDto dto) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_UPDATED, entityType = "VEHICLE")
+    public VehicleDto updateVehicle(Long id, NewVehicleDto dto) {
 
         Vehicle existing = vehicleRepository
                 .findByIdAndDeletedAtIsNull(id)
@@ -80,19 +75,20 @@ public class VehicleService {
 
         Vehicle updated = vehicleRepository.save(existing);
 
-        return ResponseEntity.ok(modelMapper.map(updated, VehicleDto.class));
+        return modelMapper.map(updated, VehicleDto.class);
     }
 
     @Transactional
-    public ResponseEntity<InformativeMessage> deleteVehicle(Long id) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_DELETED, entityType = "VEHICLE")
+    public void deleteVehicle(Long id) {
 
         Vehicle vehicle = vehicleRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found"));
 
-        vehicleRepository.delete(vehicle);
+        vehicle.setDeletedAt(new Date());
 
-        return ResponseEntity.ok(new InformativeMessage("Vehicle deleted successfully"));
+        vehicleRepository.save(vehicle);
     }
 
     private void buildBaseVehicle(Vehicle vehicle, NewVehicleDto dto) {

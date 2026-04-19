@@ -1,19 +1,18 @@
 package com.carServices.backend.service;
 
-import com.carServices.backend.dtos.InformativeMessage;
-import com.carServices.backend.dtos.PageDto;
-import com.carServices.backend.dtos.VehicleMakeDto;
-import com.carServices.backend.exception.business.ConflictException;
-import com.carServices.backend.exception.business.ResourceNotFoundException;
+import com.carServices.backend.dtos.*;
+import com.carServices.backend.enums.ActivityLogAction;
+import com.carServices.backend.exception.business.*;
 import com.carServices.backend.model.VehicleMake;
 import com.carServices.backend.repository.VehicleMakeRepository;
+import com.carServices.backend.security.aop.TrackActivity;
 import com.carServices.backend.utils.JpaQueryFilters;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class VehicleMakeService {
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PageDto<VehicleMakeDto>> getAllMakes(Map<String, String> params) {
+    public PageDto<VehicleMakeDto> getAllMakes(Map<String, String> params) {
         JpaQueryFilters<VehicleMake> filters = new JpaQueryFilters<>(params, VehicleMake.class);
         Page<VehicleMake> page = vehicleMakeRepository.findAll(filters.getSpecification(), filters.getPageable());
 
@@ -33,44 +32,47 @@ public class VehicleMakeService {
                 .map(vehicle -> modelMapper.map(vehicle, VehicleMakeDto.class))
                 .toList();
 
-        return ResponseEntity.ok(PageDto.<VehicleMakeDto>builder()
+        return PageDto.<VehicleMakeDto>builder()
                 .data(data)
                 .total(page.getTotalElements())
-                .build());
+                .build();
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<VehicleMakeDto> getMakeById(Long id) {
+    public VehicleMakeDto getMakeById(Long id) {
 
         VehicleMake make =
                 vehicleMakeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Make not found"));
 
-        return ResponseEntity.ok(modelMapper.map(make, VehicleMakeDto.class));
+        return modelMapper.map(make, VehicleMakeDto.class);
     }
 
     @Transactional
-    public ResponseEntity<VehicleMakeDto> createMake(VehicleMakeDto dto) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_MAKE_CREATED, entityType = "VEHICLE_MAKE")
+    public VehicleMakeDto createMake(NewVehicleMakeDto dto) {
 
         VehicleMake make = VehicleMake.builder().name(dto.getName()).build();
 
         VehicleMake saved = vehicleMakeRepository.save(make);
 
-        return ResponseEntity.ok(modelMapper.map(saved, VehicleMakeDto.class));
+        return modelMapper.map(saved, VehicleMakeDto.class);
     }
 
     @Transactional
-    public ResponseEntity<VehicleMakeDto> updateMake(Long id, VehicleMakeDto dto) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_MAKE_UPDATED, entityType = "VEHICLE_MAKE")
+    public VehicleMakeDto updateMake(Long id, NewVehicleMakeDto dto) {
 
         VehicleMake make =
                 vehicleMakeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Make not found"));
 
         make.setName(dto.getName());
 
-        return ResponseEntity.ok(modelMapper.map(vehicleMakeRepository.save(make), VehicleMakeDto.class));
+        return modelMapper.map(vehicleMakeRepository.save(make), VehicleMakeDto.class);
     }
 
     @Transactional
-    public ResponseEntity<InformativeMessage> deleteMake(Long id) {
+    @TrackActivity(action = ActivityLogAction.VEHICLE_MAKE_DELETED, entityType = "VEHICLE_MAKE")
+    public void deleteMake(Long id) {
 
         VehicleMake make =
                 vehicleMakeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Make not found"));
@@ -79,8 +81,8 @@ public class VehicleMakeService {
             throw new ConflictException("System models cannot be deleted");
         }
 
-        vehicleMakeRepository.delete(make);
+        make.setDeletedAt(new Date());
 
-        return ResponseEntity.ok(new InformativeMessage("Make deleted successfully"));
+        vehicleMakeRepository.save(make);
     }
 }
