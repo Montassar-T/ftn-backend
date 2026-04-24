@@ -555,7 +555,7 @@ public class JpaQueryFilters<T> {
 
                 if (String.class.equals(fieldType)) {
                     Expression<String> processedPath =
-                            builder.function("unaccent", String.class, builder.lower(path.as(String.class)));
+                            builder.function("extensions.unaccent", String.class, builder.lower(path.as(String.class)));
                     // Normalize the search value to remove accents
                     String normalizedValue = java.text.Normalizer.normalize(
                                     value.toLowerCase(), java.text.Normalizer.Form.NFD)
@@ -621,7 +621,7 @@ public class JpaQueryFilters<T> {
                     if (String.class.equals(fieldType)) {
                         // For String fields
                         Expression<String> processedPath =
-                                builder.function("unaccent", String.class, builder.lower(path.as(String.class)));
+                                builder.function("extensions.unaccent", String.class, builder.lower(path.as(String.class)));
                         // Normalize the search value to remove accents
                         String normalizedValue = java.text.Normalizer.normalize(
                                         value.toLowerCase(), java.text.Normalizer.Form.NFD)
@@ -764,7 +764,7 @@ public class JpaQueryFilters<T> {
             Path<?> path = root.get(fieldName);
             if (path.getJavaType().equals(String.class)) {
                 Expression<String> processedPath =
-                        builder.function("unaccent", String.class, builder.lower(path.as(String.class)));
+                        builder.function("extensions.unaccent", String.class, builder.lower(path.as(String.class)));
 
                 // Normalize the search value to remove accents
                 String normalizedValue = java.text.Normalizer.normalize(
@@ -813,7 +813,7 @@ public class JpaQueryFilters<T> {
                 if (String.class.equals(fieldType)) {
                     // For String fields
                     Expression<String> processedPath =
-                            builder.function("unaccent", String.class, builder.lower(path.as(String.class)));
+                            builder.function("extensions.unaccent", String.class, builder.lower(path.as(String.class)));
                     // Normalize the search value to remove accents
                     String normalizedValue = java.text.Normalizer.normalize(
                                     value.toLowerCase(), java.text.Normalizer.Form.NFD)

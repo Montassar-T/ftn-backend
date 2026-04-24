@@ -18,7 +18,7 @@ public class ActivityLogController {
     private final ActivityLogService service;
 
     @GetMapping
-    public ResponseEntity<PageDto<ActivityLogDto>> getAll(Map<String, String> params) {
+    public ResponseEntity<PageDto<ActivityLogDto>> getAll(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(service.getLogs(params));
     }
 }

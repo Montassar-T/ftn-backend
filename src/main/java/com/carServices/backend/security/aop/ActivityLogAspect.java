@@ -4,6 +4,7 @@ import com.carServices.backend.dtos.LoginDto;
 import com.carServices.backend.model.*;
 import com.carServices.backend.repository.*;
 import com.carServices.backend.shared.Identifiable;
+import com.carServices.backend.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -48,7 +49,7 @@ public class ActivityLogAspect {
             for (Object arg : joinPoint.getArgs()) {
                 if (arg instanceof LoginDto loginDto) {
                     user = userRepository
-                            .findByEmailAndDeletedAtIsNull(loginDto.getEmail())
+                            .findByEmailAndDeletedAtIsNull(EmailUtils.normalize(loginDto.getEmail()))
                             .orElse(null);
                     break;
                 }

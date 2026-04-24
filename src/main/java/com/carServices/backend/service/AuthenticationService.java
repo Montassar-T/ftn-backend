@@ -9,6 +9,7 @@ import com.carServices.backend.model.User;
 import com.carServices.backend.repository.UserRepository;
 import com.carServices.backend.security.JwtService;
 import com.carServices.backend.security.aop.TrackActivity;
+import com.carServices.backend.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,9 @@ public class AuthenticationService {
     @TrackActivity(action = ActivityLogAction.LOGIN, entityType = "SYSTEM")
     public LoginResult login(LoginDto request) {
 
+        String email = EmailUtils.normalize(request.getEmail());
         User user = userRepository
-                .findByEmailAndDeletedAtIsNull(request.getEmail())
+                .findByEmailAndDeletedAtIsNull(email)
                 .orElseThrow(() -> new AuthenticationException(INVALID_CREDENTIALS));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {

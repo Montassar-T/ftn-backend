@@ -8,6 +8,7 @@ import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.User;
 import com.carServices.backend.model.UserStatus;
 import com.carServices.backend.repository.UserRepository;
+import com.carServices.backend.utils.EmailUtils;
 import com.carServices.backend.utils.JpaQueryFilters;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class UserService {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .email(request.getEmail().toLowerCase())
+                .email(EmailUtils.normalize(request.getEmail()))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .status(UserStatus.ACTIVE)
                 .role(Role.EMPLOYEE)
@@ -68,13 +69,7 @@ public class UserService {
 
         User saved = userRepository.save(user);
 
-        return UserDto.builder()
-                .id(saved.getId())
-                .firstName(saved.getFirstName())
-                .lastName(saved.getLastName())
-                .email(saved.getEmail())
-                .status(saved.getStatus())
-                .build();
+        return mapToDto(saved);
     }
 
     @Transactional
@@ -144,7 +139,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepository
-                .findByEmailAndDeletedAtIsNull(email)
+                .findByEmailAndDeletedAtIsNull(EmailUtils.normalize(email))
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 

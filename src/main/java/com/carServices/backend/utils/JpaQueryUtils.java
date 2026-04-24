@@ -12,7 +12,10 @@ public class JpaQueryUtils {
                     Map.of(
                             "model_id", new JpaQueryDto("model", "id", VehicleModel.class, null),
                             "client_id", new JpaQueryDto("client", "id", Client.class, null))),
-            Map.entry(ActivityLog.class, Map.of("user_id", new JpaQueryDto("user", "id", User.class, null))));
+            Map.entry(
+                    ActivityLog.class,
+                    Map.of(
+                            "user_id", new JpaQueryDto("user", "id", User.class, null))));
     // FIXME THE MAP ABOCE IS WRONG
     // This class MUST remain immutable
     // spotless:off

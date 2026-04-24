@@ -319,7 +319,7 @@
 
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM users WHERE email = 'admin@system.com'
+                SELECT COUNT(*) FROM users WHERE email = 'admin@car-services.tn'
             </sqlCheck>
         </preConditions>
 
@@ -564,6 +564,13 @@
                            'vehicle_makes_id_seq',
                            (SELECT MAX(id) FROM vehicle_makes)
                    );
+        </sql>
+    </changeSet>
+
+    <changeSet id="add-pgtrgm-extension" author="MontassarTayari">
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS pg_trgm
+        SCHEMA extensions;
         </sql>
     </changeSet>
 
