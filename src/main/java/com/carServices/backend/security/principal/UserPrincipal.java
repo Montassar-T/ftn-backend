@@ -3,7 +3,7 @@ package com.carServices.backend.security.principal;
 import com.carServices.backend.enums.Permission;
 import com.carServices.backend.enums.Role;
 import com.carServices.backend.model.User;
-import com.carServices.backend.model.UserStatus;
+import com.carServices.backend.enums.UserStatus;
 import com.carServices.backend.security.authorization.RolePermissions;
 import java.util.*;
 import lombok.Getter;

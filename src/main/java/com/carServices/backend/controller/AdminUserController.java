@@ -38,7 +38,7 @@ public class AdminUserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SingleResultDto<UserDto>> updateUser(@PathVariable Long id, @RequestBody NewUserDto dto) {
+    public ResponseEntity<SingleResultDto<UserDto>> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto dto) {
 
         return ResponseEntity.ok(new SingleResultDto<>(userService.updateUser(id, dto)));
     }

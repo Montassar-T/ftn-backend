@@ -113,10 +113,6 @@
             <column name="deleted_at" type="TIMESTAMP"/>
 
         </createTable>
-
-        <createIndex indexName="idx_vehicle_makes_name" tableName="vehicle_makes" unique="true">
-            <column name="name"/>
-        </createIndex>
     </changeSet>
 
     <changeSet id="4-create-vehicle-models-table" author="MontassarTayari">
@@ -188,8 +184,6 @@
 
             <column name="registration" type="VARCHAR(255)"/>
 
-            <column name="mileage" type="INT"/>
-
             <column name="vin" type="VARCHAR(17)">
                 <constraints unique="true"/>
             </column>
@@ -227,10 +221,6 @@
 
         <createIndex indexName="idx_vehicle_model_id" tableName="vehicles">
             <column name="model_id"/>
-        </createIndex>
-
-        <createIndex indexName="idx_vehicle_vin" tableName="vehicles" unique="true">
-            <column name="vin"/>
         </createIndex>
     </changeSet>
 
@@ -514,14 +504,9 @@
 
             <column name="metadata" type="TEXT"/>
 
-            <!-- BaseEntity fields -->
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="modified_at" type="TIMESTAMP"/>
-
-            <column name="deleted_at" type="TIMESTAMP"/>
 
         </createTable>
 
@@ -566,12 +551,4 @@
                    );
         </sql>
     </changeSet>
-
-    <changeSet id="add-pgtrgm-extension" author="MontassarTayari">
-        <sql>
-            CREATE EXTENSION IF NOT EXISTS pg_trgm
-        SCHEMA extensions;
-        </sql>
-    </changeSet>
-
 </databaseChangeLog>

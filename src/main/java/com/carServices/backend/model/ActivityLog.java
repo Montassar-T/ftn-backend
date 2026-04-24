@@ -1,8 +1,11 @@
 package com.carServices.backend.model;
 
 import com.carServices.backend.enums.ActivityLogAction;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "activity_logs")
@@ -11,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ActivityLog extends BaseEntity {
+public class ActivityLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +33,13 @@ public class ActivityLog extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String metadata;
+
+    @Column(name = "created_at")
+    @JsonProperty("created_at")
+    private Date createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
 }

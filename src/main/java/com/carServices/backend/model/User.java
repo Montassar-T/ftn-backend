@@ -1,6 +1,7 @@
 package com.carServices.backend.model;
 
 import com.carServices.backend.enums.Role;
+import com.carServices.backend.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

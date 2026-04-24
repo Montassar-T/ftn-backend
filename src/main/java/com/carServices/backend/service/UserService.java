@@ -6,7 +6,7 @@ import com.carServices.backend.exception.auth.AuthenticationException;
 import com.carServices.backend.exception.business.ConflictException;
 import com.carServices.backend.exception.business.ResourceNotFoundException;
 import com.carServices.backend.model.User;
-import com.carServices.backend.model.UserStatus;
+import com.carServices.backend.enums.UserStatus;
 import com.carServices.backend.repository.UserRepository;
 import com.carServices.backend.utils.EmailUtils;
 import com.carServices.backend.utils.JpaQueryFilters;
@@ -73,7 +73,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateUser(Long id, NewUserDto request) {
+    public UserDto updateUser(Long id, UpdateUserDto request) {
 
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 

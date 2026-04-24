@@ -16,8 +16,6 @@ public class VehicleDto {
 
     private String registration;
 
-    private Integer mileage;
-
     private String vin;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.TIMESTAMP_FORMAT)

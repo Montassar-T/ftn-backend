@@ -1,7 +1,7 @@
 package com.carServices.backend.dtos;
 
 import com.carServices.backend.enums.Role;
-import com.carServices.backend.model.UserStatus;
+import com.carServices.backend.enums.UserStatus;
 import lombok.*;
 
 @Builder

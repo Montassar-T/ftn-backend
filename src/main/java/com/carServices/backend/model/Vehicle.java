@@ -22,9 +22,6 @@ public class Vehicle extends BaseEntity {
     @Column(nullable = true)
     private String registration;
 
-    @Column(nullable = true)
-    private String mileage;
-
     @Column(nullable = true, unique = true)
     private String vin;
 

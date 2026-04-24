@@ -3,6 +3,8 @@ package com.carServices.backend.dtos;
 import com.carServices.backend.enums.ActivityLogAction;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +22,6 @@ public class ActivityLogDto {
     private UserDto user;
 
     private String metadata;
+
+    private LocalDateTime createdAt;
 }

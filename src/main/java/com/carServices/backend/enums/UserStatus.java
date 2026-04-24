@@ -1,4 +1,4 @@
-package com.carServices.backend.model;
+package com.carServices.backend.enums;
 
 public enum UserStatus {
     ACTIVE,
