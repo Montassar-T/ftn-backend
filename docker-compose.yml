@@ -16,6 +16,22 @@ services:
     networks:
       - app-network
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: car-services-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
   backend:
     build: .
     container_name: car-services-backend
@@ -31,6 +47,7 @@ services:
 
 volumes:
   postgres_data:
+  pgadmin_data:
 
 networks:
   app-network:
