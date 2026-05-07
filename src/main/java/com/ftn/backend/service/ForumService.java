@@ -6,6 +6,8 @@ import com.ftn.backend.dtos.forum.UpdateForumDto;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Forum;
 import com.ftn.backend.repository.ForumRepository;
+import com.ftn.backend.repository.ReponseRepository;
+import com.ftn.backend.repository.SujetRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ForumService {
 
     private final ForumRepository forumRepository;
+    private final SujetRepository sujetRepository;
+    private final ReponseRepository reponseRepository;
 
     @Transactional(readOnly = true)
     public ForumDto getById(Long id) {
@@ -59,7 +63,19 @@ public class ForumService {
         Forum forum = forumRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Forum not found"));
-        forum.setDeletedAt(LocalDateTime.now());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        sujetRepository.findByForum_IdAndDeletedAtIsNull(id).forEach(sujet -> {
+            reponseRepository.findBySujet_IdAndDeletedAtIsNull(sujet.getId()).forEach(reponse -> {
+                reponse.setDeletedAt(now);
+                reponseRepository.save(reponse);
+            });
+            sujet.setDeletedAt(now);
+            sujetRepository.save(sujet);
+        });
+
+        forum.setDeletedAt(now);
         forumRepository.save(forum);
     }
 

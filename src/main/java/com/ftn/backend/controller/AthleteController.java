@@ -8,6 +8,7 @@ import com.ftn.backend.dtos.athlete.UpdateAthleteDto;
 import com.ftn.backend.dtos.licence.LicenceDto;
 import com.ftn.backend.service.AthleteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class AthleteController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<AthleteDto>> create(@RequestBody CreateAthleteDto dto) {
+    public ResponseEntity<SingleResultDto<AthleteDto>> create(@Valid @RequestBody CreateAthleteDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(athleteService.create(dto)));
     }
 

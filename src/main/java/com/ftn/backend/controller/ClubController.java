@@ -8,6 +8,7 @@ import com.ftn.backend.dtos.club.CreateClubDto;
 import com.ftn.backend.dtos.club.UpdateClubDto;
 import com.ftn.backend.service.ClubService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ClubController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<ClubDto>> create(@RequestBody CreateClubDto dto) {
+    public ResponseEntity<SingleResultDto<ClubDto>> create(@Valid @RequestBody CreateClubDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(clubService.create(dto)));
     }
 

@@ -7,6 +7,7 @@ import com.ftn.backend.dtos.sujet.SujetDto;
 import com.ftn.backend.dtos.sujet.UpdateSujetDto;
 import com.ftn.backend.service.SujetService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class SujetController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<SujetDto>> create(@RequestBody CreateSujetDto dto) {
+    public ResponseEntity<SingleResultDto<SujetDto>> create(@Valid @RequestBody CreateSujetDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(sujetService.create(dto)));
     }
 

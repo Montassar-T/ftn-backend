@@ -7,6 +7,7 @@ import com.ftn.backend.dtos.reponse.ReponseDto;
 import com.ftn.backend.dtos.reponse.UpdateReponseDto;
 import com.ftn.backend.service.ReponseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class ReponseController {
 
     @PostMapping
     public ResponseEntity<SingleResultDto<ReponseDto>> create(
-            @RequestBody CreateReponseDto dto) {
+            @Valid @RequestBody CreateReponseDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.create(dto)));
     }
 

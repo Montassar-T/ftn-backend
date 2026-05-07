@@ -6,6 +6,7 @@ import com.ftn.backend.dtos.inscription.CreateInscriptionDto;
 import com.ftn.backend.dtos.inscription.InscriptionDto;
 import com.ftn.backend.service.InscriptionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class InscriptionController {
 
     @PostMapping
     public ResponseEntity<SingleResultDto<InscriptionDto>> create(
-            @RequestBody CreateInscriptionDto dto) {
+            @Valid @RequestBody CreateInscriptionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.create(dto)));
     }
 

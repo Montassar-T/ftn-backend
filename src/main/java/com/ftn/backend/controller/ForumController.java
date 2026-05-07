@@ -6,6 +6,7 @@ import com.ftn.backend.dtos.forum.ForumDto;
 import com.ftn.backend.dtos.forum.UpdateForumDto;
 import com.ftn.backend.service.ForumService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ForumController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<ForumDto>> create(@RequestBody CreateForumDto dto) {
+    public ResponseEntity<SingleResultDto<ForumDto>> create(@Valid @RequestBody CreateForumDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(forumService.create(dto)));
     }
 

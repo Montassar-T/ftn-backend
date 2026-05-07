@@ -7,8 +7,11 @@ import com.ftn.backend.dtos.sujet.UpdateSujetDto;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Forum;
 import com.ftn.backend.model.Sujet;
+import com.ftn.backend.model.User;
 import com.ftn.backend.repository.ForumRepository;
+import com.ftn.backend.repository.ReponseRepository;
 import com.ftn.backend.repository.SujetRepository;
+import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,8 @@ public class SujetService {
 
     private final SujetRepository sujetRepository;
     private final ForumRepository forumRepository;
+    private final ReponseRepository reponseRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public SujetDto getById(Long id) {
@@ -60,6 +66,7 @@ public class SujetService {
 
         Sujet sujet = Sujet.builder()
                 .forum(forum)
+                .auteur(getCurrentUser())
                 .titre(dto.getTitre())
                 .contenu(dto.getContenu())
                 .dateCreation(LocalDateTime.now())
@@ -86,7 +93,15 @@ public class SujetService {
         Sujet sujet = sujetRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sujet not found"));
-        sujet.setDeletedAt(LocalDateTime.now());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        reponseRepository.findBySujet_IdAndDeletedAtIsNull(id).forEach(reponse -> {
+            reponse.setDeletedAt(now);
+            reponseRepository.save(reponse);
+        });
+
+        sujet.setDeletedAt(now);
         sujetRepository.save(sujet);
     }
 
@@ -115,6 +130,11 @@ public class SujetService {
                 .orElseThrow(() -> new ResourceNotFoundException("Sujet not found"));
         sujet.setNbVues(sujet.getNbVues() + 1);
         return toDto(sujetRepository.save(sujet));
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmailAndDeletedAtIsNull(email).orElse(null);
     }
 
     public SujetDto toDto(Sujet sujet) {

@@ -7,6 +7,7 @@ import com.ftn.backend.dtos.equipe.EquipeNationaleDto;
 import com.ftn.backend.dtos.equipe.UpdateEquipeNationaleDto;
 import com.ftn.backend.service.EquipeNationaleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class EquipeNationaleController {
 
     @PostMapping
     public ResponseEntity<SingleResultDto<EquipeNationaleDto>> create(
-            @RequestBody CreateEquipeNationaleDto dto) {
+            @Valid @RequestBody CreateEquipeNationaleDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(equipeService.create(dto)));
     }
 

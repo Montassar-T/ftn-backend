@@ -7,8 +7,10 @@ import com.ftn.backend.dtos.reponse.UpdateReponseDto;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Reponse;
 import com.ftn.backend.model.Sujet;
+import com.ftn.backend.model.User;
 import com.ftn.backend.repository.ReponseRepository;
 import com.ftn.backend.repository.SujetRepository;
+import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,7 @@ public class ReponseService {
 
     private final ReponseRepository reponseRepository;
     private final SujetRepository sujetRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public ReponseDto getById(Long id) {
@@ -61,6 +65,7 @@ public class ReponseService {
 
         Reponse reponse = Reponse.builder()
                 .sujet(sujet)
+                .auteur(getCurrentUser())
                 .contenu(dto.getContenu())
                 .dateCreation(LocalDateTime.now())
                 .build();
@@ -105,6 +110,11 @@ public class ReponseService {
                 .orElseThrow(() -> new ResourceNotFoundException("Reponse not found"));
         reponse.setSignale(true);
         return toDto(reponseRepository.save(reponse));
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmailAndDeletedAtIsNull(email).orElse(null);
     }
 
     public ReponseDto toDto(Reponse reponse) {

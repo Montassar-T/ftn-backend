@@ -1,6 +1,7 @@
 package com.ftn.backend.dtos.club;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import lombok.*;
 
@@ -9,7 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateClubDto {
+
+    @NotBlank(message = "Le nom du club est obligatoire")
     private String nom;
+
     private String ville;
     private String region;
     private String logo;

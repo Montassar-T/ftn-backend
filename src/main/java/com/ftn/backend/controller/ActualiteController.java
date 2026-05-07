@@ -8,6 +8,7 @@ import com.ftn.backend.dtos.actualite.UpdateActualiteDto;
 import com.ftn.backend.enums.CategorieActuEnum;
 import com.ftn.backend.service.ActualiteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class ActualiteController {
 
     @PostMapping
     public ResponseEntity<SingleResultDto<ActualiteDto>> create(
-            @RequestBody CreateActualiteDto dto) {
+            @Valid @RequestBody CreateActualiteDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(actualiteService.create(dto)));
     }
 

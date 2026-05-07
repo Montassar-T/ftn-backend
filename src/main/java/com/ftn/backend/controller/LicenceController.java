@@ -7,6 +7,7 @@ import com.ftn.backend.dtos.licence.LicenceDto;
 import com.ftn.backend.dtos.licence.UpdateLicenceDto;
 import com.ftn.backend.service.LicenceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class LicenceController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<LicenceDto>> create(@RequestBody CreateLicenceDto dto) {
+    public ResponseEntity<SingleResultDto<LicenceDto>> create(@Valid @RequestBody CreateLicenceDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(licenceService.create(dto)));
     }
 
