@@ -1,8 +1,8 @@
-package com.carServices.backend.security;
+package com.ftn.backend.security;
 
-import com.carServices.backend.model.User;
-import com.carServices.backend.security.principal.UserPrincipal;
-import com.carServices.backend.service.UserService;
+import com.ftn.backend.model.User;
+import com.ftn.backend.security.principal.UserPrincipal;
+import com.ftn.backend.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

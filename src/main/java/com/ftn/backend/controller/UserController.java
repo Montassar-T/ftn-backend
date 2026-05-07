@@ -1,7 +1,7 @@
-package com.carServices.backend.controller;
+package com.ftn.backend.controller;
 
-import com.carServices.backend.dtos.*;
-import com.carServices.backend.service.UserService;
+import com.ftn.backend.dtos.*;
+import com.ftn.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

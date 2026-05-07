@@ -1,4 +1,4 @@
-package com.carServices.backend.utils;
+package com.ftn.backend.utils;
 
 import lombok.extern.slf4j.Slf4j;
 

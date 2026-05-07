@@ -1,6 +1,6 @@
 spring:
   application:
-    name: car-services
+    name: ftn-backend
 
   datasource:
     url: ${DB_URL}
@@ -37,6 +37,6 @@ jwt:
 
 logging:
   level:
-    root: DEBUG
+    root: info
     org.springframework.security: info
-    com.carServices.backend: DEBUG
+    com.ftn.backend: info

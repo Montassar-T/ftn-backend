@@ -1,4 +1,4 @@
-package com.carServices.backend.exception.global;
+package com.ftn.backend.exception.global;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

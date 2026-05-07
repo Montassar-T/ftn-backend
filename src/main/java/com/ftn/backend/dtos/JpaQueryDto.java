@@ -1,4 +1,4 @@
-package com.carServices.backend.dtos;
+package com.ftn.backend.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

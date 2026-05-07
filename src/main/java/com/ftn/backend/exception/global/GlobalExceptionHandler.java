@@ -1,8 +1,8 @@
-package com.carServices.backend.exception.global;
+package com.ftn.backend.exception.global;
 
-import com.carServices.backend.exception.auth.AuthException;
-import com.carServices.backend.exception.business.ConflictException;
-import com.carServices.backend.exception.business.ResourceNotFoundException;
+import com.ftn.backend.exception.auth.AuthException;
+import com.ftn.backend.exception.business.ConflictException;
+import com.ftn.backend.exception.business.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;

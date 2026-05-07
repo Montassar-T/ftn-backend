@@ -1,4 +1,4 @@
-package com.carServices.backend.exception.business;
+package com.ftn.backend.exception.business;
 
 public class ConflictException extends RuntimeException {
 

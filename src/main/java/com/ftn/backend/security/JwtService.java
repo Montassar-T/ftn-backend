@@ -1,6 +1,6 @@
-package com.carServices.backend.security;
+package com.ftn.backend.security;
 
-import com.carServices.backend.configuration.JwtProperties;
+import com.ftn.backend.configuration.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;

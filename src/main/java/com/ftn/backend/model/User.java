@@ -1,7 +1,7 @@
-package com.carServices.backend.model;
+package com.ftn.backend.model;
 
-import com.carServices.backend.enums.Role;
-import com.carServices.backend.enums.UserStatus;
+import com.ftn.backend.enums.Role;
+import com.ftn.backend.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    private Role role = Role.EMPLOYEE;
+    private Role role = Role.USER;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

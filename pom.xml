@@ -8,11 +8,11 @@
 		<version>3.3.5</version>
 		<relativePath/>
 	</parent>
-	<groupId>com.carServices</groupId>
+	<groupId>com.ftnBackend</groupId>
 	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>car-services-backend</name>
-	<description>Car Services Backend API built with Spring Boot</description>
+	<name>ftn-backend</name>
+	<description>Tunisian Swimming Federation API built with Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>

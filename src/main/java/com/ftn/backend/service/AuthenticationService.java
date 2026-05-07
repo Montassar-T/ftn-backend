@@ -1,14 +1,13 @@
-package com.carServices.backend.service;
+package com.ftn.backend.service;
 
-import com.carServices.backend.dtos.AuthResponse;
-import com.carServices.backend.dtos.LoginDto;
-import com.carServices.backend.dtos.LoginResult;
-import com.carServices.backend.exception.auth.AuthenticationException;
-import com.carServices.backend.model.User;
-import com.carServices.backend.repository.UserRepository;
-import com.carServices.backend.security.JwtService;
-import com.carServices.backend.security.aop.TrackActivity;
-import com.carServices.backend.utils.EmailUtils;
+import com.ftn.backend.dtos.AuthResponse;
+import com.ftn.backend.dtos.LoginDto;
+import com.ftn.backend.dtos.LoginResult;
+import com.ftn.backend.exception.auth.AuthenticationException;
+import com.ftn.backend.model.User;
+import com.ftn.backend.repository.UserRepository;
+import com.ftn.backend.security.JwtService;
+import com.ftn.backend.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     @Transactional
-    @TrackActivity(action = ActivityLogAction.LOGIN, entityType = "SYSTEM")
     public LoginResult login(LoginDto request) {
 
         String email = EmailUtils.normalize(request.getEmail());

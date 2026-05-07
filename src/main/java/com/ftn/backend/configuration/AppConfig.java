@@ -1,4 +1,4 @@
-package com.carServices.backend.configuration;
+package com.ftn.backend.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

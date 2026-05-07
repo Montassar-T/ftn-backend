@@ -1,6 +1,6 @@
-package com.carServices.backend.repository;
+package com.ftn.backend.repository;
 
-import com.carServices.backend.model.User;
+import com.ftn.backend.model.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

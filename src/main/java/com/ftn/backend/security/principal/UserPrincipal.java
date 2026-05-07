@@ -1,9 +1,10 @@
-package com.carServices.backend.security.principal;
+package com.ftn.backend.security.principal;
 
-import com.carServices.backend.enums.Role;
-import com.carServices.backend.enums.UserStatus;
-import com.carServices.backend.model.User;
-import com.carServices.backend.security.authorization.RolePermissions;
+import com.ftn.backend.enums.Permission;
+import com.ftn.backend.enums.Role;
+import com.ftn.backend.enums.UserStatus;
+import com.ftn.backend.model.User;
+import com.ftn.backend.security.authorization.RolePermissions;
 import java.util.*;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

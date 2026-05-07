@@ -110,7 +110,7 @@ Application starts on `http://localhost:8080`
 ```
 src/
 ├── main/
-│   ├── java/com/carServices/
+│   ├── java/com/ftn/
 │   │   ├── controller/        # REST API endpoints
 │   │   ├── service/           # Business logic
 │   │   ├── repository/        # JPA repositories
@@ -126,7 +126,7 @@ src/
 │       ├── application-dev.properties
 │       └── db/changelog/             # Liquibase migrations
 └── test/
-    └── java/com/carServices/        # Unit and integration tests
+    └── java/com/ftn/        # Unit and integration tests
 ```
 
 ## API Documentation

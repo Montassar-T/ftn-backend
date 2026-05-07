@@ -1,9 +1,10 @@
-package com.carServices.backend.controller;
+package com.ftn.backend.controller;
 
-import com.carServices.backend.dtos.*;
-import com.carServices.backend.security.CookieService;
-import com.carServices.backend.security.principal.UserPrincipal;
-import com.carServices.backend.service.AuthenticationService;
+import com.ftn.backend.dtos.*;
+import com.ftn.backend.dtos.*;
+import com.ftn.backend.security.CookieService;
+import com.ftn.backend.security.principal.UserPrincipal;
+import com.ftn.backend.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

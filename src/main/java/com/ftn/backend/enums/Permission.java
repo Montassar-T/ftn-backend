@@ -1,34 +1,5 @@
-package com.carServices.backend.enums;
+package com.ftn.backend.enums;
 
 public enum Permission {
-
-    // USER MANAGEMENT
-    USER_CREATE,
-    USER_UPDATE,
-    USER_READ,
-    USER_DELETE,
-
-    // VEHICLES
-    VEHICLE_CREATE,
-    VEHICLE_UPDATE,
-    VEHICLE_READ,
-    VEHICLE_DELETE,
-
-    // CLIENTS
-    CLIENT_CREATE,
-    CLIENT_UPDATE,
-    CLIENT_READ,
-    CLIENT_DELETE,
-
-    // MECHANICS
-    MECHANIC_CREATE,
-    MECHANIC_UPDATE,
-    MECHANIC_READ,
-    MECHANIC_DELETE,
-
-    // REPAIRS
-    REPAIR_CREATE,
-    REPAIR_UPDATE,
-    REPAIR_READ,
-    REPAIR_DELETE
+    // NOTE -- NOT IMPLEMENTED YET
 }

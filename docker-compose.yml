@@ -3,12 +3,12 @@ version: "3.8"
 services:
   db:
     image: postgres:15
-    container_name: car-services-db
+    container_name: ftn-db
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: car_services
+      POSTGRES_DB: ftn_db
     ports:
       - "5432:5432"
     volumes:
@@ -18,7 +18,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: car-services-pgadmin
+    container_name: ftn-pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
@@ -34,12 +34,12 @@ services:
 
   backend:
     build: .
-    container_name: car-services-backend
+    container_name: ftn-backend
     restart: always
     ports:
       - "8080:8080"
     env_file:
-      - .env.docker
+      - .env
     depends_on:
       - db
     networks:

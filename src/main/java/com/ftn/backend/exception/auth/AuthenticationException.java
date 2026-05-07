@@ -1,4 +1,4 @@
-package com.carServices.backend.exception.auth;
+package com.ftn.backend.exception.auth;
 
 public class AuthenticationException extends AuthException {
 

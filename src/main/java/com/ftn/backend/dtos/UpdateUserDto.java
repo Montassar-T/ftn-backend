@@ -1,4 +1,4 @@
-package com.carServices.backend.dtos;
+package com.ftn.backend.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

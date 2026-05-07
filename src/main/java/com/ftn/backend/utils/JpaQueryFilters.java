@@ -1,8 +1,8 @@
-package com.carServices.backend.utils;
+package com.ftn.backend.utils;
 
-import static com.carServices.backend.utils.JpaQueryUtils.getParameterMapping;
+import static com.ftn.backend.utils.JpaQueryUtils.getParameterMapping;
 
-import com.carServices.backend.dtos.JpaQueryDto;
+import com.ftn.backend.dtos.JpaQueryDto;
 import jakarta.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;

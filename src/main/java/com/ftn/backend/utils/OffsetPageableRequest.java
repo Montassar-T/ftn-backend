@@ -1,4 +1,4 @@
-package com.carServices.backend.utils;
+package com.ftn.backend.utils;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

@@ -1,6 +1,6 @@
-package com.carServices.backend.security;
+package com.ftn.backend.security;
 
-import com.carServices.backend.exception.global.ErrorResponse;
+import com.ftn.backend.exception.global.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

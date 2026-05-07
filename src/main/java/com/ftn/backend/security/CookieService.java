@@ -1,7 +1,7 @@
-package com.carServices.backend.security;
+package com.ftn.backend.security;
 
-import com.carServices.backend.configuration.CookieProperties;
-import com.carServices.backend.configuration.JwtProperties;
+import com.ftn.backend.configuration.CookieProperties;
+import com.ftn.backend.configuration.JwtProperties;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;

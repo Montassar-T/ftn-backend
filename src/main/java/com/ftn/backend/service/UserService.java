@@ -1,15 +1,15 @@
-package com.carServices.backend.service;
+package com.ftn.backend.service;
 
-import com.carServices.backend.dtos.*;
-import com.carServices.backend.enums.Role;
-import com.carServices.backend.enums.UserStatus;
-import com.carServices.backend.exception.auth.AuthenticationException;
-import com.carServices.backend.exception.business.ConflictException;
-import com.carServices.backend.exception.business.ResourceNotFoundException;
-import com.carServices.backend.model.User;
-import com.carServices.backend.repository.UserRepository;
-import com.carServices.backend.utils.EmailUtils;
-import com.carServices.backend.utils.JpaQueryFilters;
+import com.ftn.backend.dtos.*;
+import com.ftn.backend.dtos.*;
+import com.ftn.backend.enums.UserStatus;
+import com.ftn.backend.exception.auth.AuthenticationException;
+import com.ftn.backend.exception.business.ConflictException;
+import com.ftn.backend.exception.business.ResourceNotFoundException;
+import com.ftn.backend.model.User;
+import com.ftn.backend.repository.UserRepository;
+import com.ftn.backend.utils.EmailUtils;
+import com.ftn.backend.utils.JpaQueryFilters;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +64,6 @@ public class UserService {
                 .email(EmailUtils.normalize(request.getEmail()))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .status(UserStatus.ACTIVE)
-                .role(Role.EMPLOYEE)
                 .build();
 
         User saved = userRepository.save(user);
@@ -150,7 +149,6 @@ public class UserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .status(user.getStatus())
-                .role(user.getRole())
                 .build();
     }
 }

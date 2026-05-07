@@ -1,7 +1,7 @@
-package com.carServices.backend.dtos;
+package com.ftn.backend.dtos;
 
-import com.carServices.backend.enums.Role;
-import com.carServices.backend.enums.UserStatus;
+import com.ftn.backend.enums.Role;
+import com.ftn.backend.enums.UserStatus;
 import lombok.*;
 
 @Builder

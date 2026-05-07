@@ -1,4 +1,4 @@
-package com.carServices.backend.model;
+package com.ftn.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

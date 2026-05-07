@@ -1,4 +1,4 @@
-package com.carServices.backend.configuration;
+package com.ftn.backend.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
