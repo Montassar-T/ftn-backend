@@ -21,8 +21,7 @@ public class InscriptionController {
     private final InscriptionService inscriptionService;
 
     @GetMapping
-    public ResponseEntity<PageDto<InscriptionDto>> getAll(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<InscriptionDto>> getAll(@RequestParam Map<String, String> params) {
         return inscriptionService.getAll(params);
     }
 
@@ -32,8 +31,7 @@ public class InscriptionController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<InscriptionDto>> create(
-            @Valid @RequestBody CreateInscriptionDto dto) {
+    public ResponseEntity<SingleResultDto<InscriptionDto>> create(@Valid @RequestBody CreateInscriptionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.create(dto)));
     }
 

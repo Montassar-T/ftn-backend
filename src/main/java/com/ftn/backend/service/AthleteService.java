@@ -43,8 +43,7 @@ public class AthleteService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<AthleteDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Athlete> filters = new JpaQueryFilters<>(params, Athlete.class);
-        Page<Athlete> page =
-                athleteRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Athlete> page = athleteRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<AthleteDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<AthleteDto>builder()
                 .data(data)

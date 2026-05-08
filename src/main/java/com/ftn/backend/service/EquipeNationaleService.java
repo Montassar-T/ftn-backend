@@ -36,10 +36,8 @@ public class EquipeNationaleService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<EquipeNationaleDto>> getAll(Map<String, String> params) {
-        JpaQueryFilters<EquipeNationale> filters =
-                new JpaQueryFilters<>(params, EquipeNationale.class);
-        Page<EquipeNationale> page =
-                equipeRepository.findAll(filters.getSpecification(), filters.getPageable());
+        JpaQueryFilters<EquipeNationale> filters = new JpaQueryFilters<>(params, EquipeNationale.class);
+        Page<EquipeNationale> page = equipeRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<EquipeNationaleDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<EquipeNationaleDto>builder()
                 .data(data)
@@ -99,8 +97,7 @@ public class EquipeNationaleService {
     }
 
     public EquipeNationaleDto toDto(EquipeNationale equipe) {
-        List<Long> membresIds =
-                equipe.getMembres().stream().map(Athlete::getId).toList();
+        List<Long> membresIds = equipe.getMembres().stream().map(Athlete::getId).toList();
         return EquipeNationaleDto.builder()
                 .id(equipe.getId())
                 .discipline(equipe.getDiscipline())

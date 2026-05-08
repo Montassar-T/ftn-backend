@@ -22,8 +22,7 @@ public class EquipeNationaleController {
     private final EquipeNationaleService equipeService;
 
     @GetMapping
-    public ResponseEntity<PageDto<EquipeNationaleDto>> getAll(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<EquipeNationaleDto>> getAll(@RequestParam Map<String, String> params) {
         return equipeService.getAll(params);
     }
 

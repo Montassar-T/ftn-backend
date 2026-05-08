@@ -1,10 +1,10 @@
 package com.ftn.backend.dtos.equipe;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ftn.backend.enums.CategorieEnum;
 import com.ftn.backend.enums.DisciplineEnum;
 import java.time.LocalDateTime;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Builder

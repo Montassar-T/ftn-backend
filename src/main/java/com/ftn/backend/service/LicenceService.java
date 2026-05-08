@@ -41,8 +41,7 @@ public class LicenceService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<LicenceDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Licence> filters = new JpaQueryFilters<>(params, Licence.class);
-        Page<Licence> page =
-                licenceRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Licence> page = licenceRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<LicenceDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<LicenceDto>builder()
                 .data(data)
