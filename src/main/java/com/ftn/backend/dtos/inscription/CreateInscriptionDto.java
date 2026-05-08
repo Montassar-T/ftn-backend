@@ -10,10 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateInscriptionDto {
 
-    @NotNull(message = "L'athlète est obligatoire")
+    @NotNull(message = "Athlete is required")
     @JsonProperty("athlete_id")
     private Long athleteId;
 
+    @NotNull(message = "Epreuve is required")
     @JsonProperty("epreuve_id")
     private Long epreuveId;
 }

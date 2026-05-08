@@ -16,5 +16,9 @@
     <include file="db/changelog/changes/008-forums.xml" />
     <include file="db/changelog/changes/009-sujets.xml" />
     <include file="db/changelog/changes/010-reponses.xml" />
+    <include file="db/changelog/changes/011-competitions.xml" />
+    <include file="db/changelog/changes/012-epreuves.xml" />
+    <include file="db/changelog/changes/013-resultats.xml" />
+    <include file="db/changelog/changes/014-classements.xml" />
 
 </databaseChangeLog>

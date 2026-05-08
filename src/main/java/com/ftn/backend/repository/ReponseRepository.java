@@ -6,8 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ReponseRepository
-        extends JpaRepository<Reponse, Long>, JpaSpecificationExecutor<Reponse> {
+public interface ReponseRepository extends JpaRepository<Reponse, Long>, JpaSpecificationExecutor<Reponse> {
 
     Optional<Reponse> findByIdAndDeletedAtIsNull(Long id);
 

@@ -22,8 +22,9 @@ public class Inscription extends BaseEntity {
     @JoinColumn(name = "athlete_id", nullable = false)
     private Athlete athlete;
 
-    @Column(name = "epreuve_id")
-    private Long epreuveId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "epreuve_id")
+    private Epreuve epreuve;
 
     @Column(name = "date_inscription", nullable = false)
     private LocalDateTime dateInscription;

@@ -41,8 +41,7 @@ public class ReponseService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<ReponseDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Reponse> filters = new JpaQueryFilters<>(params, Reponse.class);
-        Page<Reponse> page =
-                reponseRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Reponse> page = reponseRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<ReponseDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<ReponseDto>builder()
                 .data(data)

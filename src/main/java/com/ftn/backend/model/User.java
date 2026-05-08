@@ -1,8 +1,8 @@
 package com.ftn.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.backend.enums.Role;
 import com.ftn.backend.enums.UserStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

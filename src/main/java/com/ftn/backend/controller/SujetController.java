@@ -44,8 +44,7 @@ public class SujetController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SingleResultDto<SujetDto>> update(
-            @PathVariable Long id, @RequestBody UpdateSujetDto dto) {
+    public ResponseEntity<SingleResultDto<SujetDto>> update(@PathVariable Long id, @RequestBody UpdateSujetDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(sujetService.update(id, dto)));
     }
 

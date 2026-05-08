@@ -36,8 +36,7 @@ public class ForumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SingleResultDto<ForumDto>> update(
-            @PathVariable Long id, @RequestBody UpdateForumDto dto) {
+    public ResponseEntity<SingleResultDto<ForumDto>> update(@PathVariable Long id, @RequestBody UpdateForumDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(forumService.update(id, dto)));
     }
 

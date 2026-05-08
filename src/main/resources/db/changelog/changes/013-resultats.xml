@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="13-create-resultats-table" author="Codex">
+        <createTable tableName="resultats">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="epreuve_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_resultat_epreuve" references="epreuves(id)"/>
+            </column>
+
+            <column name="athlete_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_resultat_athlete" references="athletes(id)"/>
+            </column>
+
+            <column name="temps" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="classement" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="record" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="points" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_saisie" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="publie" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="resultats"
+                             columnNames="epreuve_id, athlete_id"
+                             constraintName="uk_resultat_epreuve_athlete"/>
+
+        <createIndex tableName="resultats" indexName="idx_resultats_athlete">
+            <column name="athlete_id"/>
+        </createIndex>
+
+        <createIndex tableName="resultats" indexName="idx_resultats_epreuve">
+            <column name="epreuve_id"/>
+        </createIndex>
+
+        <createIndex tableName="resultats" indexName="idx_resultats_publie">
+            <column name="publie"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

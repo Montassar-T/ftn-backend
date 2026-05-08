@@ -4,11 +4,16 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.inscription.CreateInscriptionDto;
 import com.ftn.backend.dtos.inscription.InscriptionDto;
 import com.ftn.backend.enums.StatutInscEnum;
+import com.ftn.backend.enums.StatutLicenceEnum;
+import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Athlete;
+import com.ftn.backend.model.Epreuve;
 import com.ftn.backend.model.Inscription;
 import com.ftn.backend.repository.AthleteRepository;
+import com.ftn.backend.repository.EpreuveRepository;
 import com.ftn.backend.repository.InscriptionRepository;
+import com.ftn.backend.repository.LicenceRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +30,8 @@ public class InscriptionService {
 
     private final InscriptionRepository inscriptionRepository;
     private final AthleteRepository athleteRepository;
+    private final EpreuveRepository epreuveRepository;
+    private final LicenceRepository licenceRepository;
 
     @Transactional(readOnly = true)
     public InscriptionDto getById(Long id) {
@@ -37,8 +44,7 @@ public class InscriptionService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<InscriptionDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Inscription> filters = new JpaQueryFilters<>(params, Inscription.class);
-        Page<Inscription> page =
-                inscriptionRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Inscription> page = inscriptionRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<InscriptionDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<InscriptionDto>builder()
                 .data(data)
@@ -51,10 +57,21 @@ public class InscriptionService {
         Athlete athlete = athleteRepository
                 .findByIdAndDeletedAtIsNull(dto.getAthleteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Athlete not found"));
+        Epreuve epreuve = epreuveRepository
+                .findByIdAndDeletedAtIsNull(dto.getEpreuveId())
+                .orElseThrow(() -> new ResourceNotFoundException("Epreuve not found"));
+
+        boolean licenceActive = licenceRepository.findByAthlete_IdAndDeletedAtIsNull(athlete.getId()).stream()
+                .anyMatch(licence -> licence.getStatut() == StatutLicenceEnum.VALIDEE
+                        && (licence.getDateExpiration() == null
+                                || !licence.getDateExpiration().isBefore(java.time.LocalDate.now())));
+        if (!licenceActive) {
+            throw new ConflictException("Athlete has no active licence");
+        }
 
         Inscription inscription = Inscription.builder()
                 .athlete(athlete)
-                .epreuveId(dto.getEpreuveId())
+                .epreuve(epreuve)
                 .dateInscription(LocalDateTime.now())
                 .build();
 
@@ -99,7 +116,10 @@ public class InscriptionService {
         return InscriptionDto.builder()
                 .id(inscription.getId())
                 .athleteId(inscription.getAthlete().getId())
-                .epreuveId(inscription.getEpreuveId())
+                .epreuveId(
+                        inscription.getEpreuve() != null
+                                ? inscription.getEpreuve().getId()
+                                : null)
                 .dateInscription(inscription.getDateInscription())
                 .statut(inscription.getStatut())
                 .createdAt(inscription.getCreatedAt())
