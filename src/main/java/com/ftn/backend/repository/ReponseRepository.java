@@ -11,4 +11,6 @@ public interface ReponseRepository extends JpaRepository<Reponse, Long>, JpaSpec
     Optional<Reponse> findByIdAndDeletedAtIsNull(Long id);
 
     List<Reponse> findBySujet_IdAndDeletedAtIsNull(Long sujetId);
+
+    List<Reponse> findBySignaleTrueAndDeletedAtIsNull();
 }

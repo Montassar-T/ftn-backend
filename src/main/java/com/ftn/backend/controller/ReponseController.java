@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,29 +39,46 @@ public class ReponseController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('REPONSE_CREATE')")
     public ResponseEntity<SingleResultDto<ReponseDto>> create(@Valid @RequestBody CreateReponseDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.create(dto)));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('REPONSE_UPDATE_OWN') or hasAuthority('SUJET_UPDATE_ANY')")
     public ResponseEntity<SingleResultDto<ReponseDto>> update(
             @PathVariable Long id, @RequestBody UpdateReponseDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.update(id, dto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('REPONSE_DELETE_OWN') or hasAuthority('REPONSE_DELETE_ANY')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reponseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/liker")
+    @PreAuthorize("hasAuthority('REPONSE_LIKE')")
     public ResponseEntity<SingleResultDto<ReponseDto>> liker(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.liker(id)));
     }
 
     @PutMapping("/{id}/signaler")
+    @PreAuthorize("hasAuthority('REPONSE_SIGNALER')")
     public ResponseEntity<SingleResultDto<ReponseDto>> signaler(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.signaler(id)));
+    }
+
+    @GetMapping("/signalees")
+    @PreAuthorize("hasAuthority('REPONSE_DELETE_ANY')")
+    public ResponseEntity<List<ReponseDto>> getSignalees() {
+        return ResponseEntity.ok(reponseService.getSignalees());
+    }
+
+    @PutMapping("/{id}/clear-signal")
+    @PreAuthorize("hasAuthority('REPONSE_DELETE_ANY')")
+    public ResponseEntity<SingleResultDto<ReponseDto>> clearSignale(@PathVariable Long id) {
+        return ResponseEntity.ok(new SingleResultDto<>(reponseService.clearSignale(id)));
     }
 }

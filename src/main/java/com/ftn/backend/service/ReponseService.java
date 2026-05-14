@@ -111,6 +111,22 @@ public class ReponseService {
         return toDto(reponseRepository.save(reponse));
     }
 
+    @Transactional(readOnly = true)
+    public List<ReponseDto> getSignalees() {
+        return reponseRepository.findBySignaleTrueAndDeletedAtIsNull().stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public ReponseDto clearSignale(Long id) {
+        Reponse reponse = reponseRepository
+                .findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reponse not found"));
+        reponse.setSignale(false);
+        return toDto(reponseRepository.save(reponse));
+    }
+
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmailAndDeletedAtIsNull(email).orElse(null);
@@ -121,6 +137,9 @@ public class ReponseService {
                 .id(reponse.getId())
                 .sujetId(reponse.getSujet().getId())
                 .auteurId(reponse.getAuteur() != null ? reponse.getAuteur().getId() : null)
+                .auteurNom(reponse.getAuteur() != null ? reponse.getAuteur().getLastName() : null)
+                .auteurPrenom(reponse.getAuteur() != null ? reponse.getAuteur().getFirstName() : null)
+                .auteurEmail(reponse.getAuteur() != null ? reponse.getAuteur().getEmail() : null)
                 .contenu(reponse.getContenu())
                 .dateCreation(reponse.getDateCreation())
                 .nbLikes(reponse.getNbLikes())

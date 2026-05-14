@@ -5,12 +5,32 @@ import com.ftn.backend.model.*;
 import java.util.Map;
 
 public class JpaQueryUtils {
-    // NOTE - WE WILL IMPLEMENTED -- BY MONTASSAR
-    private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries();
 
-    private JpaQueryUtils() {
-        // Utility class
-    }
+    private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(
+            Map.entry(
+                    Sujet.class,
+                    Map.ofEntries(
+                            Map.entry("forum_categorie", new JpaQueryDto("forum", "categorie", Forum.class, null)),
+                            Map.entry("forum_nom", new JpaQueryDto("forum", "nom", Forum.class, null)),
+                            Map.entry("forum_description", new JpaQueryDto("forum", "description", Forum.class, null)),
+                            Map.entry("forum_id", new JpaQueryDto("forum", "id", Forum.class, null)),
+                            Map.entry("auteur_first_name", new JpaQueryDto("auteur", "firstName", User.class, null)),
+                            Map.entry("auteur_last_name", new JpaQueryDto("auteur", "lastName", User.class, null)),
+                            Map.entry("auteur_email", new JpaQueryDto("auteur", "email", User.class, null)))),
+            Map.entry(
+                    Reponse.class,
+                    Map.ofEntries(
+                            Map.entry("sujet_titre", new JpaQueryDto("sujet", "titre", Sujet.class, null)),
+                            Map.entry(
+                                    "sujet_forum_categorie",
+                                    new JpaQueryDto("sujet", "", Sujet.class, "forum_categorie")),
+                            Map.entry("sujet_forum_nom", new JpaQueryDto("sujet", "", Sujet.class, "forum_nom")),
+                            Map.entry("auteur_first_name", new JpaQueryDto("auteur", "firstName", User.class, null)),
+                            Map.entry("auteur_last_name", new JpaQueryDto("auteur", "lastName", User.class, null)),
+                            Map.entry("auteur_email", new JpaQueryDto("auteur", "email", User.class, null)))),
+            Map.entry(Forum.class, Map.ofEntries()));
+
+    private JpaQueryUtils() {}
 
     public static JpaQueryDto getParameterMapping(Class<?> clazz, String param) {
         Map<String, JpaQueryDto> entityMap = correspondanceEntityMap.get(clazz);

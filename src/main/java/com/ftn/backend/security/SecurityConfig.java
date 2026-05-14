@@ -30,14 +30,18 @@ public class SecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-
-                //                .authorizeHttpRequests(auth -> auth.requestMatchers(
-                //                                "/api/v1/auth/**", "/swagger-ui/**", "/swagger-ui.html",
-                // "/v3/api-docs/**")
-                //                        .permitAll()
-                //                        .anyRequest()
-                //                        .authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        // Public: auth, swagger, read-only forum endpoints
+                        .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**")
+                        .permitAll()
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.GET,
+                                "/api/v1/forums/**",
+                                "/api/v1/sujets/**",
+                                "/api/v1/reponses/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

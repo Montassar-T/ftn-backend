@@ -4,6 +4,7 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.sujet.CreateSujetDto;
 import com.ftn.backend.dtos.sujet.SujetDto;
 import com.ftn.backend.dtos.sujet.UpdateSujetDto;
+import com.ftn.backend.enums.CategorieForumEnum;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Forum;
 import com.ftn.backend.model.Sujet;
@@ -54,6 +55,13 @@ public class SujetService {
     @Transactional(readOnly = true)
     public List<SujetDto> getByForum(Long forumId) {
         return sujetRepository.findByForum_IdAndDeletedAtIsNull(forumId).stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SujetDto> getByCategorie(CategorieForumEnum categorie) {
+        return sujetRepository.findByForumCategorieAndDeletedAtIsNull(categorie).stream()
                 .map(this::toDto)
                 .toList();
     }
@@ -141,7 +149,12 @@ public class SujetService {
         return SujetDto.builder()
                 .id(sujet.getId())
                 .forumId(sujet.getForum().getId())
+                .forumNom(sujet.getForum().getNom())
+                .forumCategorie(sujet.getForum().getCategorie())
                 .auteurId(sujet.getAuteur() != null ? sujet.getAuteur().getId() : null)
+                .auteurNom(sujet.getAuteur() != null ? sujet.getAuteur().getLastName() : null)
+                .auteurPrenom(sujet.getAuteur() != null ? sujet.getAuteur().getFirstName() : null)
+                .auteurEmail(sujet.getAuteur() != null ? sujet.getAuteur().getEmail() : null)
                 .titre(sujet.getTitre())
                 .contenu(sujet.getContenu())
                 .dateCreation(sujet.getDateCreation())
