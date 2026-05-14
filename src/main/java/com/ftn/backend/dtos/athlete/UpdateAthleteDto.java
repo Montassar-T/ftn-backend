@@ -12,6 +12,9 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdateAthleteDto {
 
+    private String nom;
+    private String prenom;
+
     @JsonProperty("club_id")
     private Long clubId;
 

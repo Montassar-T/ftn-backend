@@ -1,0 +1,35 @@
+---
+name: FTN Backend Modules 4 & 5
+description: Full CRUD implemented for Modules 4 (Athlètes & Clubs) and 5 (Contenu & Backoffice) on top of ftn-backend repo
+type: project
+originSessionId: 99ff5781-779b-46a4-86d3-108dcfeb4e8b
+---
+Repo cloned to `c:\Mission_enterprise\ftn-backend`.
+
+**Why:** User is building the FTN (Fédération Tunisienne de Natation) platform. Modules 4 & 5 were missing. Task was to add CRUD on top of existing auth/user code without touching any existing files.
+
+**How to apply:** All new code is additive only. Existing files (User.java, SecurityConfig.java, etc.) were never touched.
+
+## What was built
+
+### Module 4 — Gestion des Athlètes & Clubs
+- Entities: Club, Athlete, Licence, EquipeNationale, Inscription
+- Enums: CategorieEnum, SexeEnum, StatutLicenceEnum, TypeLicenceEnum, DisciplineEnum, StatutInscEnum
+- API endpoints: /api/v1/clubs, /api/v1/athletes, /api/v1/licences, /api/v1/equipes-nationales, /api/v1/inscriptions
+
+### Module 5 — Contenu & Backoffice
+- Entities: Actualite, Forum, Sujet, Reponse
+- Enums: CategorieActuEnum, CategorieForumEnum
+- API endpoints: /api/v1/actualites, /api/v1/forums, /api/v1/sujets, /api/v1/reponses
+
+## Docker
+- `.env` created at project root (DB_URL uses `db` service name, not localhost)
+- `docker-compose up --build -d` starts: ftn-db (postgres:15), ftn-pgadmin (:5050), ftn-backend (:8080)
+- Liquibase migrations 002–010 run automatically on startup
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+
+## Key patterns used
+- Soft delete via `deletedAt` (BaseEntity)
+- `JpaQueryFilters` for paginated GET endpoints
+- `SingleResultDto<T>` / `PageDto<T>` response wrappers
+- All repos extend `JpaRepository` + `JpaSpecificationExecutor`

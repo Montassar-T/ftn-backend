@@ -35,4 +35,7 @@ public class Club extends BaseEntity {
     @Column(nullable = false)
     @Builder.Default
     private Boolean actif = true;
+
+    @Column(name = "president_nom", length = 255)
+    private String presidentNom;
 }

@@ -55,6 +55,7 @@ public class ClubService {
                 .logo(dto.getLogo())
                 .dateAffiliation(dto.getDateAffiliation())
                 .actif(dto.getActif() != null ? dto.getActif() : true)
+                .presidentNom(dto.getPresidentNom())
                 .build();
         return toDto(clubRepository.save(club));
     }
@@ -70,6 +71,7 @@ public class ClubService {
         if (dto.getLogo() != null) club.setLogo(dto.getLogo());
         if (dto.getDateAffiliation() != null) club.setDateAffiliation(dto.getDateAffiliation());
         if (dto.getActif() != null) club.setActif(dto.getActif());
+        if (dto.getPresidentNom() != null) club.setPresidentNom(dto.getPresidentNom());
         return toDto(clubRepository.save(club));
     }
 
@@ -101,6 +103,7 @@ public class ClubService {
                 .logo(club.getLogo())
                 .dateAffiliation(club.getDateAffiliation())
                 .actif(club.getActif())
+                .presidentNom(club.getPresidentNom())
                 .createdAt(club.getCreatedAt())
                 .build();
     }

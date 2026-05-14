@@ -38,8 +38,7 @@ public class ReponseController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<ReponseDto>> create(
-            @Valid @RequestBody CreateReponseDto dto) {
+    public ResponseEntity<SingleResultDto<ReponseDto>> create(@Valid @RequestBody CreateReponseDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reponseService.create(dto)));
     }
 

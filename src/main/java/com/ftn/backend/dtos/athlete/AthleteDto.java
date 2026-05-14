@@ -15,6 +15,9 @@ import lombok.*;
 public class AthleteDto {
     private Long id;
 
+    private String nom;
+    private String prenom;
+
     @JsonProperty("user_id")
     private Long userId;
 

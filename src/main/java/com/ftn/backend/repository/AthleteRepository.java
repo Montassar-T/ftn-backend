@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AthleteRepository
-        extends JpaRepository<Athlete, Long>, JpaSpecificationExecutor<Athlete> {
+public interface AthleteRepository extends JpaRepository<Athlete, Long>, JpaSpecificationExecutor<Athlete> {
 
     Optional<Athlete> findByIdAndDeletedAtIsNull(Long id);
 
     List<Athlete> findByClub_IdAndDeletedAtIsNull(Long clubId);
+
+    long countByDeletedAtIsNull();
 }

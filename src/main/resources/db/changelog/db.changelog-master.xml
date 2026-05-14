@@ -16,5 +16,11 @@
     <include file="db/changelog/changes/008-forums.xml" />
     <include file="db/changelog/changes/009-sujets.xml" />
     <include file="db/changelog/changes/010-reponses.xml" />
+    <include file="db/changelog/changes/011-clubs-update.xml" />
+    <include file="db/changelog/changes/012-pools.xml" />
+    <include file="db/changelog/changes/013-competitions.xml" />
+    <include file="db/changelog/changes/014-results.xml" />
+    <include file="db/changelog/changes/015-users-add-role.xml" />
+    <include file="db/changelog/changes/016-athletes-add-name.xml" />
 
 </databaseChangeLog>

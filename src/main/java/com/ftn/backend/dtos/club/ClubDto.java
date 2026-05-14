@@ -22,6 +22,9 @@ public class ClubDto {
 
     private Boolean actif;
 
+    @JsonProperty("president_nom")
+    private String presidentNom;
+
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 }

@@ -39,8 +39,7 @@ public class ActualiteService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<ActualiteDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Actualite> filters = new JpaQueryFilters<>(params, Actualite.class);
-        Page<Actualite> page =
-                actualiteRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Actualite> page = actualiteRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<ActualiteDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<ActualiteDto>builder()
                 .data(data)
@@ -64,9 +63,7 @@ public class ActualiteService {
 
     @Transactional(readOnly = true)
     public List<ActualiteDto> search(String titre) {
-        return actualiteRepository
-                .findByTitreContainingIgnoreCaseAndDeletedAtIsNull(titre)
-                .stream()
+        return actualiteRepository.findByTitreContainingIgnoreCaseAndDeletedAtIsNull(titre).stream()
                 .map(this::toDto)
                 .toList();
     }

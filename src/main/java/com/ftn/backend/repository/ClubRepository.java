@@ -13,4 +13,6 @@ public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificat
     List<Club> findAllByDeletedAtIsNull();
 
     List<Club> findByActifTrueAndDeletedAtIsNull();
+
+    long countByDeletedAtIsNull();
 }

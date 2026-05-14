@@ -3,6 +3,7 @@ package com.ftn.backend.dtos.athlete;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ftn.backend.enums.CategorieEnum;
 import com.ftn.backend.enums.SexeEnum;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.*;
@@ -12,6 +13,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAthleteDto {
+
+    @NotBlank(message = "Le nom est obligatoire")
+    private String nom;
+
+    @NotBlank(message = "Le prénom est obligatoire")
+    private String prenom;
 
     @JsonProperty("user_id")
     private Long userId;

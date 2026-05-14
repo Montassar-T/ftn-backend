@@ -24,8 +24,7 @@ public class ActualiteController {
     private final ActualiteService actualiteService;
 
     @GetMapping
-    public ResponseEntity<PageDto<ActualiteDto>> getAll(
-            @RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDto<ActualiteDto>> getAll(@RequestParam Map<String, String> params) {
         return actualiteService.getAll(params);
     }
 
@@ -35,8 +34,7 @@ public class ActualiteController {
     }
 
     @GetMapping("/categorie/{categorie}")
-    public ResponseEntity<List<ActualiteDto>> getByCategorie(
-            @PathVariable CategorieActuEnum categorie) {
+    public ResponseEntity<List<ActualiteDto>> getByCategorie(@PathVariable CategorieActuEnum categorie) {
         return ResponseEntity.ok(actualiteService.getByCategorie(categorie));
     }
 
@@ -51,8 +49,7 @@ public class ActualiteController {
     }
 
     @PostMapping
-    public ResponseEntity<SingleResultDto<ActualiteDto>> create(
-            @Valid @RequestBody CreateActualiteDto dto) {
+    public ResponseEntity<SingleResultDto<ActualiteDto>> create(@Valid @RequestBody CreateActualiteDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(actualiteService.create(dto)));
     }
 

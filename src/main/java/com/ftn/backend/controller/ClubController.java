@@ -39,8 +39,7 @@ public class ClubController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SingleResultDto<ClubDto>> update(
-            @PathVariable Long id, @RequestBody UpdateClubDto dto) {
+    public ResponseEntity<SingleResultDto<ClubDto>> update(@PathVariable Long id, @RequestBody UpdateClubDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(clubService.update(id, dto)));
     }
 

@@ -1,7 +1,6 @@
 package com.ftn.backend.controller;
 
 import com.ftn.backend.dtos.*;
-import com.ftn.backend.dtos.*;
 import com.ftn.backend.security.CookieService;
 import com.ftn.backend.security.principal.UserPrincipal;
 import com.ftn.backend.service.AuthenticationService;

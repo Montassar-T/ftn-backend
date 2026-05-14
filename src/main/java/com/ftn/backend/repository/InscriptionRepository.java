@@ -6,8 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface InscriptionRepository
-        extends JpaRepository<Inscription, Long>, JpaSpecificationExecutor<Inscription> {
+public interface InscriptionRepository extends JpaRepository<Inscription, Long>, JpaSpecificationExecutor<Inscription> {
 
     Optional<Inscription> findByIdAndDeletedAtIsNull(Long id);
 

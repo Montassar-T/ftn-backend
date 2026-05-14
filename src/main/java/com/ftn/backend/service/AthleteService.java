@@ -43,8 +43,7 @@ public class AthleteService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<AthleteDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Athlete> filters = new JpaQueryFilters<>(params, Athlete.class);
-        Page<Athlete> page =
-                athleteRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Athlete> page = athleteRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<AthleteDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<AthleteDto>builder()
                 .data(data)
@@ -55,6 +54,8 @@ public class AthleteService {
     @Transactional
     public AthleteDto create(CreateAthleteDto dto) {
         Athlete.AthleteBuilder builder = Athlete.builder()
+                .nom(dto.getNom())
+                .prenom(dto.getPrenom())
                 .dateNaissance(dto.getDateNaissance())
                 .nationalite(dto.getNationalite())
                 .categorie(dto.getCategorie())
@@ -83,6 +84,8 @@ public class AthleteService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Athlete not found"));
 
+        if (dto.getNom() != null) athlete.setNom(dto.getNom());
+        if (dto.getPrenom() != null) athlete.setPrenom(dto.getPrenom());
         if (dto.getClubId() != null) {
             Club club = clubRepository
                     .findByIdAndDeletedAtIsNull(dto.getClubId())
@@ -129,6 +132,8 @@ public class AthleteService {
     public AthleteDto toDto(Athlete athlete) {
         return AthleteDto.builder()
                 .id(athlete.getId())
+                .nom(athlete.getNom())
+                .prenom(athlete.getPrenom())
                 .userId(athlete.getUser() != null ? athlete.getUser().getId() : null)
                 .clubId(athlete.getClub() != null ? athlete.getClub().getId() : null)
                 .clubNom(athlete.getClub() != null ? athlete.getClub().getNom() : null)

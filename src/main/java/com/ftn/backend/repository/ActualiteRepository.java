@@ -7,8 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ActualiteRepository
-        extends JpaRepository<Actualite, Long>, JpaSpecificationExecutor<Actualite> {
+public interface ActualiteRepository extends JpaRepository<Actualite, Long>, JpaSpecificationExecutor<Actualite> {
 
     Optional<Actualite> findByIdAndDeletedAtIsNull(Long id);
 

@@ -37,8 +37,7 @@ public class InscriptionService {
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<InscriptionDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Inscription> filters = new JpaQueryFilters<>(params, Inscription.class);
-        Page<Inscription> page =
-                inscriptionRepository.findAll(filters.getSpecification(), filters.getPageable());
+        Page<Inscription> page = inscriptionRepository.findAll(filters.getSpecification(), filters.getPageable());
         List<InscriptionDto> data = page.stream().map(this::toDto).toList();
         return ResponseEntity.ok(PageDto.<InscriptionDto>builder()
                 .data(data)

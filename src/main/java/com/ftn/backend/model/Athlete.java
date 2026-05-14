@@ -19,6 +19,12 @@ public class Athlete extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 150)
+    private String nom;
+
+    @Column(length = 150)
+    private String prenom;
+
     @OneToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "user_id")
     private User user;
