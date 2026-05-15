@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="19-alter-classements" author="Codex">
+        <!-- Drop old unique constraint and index -->
+        <sql>ALTER TABLE classements DROP CONSTRAINT IF EXISTS uk_classement_scope</sql>
+        <sql>DROP INDEX IF EXISTS idx_classements_scope</sql>
+
+        <!-- Add new columns -->
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS swim_style VARCHAR(50)</sql>
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS distance VARCHAR(100)</sql>
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS best_time INT</sql>
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS rank INT</sql>
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS season VARCHAR(20)</sql>
+
+        <!-- Copy data -->
+        <sql>UPDATE classements SET rank = rang WHERE rank IS NULL AND rang IS NOT NULL</sql>
+        <sql>UPDATE classements SET swim_style = discipline WHERE swim_style IS NULL AND discipline IS NOT NULL</sql>
+        <sql>UPDATE classements SET distance = '0' WHERE distance IS NULL</sql>
+        <sql>UPDATE classements SET season = CAST(annee AS VARCHAR) WHERE season IS NULL AND annee IS NOT NULL</sql>
+        <sql>UPDATE classements SET rank = 0 WHERE rank IS NULL</sql>
+        <sql>UPDATE classements SET swim_style = 'NAGE_LIBRE' WHERE swim_style IS NULL</sql>
+        <sql>UPDATE classements SET season = '2024' WHERE season IS NULL</sql>
+
+        <!-- Drop old columns -->
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS discipline</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS categorie</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS sexe</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS annee</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS points_total</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS rang</sql>
+
+        <!-- Add NOT NULL constraints -->
+        <sql>ALTER TABLE classements ALTER COLUMN swim_style SET NOT NULL</sql>
+        <sql>ALTER TABLE classements ALTER COLUMN distance SET NOT NULL</sql>
+        <sql>ALTER TABLE classements ALTER COLUMN rank SET NOT NULL</sql>
+        <sql>ALTER TABLE classements ALTER COLUMN season SET NOT NULL</sql>
+
+        <!-- Add new unique constraint and index -->
+        <sql>ALTER TABLE classements ADD CONSTRAINT uk_classement_scope UNIQUE (athlete_id, swim_style, distance, season)</sql>
+        <sql>CREATE INDEX IF NOT EXISTS idx_classements_scope ON classements(swim_style, distance, season)</sql>
+    </changeSet>
+
+</databaseChangeLog>

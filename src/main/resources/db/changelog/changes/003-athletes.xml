@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="3-create-athletes-table" author="MontassarTayari">
+        <createTable tableName="athletes">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints foreignKeyName="fk_athlete_user" references="users(id)"/>
+            </column>
+
+            <column name="club_id" type="BIGINT">
+                <constraints foreignKeyName="fk_athlete_club" references="clubs(id)"/>
+            </column>
+
+            <column name="date_naissance" type="DATE"/>
+
+            <column name="nationalite" type="VARCHAR(100)"/>
+
+            <column name="categorie" type="VARCHAR(50)"/>
+
+            <column name="sexe" type="VARCHAR(50)"/>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="17-alter-inscriptions" author="Codex">
+        <!-- Add new columns -->
+        <sql>ALTER TABLE inscriptions ADD COLUMN IF NOT EXISTS seed_time VARCHAR(20)</sql>
+        <sql>ALTER TABLE inscriptions ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'EN_ATTENTE'</sql>
+        <sql>ALTER TABLE inscriptions ADD COLUMN IF NOT EXISTS registered_at TIMESTAMP</sql>
+
+        <!-- Copy data -->
+        <sql>UPDATE inscriptions SET status = statut WHERE status IS NULL AND statut IS NOT NULL</sql>
+        <sql>UPDATE inscriptions SET registered_at = date_inscription WHERE registered_at IS NULL AND date_inscription IS NOT NULL</sql>
+        <sql>UPDATE inscriptions SET status = 'EN_ATTENTE' WHERE status IS NULL</sql>
+        <sql>UPDATE inscriptions SET registered_at = CURRENT_TIMESTAMP WHERE registered_at IS NULL</sql>
+
+        <!-- Drop old columns -->
+        <sql>ALTER TABLE inscriptions DROP COLUMN IF EXISTS date_inscription</sql>
+        <sql>ALTER TABLE inscriptions DROP COLUMN IF EXISTS statut</sql>
+
+        <!-- Add NOT NULL constraints -->
+        <sql>ALTER TABLE inscriptions ALTER COLUMN status SET NOT NULL</sql>
+        <sql>ALTER TABLE inscriptions ALTER COLUMN registered_at SET NOT NULL</sql>
+        <sql>ALTER TABLE inscriptions ALTER COLUMN epreuve_id SET NOT NULL</sql>
+    </changeSet>
+
+</databaseChangeLog>
