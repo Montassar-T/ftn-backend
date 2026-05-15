@@ -1,8 +1,5 @@
 package com.ftn.backend.model;
 
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +9,7 @@ import lombok.*;
         uniqueConstraints = {
             @UniqueConstraint(
                     name = "uk_classement_scope",
-                    columnNames = {"athlete_id", "discipline", "categorie", "sexe", "annee"})
+                    columnNames = {"athlete_id", "swim_style", "distance", "season"})
         })
 @Getter
 @Setter
@@ -29,25 +26,18 @@ public class Classement extends BaseEntity {
     @JoinColumn(name = "athlete_id", nullable = false)
     private Athlete athlete;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private DisciplineEnum discipline;
+    @Column(name = "swim_style", nullable = false, length = 50)
+    private String swimStyle;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private CategorieEnum categorie;
+    @Column(nullable = false, length = 100)
+    private String distance;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private SexeEnum sexe;
+    @Column(name = "best_time")
+    private Integer bestTime;
 
     @Column(nullable = false)
-    private Integer annee;
+    private Integer rank;
 
-    @Column(name = "points_total", nullable = false)
-    @Builder.Default
-    private Integer pointsTotal = 0;
-
-    @Column(nullable = false)
-    private Integer rang;
+    @Column(nullable = false, length = 20)
+    private String season;
 }

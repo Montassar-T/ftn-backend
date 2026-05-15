@@ -1,11 +1,7 @@
 package com.ftn.backend.model;
 
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
-import com.ftn.backend.enums.StyleEnum;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.*;
 
 @Entity
@@ -25,28 +21,22 @@ public class Epreuve extends BaseEntity {
     @JoinColumn(name = "competition_id", nullable = false)
     private Competition competition;
 
-    @Column(nullable = false)
-    private String nom;
+    @Column(name = "swim_style", nullable = false, length = 50)
+    private String swimStyle;
 
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 100)
+    private String distance;
+
+    @Column(nullable = false, length = 10)
+    private String gender;
+
+    @Column(length = 50)
+    private String round;
+
+    @Column(name = "scheduled_date", nullable = false)
+    private LocalDate scheduledDate;
+
     @Column(nullable = false, length = 50)
-    private DisciplineEnum discipline;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private CategorieEnum categorie;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private SexeEnum sexe;
-
-    @Column(nullable = false)
-    private Integer distance;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private StyleEnum style;
-
-    @Column(name = "date_heure", nullable = false)
-    private LocalDateTime dateHeure;
+    @Builder.Default
+    private String status = "PLANIFIEE";
 }

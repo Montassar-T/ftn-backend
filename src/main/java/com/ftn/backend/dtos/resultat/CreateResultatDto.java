@@ -1,6 +1,5 @@
 package com.ftn.backend.dtos.resultat;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -11,18 +10,19 @@ import lombok.*;
 public class CreateResultatDto {
 
     @NotNull
-    private Long epreuveId;
-
-    @NotNull
     private Long athleteId;
 
-    @NotBlank
-    private String temps;
+    @NotNull
+    private Long eventId;
+
+    private Integer lane;
+
+    private Integer finalTime;
 
     @NotNull
-    private Integer classement;
+    private Integer rank;
 
-    private Boolean record;
+    private Boolean isRecord;
 
-    private Integer points;
+    private Long validatedById;
 }

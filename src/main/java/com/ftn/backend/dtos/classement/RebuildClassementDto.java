@@ -1,9 +1,6 @@
 package com.ftn.backend.dtos.classement;
 
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -12,15 +9,12 @@ import lombok.*;
 @AllArgsConstructor
 public class RebuildClassementDto {
 
-    @NotNull
-    private DisciplineEnum discipline;
+    @NotBlank
+    private String swimStyle;
 
-    @NotNull
-    private CategorieEnum categorie;
+    @NotBlank
+    private String distance;
 
-    @NotNull
-    private SexeEnum sexe;
-
-    @NotNull
-    private Integer annee;
+    @NotBlank
+    private String season;
 }

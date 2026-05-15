@@ -1,4 +1,4 @@
-package com.ftn.backend.dtos.epreuve;
+package com.ftn.backend.dtos.record;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,10 +9,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateEpreuveDto {
+public class CreateRecordDto {
 
-    @NotNull
-    private Long competitionId;
+    @NotBlank
+    private String type;
 
     @NotBlank
     private String swimStyle;
@@ -20,11 +20,14 @@ public class CreateEpreuveDto {
     @NotBlank
     private String distance;
 
-    @NotBlank
-    private String gender;
-
-    private String round;
+    @NotNull
+    private Long athleteId;
 
     @NotNull
-    private LocalDate scheduledDate;
+    private Integer time;
+
+    @NotNull
+    private LocalDate date;
+
+    private Long competitionId;
 }

@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/classements")
+@RequestMapping("/api/v1/rankings")
 @RequiredArgsConstructor
-@Tag(name = "Classement", description = "Ranking management APIs")
+@Tag(name = "NationalRanking", description = "National ranking management APIs")
 public class ClassementController {
 
     private final ClassementService classementService;
@@ -33,16 +33,13 @@ public class ClassementController {
 
     @GetMapping("/national")
     public ResponseEntity<List<ClassementDto>> getNational(
-            @RequestParam com.ftn.backend.enums.DisciplineEnum discipline,
-            @RequestParam com.ftn.backend.enums.CategorieEnum categorie,
-            @RequestParam com.ftn.backend.enums.SexeEnum sexe,
-            @RequestParam Integer annee) {
-        return ResponseEntity.ok(classementService.getClassement(discipline, categorie, sexe, annee));
+            @RequestParam String swimStyle, @RequestParam String distance, @RequestParam String season) {
+        return ResponseEntity.ok(classementService.getNationalRanking(swimStyle, distance, season));
     }
 
     @PostMapping("/rebuild")
     public ResponseEntity<SingleResultDto<List<ClassementDto>>> rebuild(@Valid @RequestBody RebuildClassementDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(
-                classementService.rebuild(dto.getDiscipline(), dto.getCategorie(), dto.getSexe(), dto.getAnnee())));
+                classementService.rebuild(dto.getSwimStyle(), dto.getDistance(), dto.getSeason())));
     }
 }

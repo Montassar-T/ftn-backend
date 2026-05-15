@@ -2,9 +2,6 @@ package com.ftn.backend.service;
 
 import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.classement.ClassementDto;
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
 import com.ftn.backend.model.Classement;
 import com.ftn.backend.model.Resultat;
 import com.ftn.backend.repository.ClassementRepository;
@@ -13,6 +10,7 @@ import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -47,67 +45,62 @@ public class ClassementService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClassementDto> getClassement(
-            DisciplineEnum discipline, CategorieEnum categorie, SexeEnum sexe, Integer annee) {
+    public List<ClassementDto> getNationalRanking(String swimStyle, String distance, String season) {
         return classementRepository
-                .findByDisciplineAndCategorieAndSexeAndAnneeAndDeletedAtIsNullOrderByRangAsc(
-                        discipline, categorie, sexe, annee)
+                .findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(swimStyle, distance, season)
                 .stream()
                 .map(this::toDto)
                 .toList();
     }
 
     @Transactional
-    public List<ClassementDto> rebuild(
-            DisciplineEnum discipline, CategorieEnum categorie, SexeEnum sexe, Integer annee) {
+    public List<ClassementDto> rebuild(String swimStyle, String distance, String season) {
+        List<Resultat> matchingResults = new ArrayList<>();
+        for (Resultat r : resultatRepository.findAll()) {
+            if (r.getDeletedAt() != null) continue;
+            Resultat resultat = r;
+            if (!swimStyle.equals(resultat.getEpreuve().getSwimStyle())) continue;
+            if (!distance.equals(resultat.getEpreuve().getDistance())) continue;
+            String resultSeason =
+                    String.valueOf(resultat.getEpreuve().getScheduledDate().getYear());
+            if (!season.equals(resultSeason)) continue;
+            if (resultat.getFinalTime() == null) continue;
+            matchingResults.add(resultat);
+        }
 
-        List<Resultat> results = new ArrayList<>();
-        for (Resultat resultat : resultatRepository.findAll()) {
-            if (resultat.getDeletedAt() != null || !Boolean.TRUE.equals(resultat.getPublie())) {
-                continue;
+        Map<Long, Integer> bestTimeByAthlete = new HashMap<>();
+        Map<Long, Resultat> sourceByAthlete = new HashMap<>();
+        for (Resultat r : matchingResults) {
+            Long athleteId = r.getAthlete().getId();
+            int time = r.getFinalTime();
+            if (!bestTimeByAthlete.containsKey(athleteId) || time < bestTimeByAthlete.get(athleteId)) {
+                bestTimeByAthlete.put(athleteId, time);
+                sourceByAthlete.put(athleteId, r);
             }
-            if (resultat.getEpreuve().getDiscipline() != discipline) continue;
-            if (resultat.getEpreuve().getCategorie() != categorie) continue;
-            if (resultat.getEpreuve().getSexe() != sexe) continue;
-            if (resultat.getEpreuve().getDateHeure().getYear() != annee) continue;
-            results.add(resultat);
         }
 
-        Map<Long, Integer> pointsByAthlete = new java.util.HashMap<>();
-        for (Resultat resultat : results) {
-            pointsByAthlete.merge(resultat.getAthlete().getId(), resultat.getPoints(), Integer::sum);
-        }
-
-        List<Map.Entry<Long, Integer>> ordered = pointsByAthlete.entrySet().stream()
-                .sorted(Map.Entry.<Long, Integer>comparingByValue(Comparator.reverseOrder()))
+        List<Map.Entry<Long, Integer>> ordered = bestTimeByAthlete.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
                 .toList();
 
         List<Classement> oldRows =
-                classementRepository.findByDisciplineAndCategorieAndSexeAndAnneeAndDeletedAtIsNullOrderByRangAsc(
-                        discipline, categorie, sexe, annee);
+                classementRepository.findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(
+                        swimStyle, distance, season);
         LocalDateTime now = LocalDateTime.now();
         oldRows.forEach(row -> row.setDeletedAt(now));
         classementRepository.saveAll(oldRows);
 
         List<Classement> refreshed = new ArrayList<>();
-        int rang = 1;
+        int rank = 1;
         for (Map.Entry<Long, Integer> entry : ordered) {
-            Resultat source = results.stream()
-                    .filter(r -> r.getAthlete().getId().equals(entry.getKey()))
-                    .findFirst()
-                    .orElse(null);
-            if (source == null) {
-                continue;
-            }
-
+            Resultat source = sourceByAthlete.get(entry.getKey());
             Classement classement = Classement.builder()
                     .athlete(source.getAthlete())
-                    .discipline(discipline)
-                    .categorie(categorie)
-                    .sexe(sexe)
-                    .annee(annee)
-                    .pointsTotal(entry.getValue())
-                    .rang(rang++)
+                    .swimStyle(swimStyle)
+                    .distance(distance)
+                    .bestTime(entry.getValue())
+                    .rank(rank++)
+                    .season(season)
                     .build();
             refreshed.add(classement);
         }
@@ -120,12 +113,11 @@ public class ClassementService {
         return ClassementDto.builder()
                 .id(classement.getId())
                 .athleteId(classement.getAthlete().getId())
-                .discipline(classement.getDiscipline())
-                .categorie(classement.getCategorie())
-                .sexe(classement.getSexe())
-                .annee(classement.getAnnee())
-                .pointsTotal(classement.getPointsTotal())
-                .rang(classement.getRang())
+                .swimStyle(classement.getSwimStyle())
+                .distance(classement.getDistance())
+                .bestTime(classement.getBestTime())
+                .rank(classement.getRank())
+                .season(classement.getSeason())
                 .createdAt(classement.getCreatedAt())
                 .build();
     }

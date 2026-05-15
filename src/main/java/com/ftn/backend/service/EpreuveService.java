@@ -30,7 +30,7 @@ public class EpreuveService {
     public EpreuveDto getById(Long id) {
         Epreuve epreuve = epreuveRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Epreuve not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
         return toDto(epreuve);
     }
 
@@ -60,13 +60,11 @@ public class EpreuveService {
 
         Epreuve epreuve = Epreuve.builder()
                 .competition(competition)
-                .nom(dto.getNom())
-                .discipline(dto.getDiscipline())
-                .categorie(dto.getCategorie())
-                .sexe(dto.getSexe())
+                .swimStyle(dto.getSwimStyle())
                 .distance(dto.getDistance())
-                .style(dto.getStyle())
-                .dateHeure(dto.getDateHeure())
+                .gender(dto.getGender())
+                .round(dto.getRound())
+                .scheduledDate(dto.getScheduledDate())
                 .build();
 
         return toDto(epreuveRepository.save(epreuve));
@@ -76,15 +74,14 @@ public class EpreuveService {
     public EpreuveDto update(Long id, UpdateEpreuveDto dto) {
         Epreuve epreuve = epreuveRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Epreuve not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        if (dto.getNom() != null) epreuve.setNom(dto.getNom());
-        if (dto.getDiscipline() != null) epreuve.setDiscipline(dto.getDiscipline());
-        if (dto.getCategorie() != null) epreuve.setCategorie(dto.getCategorie());
-        if (dto.getSexe() != null) epreuve.setSexe(dto.getSexe());
+        if (dto.getSwimStyle() != null) epreuve.setSwimStyle(dto.getSwimStyle());
         if (dto.getDistance() != null) epreuve.setDistance(dto.getDistance());
-        if (dto.getStyle() != null) epreuve.setStyle(dto.getStyle());
-        if (dto.getDateHeure() != null) epreuve.setDateHeure(dto.getDateHeure());
+        if (dto.getGender() != null) epreuve.setGender(dto.getGender());
+        if (dto.getRound() != null) epreuve.setRound(dto.getRound());
+        if (dto.getScheduledDate() != null) epreuve.setScheduledDate(dto.getScheduledDate());
+        if (dto.getStatus() != null) epreuve.setStatus(dto.getStatus());
 
         return toDto(epreuveRepository.save(epreuve));
     }
@@ -93,7 +90,7 @@ public class EpreuveService {
     public void delete(Long id) {
         Epreuve epreuve = epreuveRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Epreuve not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
         epreuve.setDeletedAt(LocalDateTime.now());
         epreuveRepository.save(epreuve);
     }
@@ -102,13 +99,12 @@ public class EpreuveService {
         return EpreuveDto.builder()
                 .id(epreuve.getId())
                 .competitionId(epreuve.getCompetition().getId())
-                .nom(epreuve.getNom())
-                .discipline(epreuve.getDiscipline())
-                .categorie(epreuve.getCategorie())
-                .sexe(epreuve.getSexe())
+                .swimStyle(epreuve.getSwimStyle())
                 .distance(epreuve.getDistance())
-                .style(epreuve.getStyle())
-                .dateHeure(epreuve.getDateHeure())
+                .gender(epreuve.getGender())
+                .round(epreuve.getRound())
+                .scheduledDate(epreuve.getScheduledDate())
+                .status(epreuve.getStatus())
                 .createdAt(epreuve.getCreatedAt())
                 .build();
     }

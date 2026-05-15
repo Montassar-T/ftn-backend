@@ -15,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/resultats")
+@RequestMapping("/api/v1/results")
 @RequiredArgsConstructor
-@Tag(name = "Resultat", description = "Results management APIs")
+@Tag(name = "Result", description = "Results management APIs")
 public class ResultatController {
 
     private final ResultatService resultatService;
@@ -37,6 +37,11 @@ public class ResultatController {
         return ResponseEntity.ok(resultatService.getByAthlete(athleteId));
     }
 
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<ResultatDto>> getByEvent(@PathVariable Long eventId) {
+        return ResponseEntity.ok(resultatService.getByEvent(eventId));
+    }
+
     @PostMapping
     public ResponseEntity<SingleResultDto<ResultatDto>> create(@Valid @RequestBody CreateResultatDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(resultatService.create(dto)));
@@ -46,11 +51,6 @@ public class ResultatController {
     public ResponseEntity<SingleResultDto<ResultatDto>> update(
             @PathVariable Long id, @RequestBody UpdateResultatDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(resultatService.update(id, dto)));
-    }
-
-    @PutMapping("/{id}/publier")
-    public ResponseEntity<SingleResultDto<ResultatDto>> publier(@PathVariable Long id) {
-        return ResponseEntity.ok(new SingleResultDto<>(resultatService.publier(id)));
     }
 
     @DeleteMapping("/{id}")

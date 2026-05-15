@@ -6,7 +6,9 @@ import com.ftn.backend.dtos.competition.CreateCompetitionDto;
 import com.ftn.backend.dtos.competition.UpdateCompetitionDto;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Competition;
+import com.ftn.backend.model.User;
 import com.ftn.backend.repository.CompetitionRepository;
+import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompetitionService {
 
     private final CompetitionRepository competitionRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public CompetitionDto getById(Long id) {
@@ -44,14 +47,21 @@ public class CompetitionService {
 
     @Transactional
     public CompetitionDto create(CreateCompetitionDto dto) {
+        User createdBy = null;
+        if (dto.getCreatedById() != null) {
+            createdBy = userRepository
+                    .findByIdAndDeletedAtIsNull(dto.getCreatedById())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        }
+
         Competition competition = Competition.builder()
-                .nom(dto.getNom())
-                .discipline(dto.getDiscipline())
-                .dateDebut(dto.getDateDebut())
-                .dateFin(dto.getDateFin())
-                .lieu(dto.getLieu())
-                .region(dto.getRegion())
-                .niveau(dto.getNiveau())
+                .name(dto.getName())
+                .type(dto.getType())
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .registrationDeadline(dto.getRegistrationDeadline())
+                .poolId(dto.getPoolId())
+                .createdBy(createdBy)
                 .build();
         return toDto(competitionRepository.save(competition));
     }
@@ -62,14 +72,19 @@ public class CompetitionService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
 
-        if (dto.getNom() != null) competition.setNom(dto.getNom());
-        if (dto.getDiscipline() != null) competition.setDiscipline(dto.getDiscipline());
-        if (dto.getDateDebut() != null) competition.setDateDebut(dto.getDateDebut());
-        if (dto.getDateFin() != null) competition.setDateFin(dto.getDateFin());
-        if (dto.getLieu() != null) competition.setLieu(dto.getLieu());
-        if (dto.getRegion() != null) competition.setRegion(dto.getRegion());
-        if (dto.getNiveau() != null) competition.setNiveau(dto.getNiveau());
-        if (dto.getStatut() != null) competition.setStatut(dto.getStatut());
+        if (dto.getName() != null) competition.setName(dto.getName());
+        if (dto.getType() != null) competition.setType(dto.getType());
+        if (dto.getStartDate() != null) competition.setStartDate(dto.getStartDate());
+        if (dto.getEndDate() != null) competition.setEndDate(dto.getEndDate());
+        if (dto.getRegistrationDeadline() != null) competition.setRegistrationDeadline(dto.getRegistrationDeadline());
+        if (dto.getPoolId() != null) competition.setPoolId(dto.getPoolId());
+        if (dto.getStatus() != null) competition.setStatus(dto.getStatus());
+        if (dto.getCreatedById() != null) {
+            User createdBy = userRepository
+                    .findByIdAndDeletedAtIsNull(dto.getCreatedById())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            competition.setCreatedBy(createdBy);
+        }
 
         return toDto(competitionRepository.save(competition));
     }
@@ -86,14 +101,17 @@ public class CompetitionService {
     public CompetitionDto toDto(Competition competition) {
         return CompetitionDto.builder()
                 .id(competition.getId())
-                .nom(competition.getNom())
-                .discipline(competition.getDiscipline())
-                .dateDebut(competition.getDateDebut())
-                .dateFin(competition.getDateFin())
-                .lieu(competition.getLieu())
-                .region(competition.getRegion())
-                .niveau(competition.getNiveau())
-                .statut(competition.getStatut())
+                .name(competition.getName())
+                .type(competition.getType())
+                .startDate(competition.getStartDate())
+                .endDate(competition.getEndDate())
+                .registrationDeadline(competition.getRegistrationDeadline())
+                .poolId(competition.getPoolId())
+                .createdById(
+                        competition.getCreatedBy() != null
+                                ? competition.getCreatedBy().getId()
+                                : null)
+                .status(competition.getStatus())
                 .createdAt(competition.getCreatedAt())
                 .build();
     }

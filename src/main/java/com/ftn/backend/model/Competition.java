@@ -1,9 +1,7 @@
 package com.ftn.backend.model;
 
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.NiveauEnum;
-import com.ftn.backend.enums.StatutCompEnum;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 
@@ -21,29 +19,28 @@ public class Competition extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String nom;
+    private String name;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private DisciplineEnum discipline;
+    private String type;
 
-    @Column(name = "date_debut", nullable = false)
-    private LocalDateTime dateDebut;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "date_fin", nullable = false)
-    private LocalDateTime dateFin;
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
 
-    @Column(nullable = false)
-    private String lieu;
+    @Column(name = "registration_deadline")
+    private LocalDateTime registrationDeadline;
 
-    private String region;
+    @Column(name = "pool_id")
+    private Long poolId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private NiveauEnum niveau;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     @Builder.Default
-    private StatutCompEnum statut = StatutCompEnum.PLANIFIEE;
+    private String status = "PLANIFIEE";
 }

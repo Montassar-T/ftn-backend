@@ -20,5 +20,11 @@
     <include file="db/changelog/changes/012-epreuves.xml" />
     <include file="db/changelog/changes/013-resultats.xml" />
     <include file="db/changelog/changes/014-classements.xml" />
+    <include file="db/changelog/changes/015-alter-competitions.xml" />
+    <include file="db/changelog/changes/016-alter-epreuves.xml" />
+    <include file="db/changelog/changes/017-alter-inscriptions.xml" />
+    <include file="db/changelog/changes/018-alter-resultats.xml" />
+    <include file="db/changelog/changes/019-alter-classements.xml" />
+    <include file="db/changelog/changes/020-records.xml" />
 
 </databaseChangeLog>

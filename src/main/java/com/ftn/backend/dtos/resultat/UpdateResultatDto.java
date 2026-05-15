@@ -7,8 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateResultatDto {
-    private String temps;
-    private Integer classement;
-    private Boolean record;
-    private Integer points;
+    private Integer lane;
+    private Integer finalTime;
+    private String status;
+    private Integer rank;
+    private Boolean isRecord;
+    private Long validatedById;
 }

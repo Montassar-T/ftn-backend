@@ -15,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/epreuves")
+@RequestMapping("/api/v1/events")
 @RequiredArgsConstructor
-@Tag(name = "Epreuve", description = "Event management APIs")
+@Tag(name = "Event", description = "Event management APIs")
 public class EpreuveController {
 
     private final EpreuveService epreuveService;

@@ -1,10 +1,6 @@
 package com.ftn.backend.dtos.epreuve;
 
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
-import com.ftn.backend.enums.StyleEnum;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.*;
 
 @Getter
@@ -12,11 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateEpreuveDto {
-    private String nom;
-    private DisciplineEnum discipline;
-    private CategorieEnum categorie;
-    private SexeEnum sexe;
-    private Integer distance;
-    private StyleEnum style;
-    private LocalDateTime dateHeure;
+    private String swimStyle;
+    private String distance;
+    private String gender;
+    private String round;
+    private LocalDate scheduledDate;
+    private String status;
 }

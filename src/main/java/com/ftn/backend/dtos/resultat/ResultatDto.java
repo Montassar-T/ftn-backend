@@ -10,13 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 public class ResultatDto {
     private Long id;
-    private Long epreuveId;
     private Long athleteId;
-    private String temps;
-    private Integer classement;
-    private Boolean record;
-    private Integer points;
-    private LocalDateTime dateSaisie;
-    private Boolean publie;
+    private Long eventId;
+    private Integer lane;
+    private Integer finalTime;
+    private String status;
+    private Integer rank;
+    private Boolean isRecord;
+    private Long validatedById;
     private LocalDateTime createdAt;
 }

@@ -1,8 +1,6 @@
 package com.ftn.backend.dtos.competition;
 
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.NiveauEnum;
-import com.ftn.backend.enums.StatutCompEnum;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 
@@ -13,13 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 public class CompetitionDto {
     private Long id;
-    private String nom;
-    private DisciplineEnum discipline;
-    private LocalDateTime dateDebut;
-    private LocalDateTime dateFin;
-    private String lieu;
-    private String region;
-    private NiveauEnum niveau;
-    private StatutCompEnum statut;
+    private String name;
+    private String type;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDateTime registrationDeadline;
+    private Long poolId;
+    private Long createdById;
+    private String status;
     private LocalDateTime createdAt;
 }

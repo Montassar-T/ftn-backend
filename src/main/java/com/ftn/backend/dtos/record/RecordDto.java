@@ -1,5 +1,6 @@
-package com.ftn.backend.dtos.classement;
+package com.ftn.backend.dtos.record;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 
@@ -8,13 +9,14 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassementDto {
+public class RecordDto {
     private Long id;
-    private Long athleteId;
+    private String type;
     private String swimStyle;
     private String distance;
-    private Integer bestTime;
-    private Integer rank;
-    private String season;
+    private Long athleteId;
+    private Integer time;
+    private LocalDate date;
+    private Long competitionId;
     private LocalDateTime createdAt;
 }

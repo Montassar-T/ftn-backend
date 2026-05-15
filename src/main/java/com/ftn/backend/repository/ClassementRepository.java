@@ -1,8 +1,5 @@
 package com.ftn.backend.repository;
 
-import com.ftn.backend.enums.CategorieEnum;
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.SexeEnum;
 import com.ftn.backend.model.Classement;
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +10,11 @@ public interface ClassementRepository extends JpaRepository<Classement, Long>, J
 
     Optional<Classement> findByIdAndDeletedAtIsNull(Long id);
 
-    Optional<Classement> findByAthlete_IdAndDisciplineAndCategorieAndSexeAndAnneeAndDeletedAtIsNull(
-            Long athleteId, DisciplineEnum discipline, CategorieEnum categorie, SexeEnum sexe, Integer annee);
-
     List<Classement> findByAthlete_IdAndDeletedAtIsNull(Long athleteId);
 
-    List<Classement> findByDisciplineAndCategorieAndSexeAndAnneeAndDeletedAtIsNullOrderByRangAsc(
-            DisciplineEnum discipline, CategorieEnum categorie, SexeEnum sexe, Integer annee);
+    List<Classement> findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(
+            String swimStyle, String distance, String season);
+
+    Optional<Classement> findByAthlete_IdAndSwimStyleAndDistanceAndSeasonAndDeletedAtIsNull(
+            Long athleteId, String swimStyle, String distance, String season);
 }

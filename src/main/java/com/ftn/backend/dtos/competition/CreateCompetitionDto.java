@@ -1,9 +1,8 @@
 package com.ftn.backend.dtos.competition;
 
-import com.ftn.backend.enums.DisciplineEnum;
-import com.ftn.backend.enums.NiveauEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 
@@ -14,22 +13,20 @@ import lombok.*;
 public class CreateCompetitionDto {
 
     @NotBlank
-    private String nom;
-
-    @NotNull
-    private DisciplineEnum discipline;
-
-    @NotNull
-    private LocalDateTime dateDebut;
-
-    @NotNull
-    private LocalDateTime dateFin;
+    private String name;
 
     @NotBlank
-    private String lieu;
-
-    private String region;
+    private String type;
 
     @NotNull
-    private NiveauEnum niveau;
+    private LocalDate startDate;
+
+    @NotNull
+    private LocalDate endDate;
+
+    private LocalDateTime registrationDeadline;
+
+    private Long poolId;
+
+    private Long createdById;
 }

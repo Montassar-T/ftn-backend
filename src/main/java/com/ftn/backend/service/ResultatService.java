@@ -9,9 +9,11 @@ import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Athlete;
 import com.ftn.backend.model.Epreuve;
 import com.ftn.backend.model.Resultat;
+import com.ftn.backend.model.User;
 import com.ftn.backend.repository.AthleteRepository;
 import com.ftn.backend.repository.EpreuveRepository;
 import com.ftn.backend.repository.ResultatRepository;
+import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,13 +31,13 @@ public class ResultatService {
     private final ResultatRepository resultatRepository;
     private final AthleteRepository athleteRepository;
     private final EpreuveRepository epreuveRepository;
-    private final ClassementService classementService;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public ResultatDto getById(Long id) {
         Resultat resultat = resultatRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resultat not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Result not found"));
         return toDto(resultat);
     }
 
@@ -57,6 +59,13 @@ public class ResultatService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<ResultatDto> getByEvent(Long eventId) {
+        return resultatRepository.findByEpreuve_IdAndDeletedAtIsNull(eventId).stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     @Transactional
     public ResultatDto create(CreateResultatDto dto) {
         Athlete athlete = athleteRepository
@@ -64,92 +73,78 @@ public class ResultatService {
                 .orElseThrow(() -> new ResourceNotFoundException("Athlete not found"));
 
         Epreuve epreuve = epreuveRepository
-                .findByIdAndDeletedAtIsNull(dto.getEpreuveId())
-                .orElseThrow(() -> new ResourceNotFoundException("Epreuve not found"));
+                .findByIdAndDeletedAtIsNull(dto.getEventId())
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
         if (resultatRepository.existsByEpreuve_IdAndAthlete_IdAndDeletedAtIsNull(
-                dto.getEpreuveId(), dto.getAthleteId())) {
-            throw new ConflictException("Result already exists for this athlete and epreuve");
+                dto.getEventId(), dto.getAthleteId())) {
+            throw new ConflictException("Result already exists for this athlete and event");
+        }
+
+        User validatedBy = null;
+        if (dto.getValidatedById() != null) {
+            validatedBy = userRepository
+                    .findByIdAndDeletedAtIsNull(dto.getValidatedById())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         }
 
         Resultat resultat = Resultat.builder()
                 .athlete(athlete)
                 .epreuve(epreuve)
-                .temps(dto.getTemps())
-                .classement(dto.getClassement())
-                .record(dto.getRecord() != null ? dto.getRecord() : false)
-                .points(dto.getPoints() != null ? dto.getPoints() : 0)
-                .dateSaisie(LocalDateTime.now())
+                .lane(dto.getLane())
+                .finalTime(dto.getFinalTime())
+                .rank(dto.getRank())
+                .isRecord(dto.getIsRecord() != null ? dto.getIsRecord() : false)
+                .validatedBy(validatedBy)
                 .build();
 
-        Resultat saved = resultatRepository.save(resultat);
-        classementService.rebuild(
-                epreuve.getDiscipline(),
-                epreuve.getCategorie(),
-                epreuve.getSexe(),
-                epreuve.getDateHeure().getYear());
-
-        return toDto(saved);
+        return toDto(resultatRepository.save(resultat));
     }
 
     @Transactional
     public ResultatDto update(Long id, UpdateResultatDto dto) {
         Resultat resultat = resultatRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resultat not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Result not found"));
 
-        if (dto.getTemps() != null) resultat.setTemps(dto.getTemps());
-        if (dto.getClassement() != null) resultat.setClassement(dto.getClassement());
-        if (dto.getRecord() != null) resultat.setRecord(dto.getRecord());
-        if (dto.getPoints() != null) resultat.setPoints(dto.getPoints());
+        if (dto.getLane() != null) resultat.setLane(dto.getLane());
+        if (dto.getFinalTime() != null) resultat.setFinalTime(dto.getFinalTime());
+        if (dto.getStatus() != null) resultat.setStatus(dto.getStatus());
+        if (dto.getRank() != null) resultat.setRank(dto.getRank());
+        if (dto.getIsRecord() != null) resultat.setIsRecord(dto.getIsRecord());
+        if (dto.getValidatedById() != null) {
+            User validatedBy = userRepository
+                    .findByIdAndDeletedAtIsNull(dto.getValidatedById())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            resultat.setValidatedBy(validatedBy);
+        }
 
-        Resultat saved = resultatRepository.save(resultat);
-        Epreuve epreuve = resultat.getEpreuve();
-        classementService.rebuild(
-                epreuve.getDiscipline(),
-                epreuve.getCategorie(),
-                epreuve.getSexe(),
-                epreuve.getDateHeure().getYear());
-
-        return toDto(saved);
+        return toDto(resultatRepository.save(resultat));
     }
 
     @Transactional
     public void delete(Long id) {
         Resultat resultat = resultatRepository
                 .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resultat not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Result not found"));
         resultat.setDeletedAt(LocalDateTime.now());
         resultatRepository.save(resultat);
-
-        Epreuve epreuve = resultat.getEpreuve();
-        classementService.rebuild(
-                epreuve.getDiscipline(),
-                epreuve.getCategorie(),
-                epreuve.getSexe(),
-                epreuve.getDateHeure().getYear());
-    }
-
-    @Transactional
-    public ResultatDto publier(Long id) {
-        Resultat resultat = resultatRepository
-                .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resultat not found"));
-        resultat.setPublie(true);
-        return toDto(resultatRepository.save(resultat));
     }
 
     public ResultatDto toDto(Resultat resultat) {
         return ResultatDto.builder()
                 .id(resultat.getId())
-                .epreuveId(resultat.getEpreuve().getId())
                 .athleteId(resultat.getAthlete().getId())
-                .temps(resultat.getTemps())
-                .classement(resultat.getClassement())
-                .record(resultat.getRecord())
-                .points(resultat.getPoints())
-                .dateSaisie(resultat.getDateSaisie())
-                .publie(resultat.getPublie())
+                .eventId(resultat.getEpreuve().getId())
+                .lane(resultat.getLane())
+                .finalTime(resultat.getFinalTime())
+                .status(resultat.getStatus())
+                .rank(resultat.getRank())
+                .isRecord(resultat.getIsRecord())
+                .validatedById(
+                        resultat.getValidatedBy() != null
+                                ? resultat.getValidatedBy().getId()
+                                : null)
                 .createdAt(resultat.getCreatedAt())
                 .build();
     }
