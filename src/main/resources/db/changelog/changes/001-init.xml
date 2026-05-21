@@ -24,7 +24,11 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="password" type="VARCHAR(100)">
+            <column name="keycloak_id" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="role" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
 
@@ -41,6 +45,40 @@
 
             <column name="deleted_at" type="TIMESTAMP"/>
         </createTable>
+    </changeSet>
+
+    <changeSet id="2-create-coach-table" author="MontassarTayari">
+
+        <createTable tableName="coaches">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             foreignKeyName="fk_coach_user"
+                             references="users(id)"/>
+            </column>
+
+            <column name="speciality" type="VARCHAR(255)" />
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="3-create-athlete-table" author="MontassarTayari">
+
+        <createTable tableName="athletes">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             foreignKeyName="fk_athlete_user"
+                             references="users(id)"/>
+            </column>
+
+            <column name="birth_date" type="DATE"/>
+
+            <column name="gender" type="VARCHAR(50)"/>
+
+            <column name="category" type="VARCHAR(100)"/>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

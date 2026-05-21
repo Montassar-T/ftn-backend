@@ -1,7 +1,7 @@
 package com.ftn.backend.service;
 
 import com.ftn.backend.dtos.*;
-import com.ftn.backend.dtos.*;
+import com.ftn.backend.enums.UserRole;
 import com.ftn.backend.enums.UserStatus;
 import com.ftn.backend.exception.auth.AuthenticationException;
 import com.ftn.backend.exception.business.ConflictException;
@@ -10,14 +10,13 @@ import com.ftn.backend.model.User;
 import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.EmailUtils;
 import com.ftn.backend.utils.JpaQueryFilters;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,56 +24,128 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final KeycloakService keycloakService;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public UserDto getUserById(Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return mapToDto(user);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PageDto<UserDto>> getAllUsers(Map<String, String> params) {
+    public UserDto getCurrentUser(String keycloakId) {
+
+        User user = userRepository
+                .findByKeycloakIdAndDeletedAtIsNull(keycloakId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found"
+                ));
+
+        return mapToDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public PageDto<UserDto> getAllUsers(Map<String, String> params) {
+
         JpaQueryFilters<User> filters = new JpaQueryFilters<>(params, User.class);
-        Page<User> page = userRepository.findAll(filters.getSpecification(), filters.getPageable());
 
-        List<UserDto> data =
-                page.stream().map(m -> modelMapper.map(m, UserDto.class)).toList();
+        Page<User> page = userRepository.findAll(
+                filters.getSpecification(),
+                filters.getPageable()
+        );
 
-        return ResponseEntity.ok(PageDto.<UserDto>builder()
-                .data(data)
-                .total(page.getTotalElements())
-                .build());
+        List<UserDto> data = page.stream()
+                .map(this::mapToDto)
+                .toList();
+
+
+        return PageDto.<UserDto>builder()
+                        .data(data)
+                        .total(page.getTotalElements())
+                        .build();
     }
 
     @Transactional
-    public UserDto createUser(NewUserDto request) {
+    public void syncUser(Jwt jwt) {
 
-        if (userRepository.findByEmailAndDeletedAtIsNull(request.getEmail()).isPresent()) {
+        String keycloakId = jwt.getSubject();
+
+        if (userRepository.existsByKeycloakIdAndDeletedAtIsNull(keycloakId)) {
+            return;
+        }
+
+        User user = User.builder()
+                .keycloakId(keycloakId)
+                .email(jwt.getClaimAsString("email"))
+                .firstName(jwt.getClaimAsString("given_name"))
+                .lastName(jwt.getClaimAsString("family_name"))
+                .role(UserRole.ROLE_ADMIN)
+                .status(UserStatus.ACTIVE)
+                .build();
+
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public UserDto register(RegisterRequestDto request) {
+
+        if (request.getRole() == UserRole.ROLE_ADMIN) {
+            throw new IllegalArgumentException("Admin cannot be self-registered");
+        }
+
+        // 1. Create user in Keycloak
+        String keycloakId = keycloakService.createUser(
+                request.getEmail(),
+                request.getPassword(),
+                request.getFirstName(),
+                request.getLastName(),
+                String.valueOf(request.getRole())
+        );
+
+        // 2. Save in DB
+        User user = User.builder()
+                .keycloakId(keycloakId)
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .role(request.getRole())
+                .status(UserStatus.ACTIVE)
+                .build();
+
+        user = userRepository.save(user);
+
+        return mapToDto(user);
+    }
+
+    @Transactional
+    public UserDto createUser(NewUserDto request, String keycloakId) {
+
+        if (userRepository.findByEmailAndDeletedAtIsNull(
+                EmailUtils.normalize(request.getEmail())
+        ).isPresent()) {
             throw new ConflictException("Email already exists");
         }
 
         User user = User.builder()
+                .keycloakId(keycloakId)
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(EmailUtils.normalize(request.getEmail()))
-                .password(passwordEncoder.encode(request.getPassword()))
                 .status(UserStatus.ACTIVE)
                 .build();
 
-        User saved = userRepository.save(user);
-
-        return mapToDto(saved);
+        return mapToDto(userRepository.save(user));
     }
 
     @Transactional
     public UserDto updateUser(Long id, UpdateUserDto request) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -83,66 +154,29 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateCurrentUser(UpdateUserDto dto) {
+    public UserDto updateCurrentUser(String keycloakId, UpdateUserDto dto) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository
-                .findByEmailAndDeletedAtIsNull(email)
+        User user = userRepository.findByKeycloakIdAndDeletedAtIsNull(keycloakId)
                 .orElseThrow(() -> new AuthenticationException("User not found"));
 
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
 
-        userRepository.save(user);
-
-        return mapToDto(user);
-    }
-
-    @Transactional
-    public void resetPassword(Long userId, ResetPasswordDto dto) {
-
-        User user = userRepository
-                .findByIdAndDeletedAtIsNull(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-    }
-
-    @Transactional
-    public void changePassword(ChangePasswordDto dto) {
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository
-                .findByEmailAndDeletedAtIsNull(email)
-                .orElseThrow(() -> new AuthenticationException("User not found"));
-
-        if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
-            throw new AuthenticationException("Current password is incorrect");
-        }
-
-        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-
-        userRepository.save(user);
+        return mapToDto(userRepository.save(user));
     }
 
     @Transactional
     public void deleteUser(Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        userRepository.delete(user);
-    }
-
-    @Transactional(readOnly = true)
-    public User findByEmail(String email) {
-        return userRepository
-                .findByEmailAndDeletedAtIsNull(EmailUtils.normalize(email))
+        User user = userRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setDeletedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     public UserDto mapToDto(User user) {
+
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

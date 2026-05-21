@@ -2,6 +2,12 @@ spring:
   application:
     name: ftn-backend
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/ftn
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
@@ -10,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -35,8 +41,14 @@ jwt:
   access-expiration: ${JWT_ACCESS_EXPIRATION}
   refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
+keycloak:
+  server-url: ${KEYCLOAK_SERVER_URL}
+  realm: ${KEYCLOAK_REALM}
+  client-id: ${KEYCLOAK_CLIENT_ID}
+  client-secret: ${KEYCLOAK_CLIENT_SECRET}
+
 logging:
   level:
-    root: info
-    org.springframework.security: info
-    com.ftn.backend: info
+    root: DEBUG
+    org.springframework.security: DEBUG
+    com.ftn.backend: DEBUG

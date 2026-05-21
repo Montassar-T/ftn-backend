@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "jwt")
-public class JwtProperties {
+@ConfigurationProperties(prefix = "keycloak")
+public class KeycloakProperties {
 
-    private String secret;
-    private long accessExpiration;
-    private long refreshExpiration;
+    private String serverUrl;
+    private String realm;
+    private String clientId;
+    private String clientSecret;
 }

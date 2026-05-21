@@ -1,68 +1,45 @@
 package com.ftn.backend.controller;
 
-import com.ftn.backend.dtos.*;
-import com.ftn.backend.dtos.*;
-import com.ftn.backend.security.CookieService;
-import com.ftn.backend.security.principal.UserPrincipal;
-import com.ftn.backend.service.AuthenticationService;
+import com.ftn.backend.dtos.RegisterRequestDto;
+import com.ftn.backend.dtos.SingleResultDto;
+import com.ftn.backend.dtos.UserDto;
+import com.ftn.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+
 @Tag(name = "Authentication", description = "Authentication APIs")
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
-    private final CookieService cookieService;
+    private final UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<SingleResultDto<AuthResponse>> login(@RequestBody LoginDto request) {
-
-        LoginResult result = authenticationService.login(request);
-
-        ResponseCookie cookie = cookieService.buildRefreshCookie(result.getRefreshToken());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(SingleResultDto.<AuthResponse>builder()
-                        .data(result.getAuthResponse())
-                        .build());
-    }
-
-    @PostMapping("/refresh")
-    public ResponseEntity<SingleResultDto<AuthResponse>> refresh(@CookieValue("refreshToken") String refreshToken) {
-
-        LoginResult result = authenticationService.refresh(refreshToken);
-
-        ResponseCookie cookie = cookieService.buildRefreshCookie(result.getRefreshToken());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(SingleResultDto.<AuthResponse>builder()
-                        .data(result.getAuthResponse())
-                        .build());
+    @PostMapping("/register")
+    public ResponseEntity<SingleResultDto<UserDto>> register(
+            @Valid @RequestBody RegisterRequestDto request
+    ) {
+        return ResponseEntity.ok(
+                new SingleResultDto<>(userService.register(request))
+        );
     }
 
     @GetMapping("/me")
-    public ResponseEntity<SingleResultDto<UserDto>> me(Authentication authentication) {
+    public ResponseEntity<SingleResultDto<UserDto>> getCurrentUser(
+            @AuthenticationPrincipal Jwt jwt
+    ) {
 
-        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-
-        UserDto userDto = UserDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .build();
+        UserDto user =
+                userService.getCurrentUser(jwt.getSubject());
 
         return ResponseEntity.ok(
-                SingleResultDto.<UserDto>builder().data(userDto).build());
+                new SingleResultDto<>(user)
+        );
     }
 }
