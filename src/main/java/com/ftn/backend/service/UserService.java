@@ -69,6 +69,18 @@ public class UserService {
                         .build();
     }
 
+    public TokenResponseDto login(LoginRequestDto request) {
+        return keycloakService.login(request.getEmail(), request.getPassword());
+    }
+
+    public TokenResponseDto refresh(String refreshToken) {
+        return keycloakService.refresh(refreshToken);
+    }
+
+    public void logout(String refreshToken) {
+        keycloakService.logout(refreshToken);
+    }
+
     @Transactional
     public void syncUser(Jwt jwt) {
 
@@ -93,64 +105,42 @@ public class UserService {
     @Transactional
     public UserDto register(RegisterRequestDto request) {
 
-        if (request.getRole() == UserRole.ROLE_ADMIN) {
-            throw new IllegalArgumentException("Admin cannot be self-registered");
+
+            if (request.getRole() == UserRole.ROLE_ADMIN) {
+                throw new IllegalArgumentException("Admin cannot be self-registered");
+            }
+            String keycloakId = null;
+        try {
+
+            // 1. Create user in Keycloak
+            keycloakId = keycloakService.createUser(
+                    request.getEmail(),
+                    request.getPassword(),
+                    request.getFirstName(),
+                    request.getLastName(),
+                    String.valueOf(request.getRole())
+            );
+
+            // 2. Save in DB
+            User user = User.builder()
+                    .keycloakId(keycloakId)
+                    .email(request.getEmail())
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .role(request.getRole())
+                    .status(UserStatus.ACTIVE)
+                    .build();
+
+            user = userRepository.save(user);
+
+            return mapToDto(user);
+        } catch (Exception e) {
+        // Rollback Keycloak user if anything fails
+        if (keycloakId != null) {
+            keycloakService.deleteUser(keycloakId);
         }
-
-        // 1. Create user in Keycloak
-        String keycloakId = keycloakService.createUser(
-                request.getEmail(),
-                request.getPassword(),
-                request.getFirstName(),
-                request.getLastName(),
-                String.valueOf(request.getRole())
-        );
-
-        // 2. Save in DB
-        User user = User.builder()
-                .keycloakId(keycloakId)
-                .email(request.getEmail())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .role(request.getRole())
-                .status(UserStatus.ACTIVE)
-                .build();
-
-        user = userRepository.save(user);
-
-        return mapToDto(user);
+        throw e;
     }
-
-    @Transactional
-    public UserDto createUser(NewUserDto request, String keycloakId) {
-
-        if (userRepository.findByEmailAndDeletedAtIsNull(
-                EmailUtils.normalize(request.getEmail())
-        ).isPresent()) {
-            throw new ConflictException("Email already exists");
-        }
-
-        User user = User.builder()
-                .keycloakId(keycloakId)
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(EmailUtils.normalize(request.getEmail()))
-                .status(UserStatus.ACTIVE)
-                .build();
-
-        return mapToDto(userRepository.save(user));
-    }
-
-    @Transactional
-    public UserDto updateUser(Long id, UpdateUserDto request) {
-
-        User user = userRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-
-        return mapToDto(userRepository.save(user));
     }
 
     @Transactional
@@ -183,6 +173,7 @@ public class UserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .status(user.getStatus())
+                .role(user.getRole())
                 .build();
     }
 }

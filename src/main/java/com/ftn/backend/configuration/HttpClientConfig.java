@@ -1,0 +1,17 @@
+package com.ftn.backend.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.net.http.HttpClient;
+
+@Configuration
+public class HttpClientConfig {
+
+    @Bean
+    public HttpClient httpClient() {
+        return HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)  // force HTTP/1.1, avoid HTTP/2 issues
+                .build();
+    }
+}

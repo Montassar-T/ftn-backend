@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos;
 
+import com.ftn.backend.enums.UserRole;
 import com.ftn.backend.enums.UserStatus;
 import lombok.*;
 
@@ -18,4 +19,6 @@ public class UserDto {
     private String email;
 
     private UserStatus status;
+
+    private UserRole role;
 }
