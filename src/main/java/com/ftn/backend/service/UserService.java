@@ -1,7 +1,6 @@
 package com.ftn.backend.service;
 
 import com.ftn.backend.dtos.*;
-import com.ftn.backend.dtos.*;
 import com.ftn.backend.enums.UserStatus;
 import com.ftn.backend.exception.auth.AuthenticationException;
 import com.ftn.backend.exception.business.ConflictException;
