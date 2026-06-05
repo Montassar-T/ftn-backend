@@ -38,7 +38,7 @@ public class AuthenticationController {
 
         Cookie cookie = new Cookie("refresh_token", token.getRefreshToken());
         cookie.setHttpOnly(true);
-        cookie.setPath("/api/v1/auth/refresh");
+        cookie.setPath("/api/v1/auth");
         cookie.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookie);
 
@@ -55,7 +55,7 @@ public class AuthenticationController {
 
         Cookie cookie = new Cookie("refresh_token", token.getRefreshToken());
         cookie.setHttpOnly(true);
-        cookie.setPath("/api/v1/auth/refresh");
+        cookie.setPath("/api/v1/auth");
         cookie.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookie);
 
@@ -72,7 +72,7 @@ public class AuthenticationController {
 
         Cookie cookie = new Cookie("refresh_token", "");
         cookie.setHttpOnly(true);
-        cookie.setPath("/api/v1/auth/refresh");
+        cookie.setPath("/api/v1/auth");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 

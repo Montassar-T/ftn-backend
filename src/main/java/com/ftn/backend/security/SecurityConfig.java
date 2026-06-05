@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,6 +24,7 @@ public class SecurityConfig {
     private final UserSynchronizationFilter userSynchronizationFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final KeycloakJwtRoleConverter keycloakJwtRoleConverter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +51,11 @@ public class SecurityConfig {
                 )
 
                 .oauth2ResourceServer(oauth ->
-                        oauth.jwt(jwt -> {})
+                        oauth.jwt(jwt ->
+                                        jwt.jwtAuthenticationConverter(
+                                                jwtAuthenticationConverter()
+                                        )
+                                )
                                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
 
@@ -82,5 +88,18 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return source;
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+
+        JwtAuthenticationConverter converter =
+                new JwtAuthenticationConverter();
+
+        converter.setJwtGrantedAuthoritiesConverter(
+                keycloakJwtRoleConverter
+        );
+
+        return converter;
     }
 }
