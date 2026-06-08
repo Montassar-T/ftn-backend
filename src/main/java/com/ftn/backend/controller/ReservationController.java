@@ -1,0 +1,61 @@
+package com.ftn.backend.controller;
+
+import com.ftn.backend.dtos.PageDto;
+import com.ftn.backend.dtos.SingleResultDto;
+import com.ftn.backend.dtos.reservation.CreateReservationDto;
+import com.ftn.backend.dtos.reservation.ReservationDto;
+import com.ftn.backend.dtos.reservation.UpdateReservationDto;
+import com.ftn.backend.service.ReservationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/v1/reservations")
+@RequiredArgsConstructor
+@Tag(name = "Reservation", description = "Pool reservation management APIs")
+public class ReservationController {
+
+    private final ReservationService reservationService;
+
+    @GetMapping
+    public ResponseEntity<PageDto<ReservationDto>> getAll(@RequestParam Map<String, String> params) {
+        return reservationService.getAll(params);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SingleResultDto<ReservationDto>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.getById(id)));
+    }
+
+    @GetMapping("/pool/{poolId}")
+    public ResponseEntity<List<ReservationDto>> getByPool(@PathVariable Long poolId) {
+        return ResponseEntity.ok(reservationService.getByPool(poolId));
+    }
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<ReservationDto>> getByUser(@PathVariable String email) {
+        return ResponseEntity.ok(reservationService.getByUser(email));
+    }
+
+    @PostMapping
+    public ResponseEntity<SingleResultDto<ReservationDto>> create(@Valid @RequestBody CreateReservationDto dto) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.create(dto)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SingleResultDto<ReservationDto>> update(@PathVariable Long id, @RequestBody UpdateReservationDto dto) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.update(id, dto)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        reservationService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

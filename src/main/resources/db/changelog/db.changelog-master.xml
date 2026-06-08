@@ -22,5 +22,6 @@
     <include file="db/changelog/changes/014-results.xml" />
     <include file="db/changelog/changes/015-users-add-role.xml" />
     <include file="db/changelog/changes/016-athletes-add-name.xml" />
+    <include file="db/changelog/changes/017-reservations.xml" />
 
 </databaseChangeLog>
