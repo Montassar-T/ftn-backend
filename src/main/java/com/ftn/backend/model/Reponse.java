@@ -38,4 +38,8 @@ public class Reponse extends BaseEntity {
     @Column(nullable = false)
     @Builder.Default
     private Boolean signale = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_reponse_id")
+    private Reponse parentReponse;
 }

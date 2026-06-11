@@ -30,4 +30,15 @@ public class Forum extends BaseEntity {
     @Column(name = "nb_sujets", nullable = false)
     @Builder.Default
     private Integer nbSujets = 0;
+
+    @Column(length = 255)
+    private String slug;
+
+    @Column(name = "order_index")
+    @Builder.Default
+    private Integer orderIndex = 0;
+
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
 }

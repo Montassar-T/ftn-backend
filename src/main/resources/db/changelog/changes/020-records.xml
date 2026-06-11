@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="020-1" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="records"/></not>
+        </preConditions>
+        <createTable tableName="records">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="athlete_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_records_athlete"
+                             references="athletes(id)"/>
+            </column>
+            <column name="event_id" type="BIGINT">
+                <constraints foreignKeyName="fk_records_event" references="events(id)"/>
+            </column>
+            <column name="competition_id" type="BIGINT">
+                <constraints foreignKeyName="fk_records_competition" references="competitions(id)"/>
+            </column>
+            <column name="temps_ms" type="BIGINT"/>
+            <column name="temps_display" type="VARCHAR(20)"/>
+            <column name="record_date" type="DATE"/>
+            <column name="type" type="VARCHAR(20)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

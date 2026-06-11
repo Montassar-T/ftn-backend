@@ -22,5 +22,18 @@
     <include file="db/changelog/changes/014-results.xml" />
     <include file="db/changelog/changes/015-users-add-role.xml" />
     <include file="db/changelog/changes/016-athletes-add-name.xml" />
+    <include file="db/changelog/changes/017-seed-data.xml" />
+    <include file="db/changelog/changes/018-events.xml" />
+    <include file="db/changelog/changes/019-nations-ranking.xml" />
+    <include file="db/changelog/changes/020-records.xml" />
+    <include file="db/changelog/changes/021-pool-schedules.xml" />
+    <include file="db/changelog/changes/022-club-memberships.xml" />
+    <include file="db/changelog/changes/023-forum-redesign.xml" />
+    <include file="db/changelog/changes/024-rich-sample-data.xml" />
+    <include file="db/changelog/changes/025-fix-actualites-categories.xml" />
+    <include file="db/changelog/changes/026-fix-licences-statut.xml" />
+    <include file="db/changelog/changes/027-seed-users.xml" />
+    <include file="db/changelog/changes/028-seed-staff-and-links.xml" />
+    <include file="db/changelog/changes/030-club-staff.xml" />
 
 </databaseChangeLog>

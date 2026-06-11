@@ -3,6 +3,7 @@ package com.ftn.backend.controller;
 import com.ftn.backend.dtos.*;
 import com.ftn.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping
+    public ResponseEntity<?> getAllUsers(@RequestParam Map<String, String> params) {
+        return userService.getAllUsers(params);
+    }
 
     @PutMapping
     public ResponseEntity<SingleResultDto<UserDto>> updateProfile(@RequestBody UpdateUserDto dto) {

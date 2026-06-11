@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="030-create-club-staff-table" author="admin">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="club_staff"/></not>
+        </preConditions>
+        <createTable tableName="club_staff">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="club_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_club_staff_club" references="clubs(id)"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_club_staff_user" references="users(id)"/>
+            </column>
+            <column name="poste" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        <addUniqueConstraint
+            tableName="club_staff"
+            columnNames="club_id,user_id"
+            constraintName="uq_club_staff"/>
+    </changeSet>
+
+</databaseChangeLog>

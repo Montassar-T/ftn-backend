@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="023-1" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists tableName="forums" columnName="slug"/></not>
+        </preConditions>
+        <addColumn tableName="forums">
+            <column name="slug" type="VARCHAR(255)"/>
+            <column name="order_index" type="INTEGER" defaultValueNumeric="0"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="023-2" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists tableName="reponses" columnName="parent_reponse_id"/></not>
+        </preConditions>
+        <addColumn tableName="reponses">
+            <column name="parent_reponse_id" type="BIGINT">
+                <constraints foreignKeyName="fk_reponse_parent" references="reponses(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="023-3" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="forum_reactions"/></not>
+        </preConditions>
+        <createTable tableName="forum_reactions">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="thread_id" type="BIGINT">
+                <constraints foreignKeyName="fk_reaction_thread" references="sujets(id)"/>
+            </column>
+            <column name="post_id" type="BIGINT">
+                <constraints foreignKeyName="fk_reaction_post" references="reponses(id)"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reaction_user"
+                             references="users(id)"/>
+            </column>
+            <column name="type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

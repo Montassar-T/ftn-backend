@@ -1,6 +1,7 @@
 package com.ftn.backend.service;
 
 import com.ftn.backend.dtos.*;
+import com.ftn.backend.enums.Role;
 import com.ftn.backend.enums.UserStatus;
 import com.ftn.backend.exception.auth.AuthenticationException;
 import com.ftn.backend.exception.business.ConflictException;
@@ -63,6 +64,7 @@ public class UserService {
                 .email(EmailUtils.normalize(request.getEmail()))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .status(UserStatus.ACTIVE)
+                .role(request.getRole() != null ? request.getRole() : Role.USER)
                 .build();
 
         User saved = userRepository.save(user);

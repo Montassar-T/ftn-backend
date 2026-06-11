@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         024 — Rich sample data
+         Clubs ×7 more (total 15) · Athletes ×36 more (total 60)
+         Licences ×60 · Events ×40 · Extra results ×44
+         Nations ranking ×18 · Records ×8
+         Pool schedules ×29 · News ×12 · Forum replies ×30
+    ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ── EXTRA CLUBS (IDs 9-15) ──────────────────────────────── -->
+    <changeSet id="024-clubs" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM clubs WHERE nom = 'Club Natation Gafsa'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO clubs (nom, ville, region, president_nom, date_affiliation, actif, created_at) VALUES
+            ('Club Natation Gafsa',              'Gafsa',    'Gafsa',       'Tarek Ayari',       '2006-05-20', true, NOW()),
+            ('Association Sportive Kasserine',    'Kasserine','Kasserine',   'Nabil Jlassi',      '2008-03-11', true, NOW()),
+            ('Club Sportif Gabès Natation',       'Gabès',    'Gabès',       'Samir Chtourou',    '2005-09-18', true, NOW()),
+            ('Club Natation Médenine',            'Médenine', 'Sud',         'Walid Hamrouni',    '2009-07-22', true, NOW()),
+            ('Club Sportif Ben Arous Natation',   'Ben Arous','Grand Tunis', 'Zied Khalfallah',   '2004-12-05', true, NOW()),
+            ('Club Sportif Ariana Natation',      'Ariana',   'Grand Tunis', 'Hatem Boubaker',    '2003-08-14', true, NOW()),
+            ('Club de Natation Manouba',          'Manouba',  'Grand Tunis', 'Rim Fetoui',        '2010-02-28', true, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── EXTRA ATHLETES (IDs 25-60) ─────────────────────────── -->
+    <changeSet id="024-athletes" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM athletes WHERE nom = 'Ferchichi' AND prenom = 'Rania'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO athletes (nom, prenom, club_id, date_naissance, nationalite, categorie, sexe, created_at) VALUES
+            -- Club 1 – CSS Sfax (3 more, IDs 25-27)
+            ('Ferchichi',   'Rania',      1, '2002-04-18', 'Tunisienne', 'SENIOR',   'FEMININ',  NOW()),
+            ('Ghannouchi',  'Selim',      1, '2007-08-11', 'Tunisienne', 'BENJAMIN', 'MASCULIN', NOW()),
+            ('Hammami',     'Yasmine',    1, '2005-11-23', 'Tunisienne', 'CADET',    'FEMININ',  NOW()),
+            -- Club 2 – EST (3 more, IDs 28-30)
+            ('Ben Romdhane','Omar',       2, '2001-03-05', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            ('Khlifi',      'Ameni',      2, '2006-09-17', 'Tunisienne', 'CADET',    'FEMININ',  NOW()),
+            ('Mezghani',    'Wassim',     2, '2004-01-29', 'Tunisienne', 'JUNIOR',   'MASCULIN', NOW()),
+            -- Club 3 – CA (3 more, IDs 31-33)
+            ('Ayari',       'Nadia',      3, '2003-06-12', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Ben Khalifa', 'Jawher',     3, '2005-03-27', 'Tunisienne', 'CADET',    'MASCULIN', NOW()),
+            ('Chedly',      'Sabrine',    3, '2007-10-08', 'Tunisienne', 'BENJAMIN', 'FEMININ',  NOW()),
+            -- Club 4 – SNN Nabeul (3 more, IDs 34-36)
+            ('Dhouib',      'Amine',      4, '2001-12-15', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            ('Elloumi',     'Hana',       4, '2004-07-03', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Ferjani',     'Mehdi',      4, '2006-02-21', 'Tunisienne', 'CADET',    'MASCULIN', NOW()),
+            -- Club 5 – USM Monastir (3 more, IDs 37-39)
+            ('Gargouri',    'Rym',        5, '2003-05-18', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Hamdi',       'Sami',       5, '2001-09-04', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            ('Hamza',       'Ons',        5, '2007-01-14', 'Tunisienne', 'BENJAMIN', 'FEMININ',  NOW()),
+            -- Club 6 – COS Sousse (3 more, IDs 40-42)
+            ('Jellouli',    'Karim',      6, '2002-08-22', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            ('Kammoun',     'Emna',       6, '2005-04-09', 'Tunisienne', 'CADET',    'FEMININ',  NOW()),
+            ('Labidi',      'Haythem',    6, '2004-11-30', 'Tunisienne', 'JUNIOR',   'MASCULIN', NOW()),
+            -- Club 7 – ASH Hammamet (2 more, IDs 43-44)
+            ('Makhlouf',    'Alia',       7, '2003-02-16', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Mnasri',      'Yassine',    7, '2001-07-28', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            -- Club 8 – CNB Bizerte (2 more, IDs 45-46)
+            ('Nasr',        'Ghofrane',   8, '2004-05-11', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Ogbi',        'Achref',     8, '2006-12-03', 'Tunisienne', 'CADET',    'MASCULIN', NOW()),
+            -- Club 9 – Gafsa (3 athletes, IDs 47-49)
+            ('Piras',       'Rayen',      9, '2003-09-25', 'Tunisienne', 'JUNIOR',   'MASCULIN', NOW()),
+            ('Qasmi',       'Fatma',      9, '2005-06-07', 'Tunisienne', 'CADET',    'FEMININ',  NOW()),
+            ('Rhouma',      'Seif',       9, '2002-03-19', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            -- Club 10 – Kasserine (3 athletes, IDs 50-52)
+            ('Saafi',       'Ines',      10, '2004-10-30', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Sassi',       'Tarek',     10, '2006-08-14', 'Tunisienne', 'CADET',    'MASCULIN', NOW()),
+            ('Tabbabi',     'Nour',      10, '2001-04-06', 'Tunisienne', 'SENIOR',   'FEMININ',  NOW()),
+            -- Club 11 – Gabès (3 athletes, IDs 53-55)
+            ('Ouerghi',     'Ala',       11, '2003-11-22', 'Tunisienne', 'JUNIOR',   'MASCULIN', NOW()),
+            ('Jaber',       'Salma',     11, '2005-07-15', 'Tunisienne', 'CADET',    'FEMININ',  NOW()),
+            ('Khalil',      'Zied',      11, '2002-01-08', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            -- Club 12 – Médenine (3 athletes, IDs 56-58)
+            ('Loukil',      'Chaima',    12, '2004-03-14', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            ('Mekni',       'Bilal',     12, '2006-10-27', 'Tunisienne', 'CADET',    'MASCULIN', NOW()),
+            ('Nasri',       'Sana',      12, '2003-08-03', 'Tunisienne', 'JUNIOR',   'FEMININ',  NOW()),
+            -- Club 13 – Ben Arous (2 athletes, IDs 59-60)
+            ('Omri',        'Hedi',      13, '2001-05-20', 'Tunisienne', 'SENIOR',   'MASCULIN', NOW()),
+            ('Perez',       'Aya',       13, '2005-12-09', 'Tunisienne', 'CADET',    'FEMININ',  NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── LICENCES (all 60 athletes, season 2025-2026) ────────── -->
+    <changeSet id="024-licences" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM licences WHERE numero = 'FTN-2025-001'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO licences (athlete_id, club_id, numero, type, date_debut, date_expiration, statut, created_at) VALUES
+            -- Club 1 (athletes 1-3, 25-27)
+            (1,  1, 'FTN-2025-001', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (2,  1, 'FTN-2025-002', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (3,  1, 'FTN-2025-003', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (25, 1, 'FTN-2025-025', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (26, 1, 'FTN-2025-026', 'LOISIR',      '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (27, 1, 'FTN-2025-027', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 2 (athletes 4-6, 28-30)
+            (4,  2, 'FTN-2025-004', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (5,  2, 'FTN-2025-005', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (6,  2, 'FTN-2025-006', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (28, 2, 'FTN-2025-028', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (29, 2, 'FTN-2025-029', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (30, 2, 'FTN-2025-030', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 3 (athletes 7-9, 31-33)
+            (7,  3, 'FTN-2025-007', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (8,  3, 'FTN-2025-008', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (9,  3, 'FTN-2025-009', 'LOISIR',      '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (31, 3, 'FTN-2025-031', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (32, 3, 'FTN-2025-032', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (33, 3, 'FTN-2025-033', 'LOISIR',      '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 4 (athletes 10-12, 34-36)
+            (10, 4, 'FTN-2025-010', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (11, 4, 'FTN-2025-011', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (12, 4, 'FTN-2025-012', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (34, 4, 'FTN-2025-034', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (35, 4, 'FTN-2025-035', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (36, 4, 'FTN-2025-036', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 5 (athletes 13-15, 37-39)
+            (13, 5, 'FTN-2025-013', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (14, 5, 'FTN-2025-014', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (15, 5, 'FTN-2025-015', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (37, 5, 'FTN-2025-037', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (38, 5, 'FTN-2025-038', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (39, 5, 'FTN-2025-039', 'LOISIR',      '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 6 (athletes 16-18, 40-42)
+            (16, 6, 'FTN-2025-016', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (17, 6, 'FTN-2025-017', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (18, 6, 'FTN-2025-018', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (40, 6, 'FTN-2025-040', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (41, 6, 'FTN-2025-041', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (42, 6, 'FTN-2025-042', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 7 (athletes 19-20, 43-44)
+            (19, 7, 'FTN-2025-019', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (20, 7, 'FTN-2025-020', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (43, 7, 'FTN-2025-043', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (44, 7, 'FTN-2025-044', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 8 (athletes 21-24, 45-46)
+            (21, 8, 'FTN-2025-021', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (22, 8, 'FTN-2025-022', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (23, 8, 'FTN-2025-023', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (24, 8, 'FTN-2025-024', 'LOISIR',      '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (45, 8, 'FTN-2025-045', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (46, 8, 'FTN-2025-046', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 9 (athletes 47-49)
+            (47, 9, 'FTN-2025-047', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (48, 9, 'FTN-2025-048', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (49, 9, 'FTN-2025-049', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 10 (athletes 50-52)
+            (50,10, 'FTN-2025-050', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (51,10, 'FTN-2025-051', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (52,10, 'FTN-2025-052', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 11 (athletes 53-55)
+            (53,11, 'FTN-2025-053', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (54,11, 'FTN-2025-054', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (55,11, 'FTN-2025-055', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 12 (athletes 56-58)
+            (56,12, 'FTN-2025-056', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (57,12, 'FTN-2025-057', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (58,12, 'FTN-2025-058', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            -- Club 13 (athletes 59-60)
+            (59,13, 'FTN-2025-059', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW()),
+            (60,13, 'FTN-2025-060', 'COMPETITION', '2025-09-01', '2026-08-31', 'ACTIVE', NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── EVENTS (all 8 competitions) ────────────────────────── -->
+    <changeSet id="024-events" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM events WHERE competition_id = 1</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO events (competition_id, swim_style, distance, gender, age_category, round, scheduled_date, status, created_at) VALUES
+            -- Championnat National 2025 (comp 1) — 9 events
+            (1, 'LIBRE',        100, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-03-10', 'COMPLETED',   NOW()),
+            (1, 'LIBRE',        200, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-03-10', 'COMPLETED',   NOW()),
+            (1, 'LIBRE',         50, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-03-11', 'COMPLETED',   NOW()),
+            (1, 'DOS',          100, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-03-11', 'COMPLETED',   NOW()),
+            (1, 'PAPILLON',     100, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-03-12', 'COMPLETED',   NOW()),
+            (1, 'LIBRE',        100, 'FEMININ',  'SENIOR',   'FINALE',      '2025-03-10', 'COMPLETED',   NOW()),
+            (1, 'LIBRE',        200, 'FEMININ',  'SENIOR',   'FINALE',      '2025-03-10', 'COMPLETED',   NOW()),
+            (1, 'LIBRE',         50, 'FEMININ',  'SENIOR',   'FINALE',      '2025-03-11', 'COMPLETED',   NOW()),
+            (1, 'BRASSE',       100, 'FEMININ',  'SENIOR',   'FINALE',      '2025-03-12', 'COMPLETED',   NOW()),
+            -- Open Sfax Printemps 2025 (comp 2) — 5 events
+            (2, 'LIBRE',        100, 'MASCULIN', 'JUNIOR',   'FINALE',      '2025-04-05', 'COMPLETED',   NOW()),
+            (2, 'PAPILLON',     100, 'MASCULIN', 'JUNIOR',   'FINALE',      '2025-04-05', 'COMPLETED',   NOW()),
+            (2, 'LIBRE',         50, 'MASCULIN', 'CADET',    'FINALE',      '2025-04-06', 'COMPLETED',   NOW()),
+            (2, 'BRASSE',       100, 'FEMININ',  'JUNIOR',   'FINALE',      '2025-04-05', 'COMPLETED',   NOW()),
+            (2, 'LIBRE',         50, 'FEMININ',  'CADET',    'FINALE',      '2025-04-06', 'COMPLETED',   NOW()),
+            -- Coupe Méditerranée 2025 (comp 3) — 4 events
+            (3, 'LIBRE',        400, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-06-15', 'COMPLETED',   NOW()),
+            (3, 'QUATRE_NAGES', 200, 'FEMININ',  'SENIOR',   'FINALE',      '2025-06-15', 'COMPLETED',   NOW()),
+            (3, 'LIBRE',       1500, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-06-16', 'COMPLETED',   NOW()),
+            (3, 'LIBRE',        200, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-06-16', 'COMPLETED',   NOW()),
+            -- Championnat Régional Sahel 2025 (comp 4) — 4 events
+            (4, 'LIBRE',         50, 'MASCULIN', 'CADET',    'FINALE',      '2025-08-20', 'COMPLETED',   NOW()),
+            (4, 'LIBRE',         50, 'FEMININ',  'CADET',    'FINALE',      '2025-08-20', 'COMPLETED',   NOW()),
+            (4, 'LIBRE',        100, 'MASCULIN', 'JUNIOR',   'FINALE',      '2025-08-21', 'COMPLETED',   NOW()),
+            (4, 'LIBRE',        100, 'FEMININ',  'JUNIOR',   'FINALE',      '2025-08-21', 'COMPLETED',   NOW()),
+            -- Grand Prix Tunis Automne 2025 (comp 5) — 5 events
+            (5, 'LIBRE',        200, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-10-05', 'COMPLETED',   NOW()),
+            (5, 'LIBRE',        200, 'FEMININ',  'SENIOR',   'FINALE',      '2025-10-05', 'COMPLETED',   NOW()),
+            (5, 'LIBRE',        100, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-10-06', 'COMPLETED',   NOW()),
+            (5, 'LIBRE',        100, 'FEMININ',  'SENIOR',   'FINALE',      '2025-10-06', 'COMPLETED',   NOW()),
+            (5, 'PAPILLON',     100, 'MASCULIN', 'SENIOR',   'FINALE',      '2025-10-07', 'COMPLETED',   NOW()),
+            -- Open Bizerte Hiver 2025 (comp 6) — 4 events
+            (6, 'LIBRE',        100, 'MASCULIN', 'SENIOR',   'SERIES',      '2025-12-14', 'IN_PROGRESS', NOW()),
+            (6, 'LIBRE',        100, 'FEMININ',  'SENIOR',   'SERIES',      '2025-12-14', 'IN_PROGRESS', NOW()),
+            (6, 'DOS',          200, 'MASCULIN', 'SENIOR',   'SERIES',      '2025-12-15', 'SCHEDULED',   NOW()),
+            (6, 'DOS',          200, 'FEMININ',  'SENIOR',   'SERIES',      '2025-12-15', 'SCHEDULED',   NOW()),
+            -- Championnat National Jeunes 2026 (comp 7) — 4 events
+            (7, 'LIBRE',        100, 'MASCULIN', 'CADET',    'FINALE',      '2026-02-20', 'SCHEDULED',   NOW()),
+            (7, 'LIBRE',        100, 'FEMININ',  'CADET',    'FINALE',      '2026-02-20', 'SCHEDULED',   NOW()),
+            (7, 'LIBRE',         50, 'MASCULIN', 'BENJAMIN', 'FINALE',      '2026-02-21', 'SCHEDULED',   NOW()),
+            (7, 'LIBRE',         50, 'FEMININ',  'BENJAMIN', 'FINALE',      '2026-02-21', 'SCHEDULED',   NOW()),
+            -- Grand Prix International Tunis 2026 (comp 8) — 4 events
+            (8, 'LIBRE',         50, 'MASCULIN', 'SENIOR',   'FINALE',      '2026-05-10', 'SCHEDULED',   NOW()),
+            (8, 'LIBRE',        100, 'MASCULIN', 'SENIOR',   'DEMI_FINALE', '2026-05-10', 'SCHEDULED',   NOW()),
+            (8, 'LIBRE',        100, 'MASCULIN', 'SENIOR',   'FINALE',      '2026-05-11', 'SCHEDULED',   NOW()),
+            (8, 'QUATRE_NAGES', 200, 'MASCULIN', 'SENIOR',   'FINALE',      '2026-05-12', 'SCHEDULED',   NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── EXTRA RESULTS (new athletes in finished competitions) ── -->
+    <changeSet id="024-extra-results" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM results WHERE athlete_id = 28</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO results (athlete_id, competition_id, epreuve, temps, rang, statut, created_at) VALUES
+            -- Championnat National 2025 (comp 1)
+            (28, 1, '100m Nage Libre Messieurs',  '00:52.88', 6, 'VALIDE', NOW()),
+            (30, 1, '100m Nage Libre Messieurs',  '00:53.55', 7, 'VALIDE', NOW()),
+            (25, 1, '100m Nage Libre Dames',      '00:56.80', 5, 'VALIDE', NOW()),
+            (29, 1, '200m Nage Libre Messieurs',  '01:52.10', 4, 'VALIDE', NOW()),
+            (34, 1, '200m Nage Libre Messieurs',  '01:53.45', 5, 'VALIDE', NOW()),
+            (31, 1, '100m Dos Messieurs',         '00:58.20', 1, 'VALIDE', NOW()),
+            (7,  1, '100m Dos Messieurs',         '00:59.05', 2, 'VALIDE', NOW()),
+            (40, 1, '100m Dos Messieurs',         '01:00.34', 3, 'VALIDE', NOW()),
+            (37, 1, '100m Brasse Dames',          '01:13.20', 1, 'VALIDE', NOW()),
+            (10, 1, '100m Brasse Dames',          '01:13.88', 2, 'VALIDE', NOW()),
+            (31, 1, '100m Papillon Messieurs',    '00:57.05', 3, 'VALIDE', NOW()),
+            -- Open Sfax (comp 2)
+            (30, 2, '100m Nage Libre Messieurs',  '00:53.12', 5, 'VALIDE', NOW()),
+            (28, 2, '100m Nage Libre Messieurs',  '00:54.00', 6, 'VALIDE', NOW()),
+            (35, 2, '100m Nage Libre Dames',      '00:57.80', 1, 'VALIDE', NOW()),
+            (4,  2, '100m Nage Libre Dames',      '00:58.10', 2, 'VALIDE', NOW()),
+            (29, 2, '50m Nage Libre Messieurs',   '00:24.78', 1, 'VALIDE', NOW()),
+            (36, 2, '50m Nage Libre Messieurs',   '00:25.12', 2, 'VALIDE', NOW()),
+            (3,  2, '50m Nage Libre Messieurs',   '00:25.33', 3, 'VALIDE', NOW()),
+            (27, 2, '50m Nage Libre Dames',       '00:28.10', 1, 'VALIDE', NOW()),
+            (20, 2, '50m Nage Libre Dames',       '00:28.45', 2, 'VALIDE', NOW()),
+            (41, 2, '50m Nage Libre Dames',       '00:28.90', 3, 'VALIDE', NOW()),
+            -- Coupe Méditerranée (comp 3)
+            (28, 3, '400m Nage Libre Messieurs',  '04:02.88', 5, 'VALIDE', NOW()),
+            (49, 3, '400m Nage Libre Messieurs',  '04:05.12', 6, 'VALIDE', NOW()),
+            (37, 3, '200m 4 Nages Dames',         '02:24.45', 4, 'VALIDE', NOW()),
+            (14, 3, '200m 4 Nages Dames',         '02:25.30', 5, 'VALIDE', NOW()),
+            (34, 3, '200m Nage Libre Messieurs',  '01:53.20', 4, 'VALIDE', NOW()),
+            -- Championnat Sahel (comp 4)
+            (36, 4, '50m Nage Libre Messieurs',   '00:24.88', 4, 'VALIDE', NOW()),
+            (29, 4, '50m Nage Libre Messieurs',   '00:25.05', 5, 'VALIDE', NOW()),
+            (38, 4, '50m Nage Libre Dames',       '00:27.88', 4, 'VALIDE', NOW()),
+            (41, 4, '50m Nage Libre Dames',       '00:28.22', 5, 'VALIDE', NOW()),
+            (42, 4, '100m Nage Libre Messieurs',  '00:53.88', 4, 'VALIDE', NOW()),
+            (47, 4, '100m Nage Libre Messieurs',  '00:54.34', 5, 'VALIDE', NOW()),
+            (35, 4, '100m Nage Libre Dames',      '00:58.40', 4, 'VALIDE', NOW()),
+            (50, 4, '100m Nage Libre Dames',      '00:59.10', 5, 'VALIDE', NOW()),
+            -- Grand Prix Tunis Automne (comp 5)
+            (28, 5, '200m Nage Libre Messieurs',  '01:51.88', 4, 'VALIDE', NOW()),
+            (40, 5, '200m Nage Libre Messieurs',  '01:52.55', 5, 'VALIDE', NOW()),
+            (37, 5, '200m Nage Libre Dames',      '02:02.30', 4, 'VALIDE', NOW()),
+            (43, 5, '200m Nage Libre Dames',      '02:03.00', 5, 'VALIDE', NOW()),
+            (30, 5, '100m Papillon Messieurs',    '00:57.88', 5, 'VALIDE', NOW()),
+            (28, 5, '100m Papillon Messieurs',    '00:58.45', 6, 'VALIDE', NOW()),
+            -- Open Bizerte EN_COURS (comp 6)
+            (45, 6, '100m Nage Libre Messieurs',  '00:53.10', 4, 'EN_ATTENTE', NOW()),
+            (49, 6, '100m Nage Libre Messieurs',  '00:54.22', 5, 'EN_ATTENTE', NOW()),
+            (46, 6, '100m Nage Libre Dames',      '00:57.55', 4, 'EN_ATTENTE', NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── NATIONS RANKING ─────────────────────────────────────── -->
+    <changeSet id="024-nations-ranking" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM nations_ranking WHERE season = '2024-2025'</sqlCheck>
+        </preConditions>
+        <sql>
+            /* ── 100m NL Messieurs Senior (Championnat National 2025) ── */
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 5,  e.id, 50340, 875, 1, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 7,  e.id, 51120, 843, 2, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 13, e.id, 51890, 818, 3, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 17, e.id, 52450, 796, 4, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 21, e.id, 53200, 768, 5, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 28, e.id, 52880, 780, 6, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            /* ── 100m NL Dames Senior ── */
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 2,  e.id, 54670, 894, 1, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 4,  e.id, 55120, 878, 2, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 10, e.id, 55890, 852, 3, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 16, e.id, 56400, 836, 4, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 25, e.id, 56800, 822, 5, '2024-2025', NOW() FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            /* ── 200m NL Messieurs Senior (Grand Prix Tunis) ── */
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 5,  e.id, 108900, 862, 1, '2024-2025', NOW() FROM events e WHERE e.competition_id=5 AND e.swim_style='LIBRE' AND e.distance=200 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 7,  e.id, 109770, 839, 2, '2024-2025', NOW() FROM events e WHERE e.competition_id=5 AND e.swim_style='LIBRE' AND e.distance=200 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 23, e.id, 111230, 803, 3, '2024-2025', NOW() FROM events e WHERE e.competition_id=5 AND e.swim_style='LIBRE' AND e.distance=200 AND e.gender='MASCULIN' LIMIT 1;
+            /* ── 400m NL Messieurs Senior (Coupe Méditerranée) ── */
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 5,  e.id, 234120, 880, 1, '2024-2025', NOW() FROM events e WHERE e.competition_id=3 AND e.swim_style='LIBRE' AND e.distance=400 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 7,  e.id, 236880, 858, 2, '2024-2025', NOW() FROM events e WHERE e.competition_id=3 AND e.swim_style='LIBRE' AND e.distance=400 AND e.gender='MASCULIN' LIMIT 1;
+            INSERT INTO nations_ranking (athlete_id, event_id, best_time_ms, points_fina, rank_position, season, created_at)
+            SELECT 13, e.id, 238340, 844, 3, '2024-2025', NOW() FROM events e WHERE e.competition_id=3 AND e.swim_style='LIBRE' AND e.distance=400 AND e.gender='MASCULIN' LIMIT 1;
+        </sql>
+    </changeSet>
+
+    <!-- ── RECORDS ─────────────────────────────────────────────── -->
+    <changeSet id="024-records" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM records WHERE type = 'NATIONAL'</sqlCheck>
+        </preConditions>
+        <sql>
+            /* Record national — 100m NL Messieurs Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 5, e.id, 1, 50340, '50.34', '2025-03-10', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            /* Record national — 100m NL Dames Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 2, e.id, 1, 54670, '54.67', '2025-03-10', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            /* Record national — 200m NL Messieurs Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 5, e.id, 5, 108900, '1:48.90', '2025-10-05', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=5 AND e.swim_style='LIBRE' AND e.distance=200 AND e.gender='MASCULIN' LIMIT 1;
+            /* Record national — 400m NL Messieurs Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 5, e.id, 3, 234120, '3:54.12', '2025-06-15', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=3 AND e.swim_style='LIBRE' AND e.distance=400 AND e.gender='MASCULIN' LIMIT 1;
+            /* Record national — 100m Dos Messieurs Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 31, e.id, 1, 58200, '58.20', '2025-03-11', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=1 AND e.swim_style='DOS' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
+            /* Record national — 200m 4 Nages Dames Senior */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 4, e.id, 3, 140340, '2:20.34', '2025-06-15', 'NATIONAL', NOW()
+            FROM events e WHERE e.competition_id=3 AND e.swim_style='QUATRE_NAGES' AND e.distance=200 AND e.gender='FEMININ' LIMIT 1;
+            /* Record régional — 100m NL Dames Junior (Open Sfax) */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 35, e.id, 2, 57800, '57.80', '2025-04-05', 'REGIONAL', NOW()
+            FROM events e WHERE e.competition_id=2 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
+            /* Record club — 50m NL Messieurs Cadet (Sahel) */
+            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
+            SELECT 1, e.id, 4, 23450, '23.45', '2025-08-20', 'CLUB', NOW()
+            FROM events e WHERE e.competition_id=4 AND e.swim_style='LIBRE' AND e.distance=50 AND e.gender='MASCULIN' LIMIT 1;
+        </sql>
+    </changeSet>
+
+    <!-- ── POOL SCHEDULES ──────────────────────────────────────── -->
+    <changeSet id="024-pool-schedules" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM pool_schedules WHERE pool_id = 1</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO pool_schedules (pool_id, purpose, start_date_time, end_date_time, status, created_at) VALUES
+            -- Pool 1 – Piscine Olympique de Tunis
+            (1, 'Entraînement EST Natation — Séniors',          '2025-03-09 06:00:00', '2025-03-09 08:30:00', 'COMPLETED', NOW()),
+            (1, 'Préchauffage Championnat National',             '2025-03-10 05:30:00', '2025-03-10 07:00:00', 'COMPLETED', NOW()),
+            (1, 'Championnat National 2025 — Journée 1',        '2025-03-10 08:00:00', '2025-03-10 19:00:00', 'COMPLETED', NOW()),
+            (1, 'Championnat National 2025 — Journée 2',        '2025-03-11 08:00:00', '2025-03-11 19:00:00', 'COMPLETED', NOW()),
+            (1, 'Championnat National 2025 — Journée 3',        '2025-03-12 08:00:00', '2025-03-12 17:00:00', 'COMPLETED', NOW()),
+            (1, 'Coupe Méditerranée 2025 — Journée 1',          '2025-06-15 08:00:00', '2025-06-15 21:00:00', 'COMPLETED', NOW()),
+            (1, 'Coupe Méditerranée 2025 — Journée 2',          '2025-06-16 08:00:00', '2025-06-16 21:00:00', 'COMPLETED', NOW()),
+            (1, 'Grand Prix Tunis Automne — Journée 1',         '2025-10-05 08:00:00', '2025-10-05 19:00:00', 'COMPLETED', NOW()),
+            (1, 'Grand Prix Tunis Automne — Journée 2',         '2025-10-06 08:00:00', '2025-10-06 19:00:00', 'COMPLETED', NOW()),
+            (1, 'Grand Prix Tunis Automne — Journée 3',         '2025-10-07 08:00:00', '2025-10-07 17:00:00', 'COMPLETED', NOW()),
+            (1, 'Entraînement EST Natation — Juniors',           '2026-05-22 06:00:00', '2026-05-22 08:00:00', 'SCHEDULED', NOW()),
+            (1, 'Entraînement EST Natation — Séniors',          '2026-05-24 06:00:00', '2026-05-24 08:30:00', 'SCHEDULED', NOW()),
+            (1, 'Préparation Grand Prix International 2026',    '2026-05-27 06:00:00', '2026-05-27 09:00:00', 'SCHEDULED', NOW()),
+            (1, 'Grand Prix International Tunis 2026 — J1',     '2026-05-10 08:00:00', '2026-05-10 21:00:00', 'SCHEDULED', NOW()),
+            (1, 'Grand Prix International Tunis 2026 — J2',     '2026-05-11 08:00:00', '2026-05-11 21:00:00', 'SCHEDULED', NOW()),
+            (1, 'Grand Prix International Tunis 2026 — J3',     '2026-05-12 08:00:00', '2026-05-12 20:00:00', 'SCHEDULED', NOW()),
+            -- Pool 2 – Piscine Municipale de Sfax
+            (2, 'Entraînement CSS Sfax — Quotidien',            '2026-05-19 06:30:00', '2026-05-19 08:30:00', 'COMPLETED', NOW()),
+            (2, 'Entraînement CSS Sfax — Quotidien',            '2026-05-20 06:30:00', '2026-05-20 08:30:00', 'COMPLETED', NOW()),
+            (2, 'Open de Sfax Printemps 2025 — Journée 1',     '2025-04-05 08:00:00', '2025-04-05 18:00:00', 'COMPLETED', NOW()),
+            (2, 'Open de Sfax Printemps 2025 — Journée 2',     '2025-04-06 08:00:00', '2025-04-06 16:00:00', 'COMPLETED', NOW()),
+            (2, 'Entraînement CSS Sfax — Quotidien',            '2026-05-22 06:30:00', '2026-05-22 08:30:00', 'SCHEDULED', NOW()),
+            (2, 'Natation loisir — Accès public',               '2026-05-24 09:00:00', '2026-05-24 13:00:00', 'SCHEDULED', NOW()),
+            -- Pool 3 – Piscine Régionale de Sousse
+            (3, 'Entraînement COS Sousse — Cadets',             '2026-05-21 16:00:00', '2026-05-21 18:00:00', 'ACTIVE',    NOW()),
+            (3, 'Championnat Régional Sahel 2025 — J1',        '2025-08-20 08:00:00', '2025-08-20 18:00:00', 'COMPLETED', NOW()),
+            (3, 'Championnat Régional Sahel 2025 — J2',        '2025-08-21 08:00:00', '2025-08-21 16:00:00', 'COMPLETED', NOW()),
+            (3, 'Entraînement COS Sousse — Juniors',            '2026-05-22 16:00:00', '2026-05-22 18:00:00', 'SCHEDULED', NOW()),
+            -- Pool 4 – Piscine Municipale de Bizerte
+            (4, 'Open de Bizerte Hiver 2025 — Journée 1',      '2025-12-14 08:00:00', '2025-12-14 20:00:00', 'COMPLETED', NOW()),
+            (4, 'Open de Bizerte Hiver 2025 — Journée 2',      '2025-12-15 08:00:00', '2025-12-15 17:00:00', 'SCHEDULED', NOW()),
+            (4, 'Entraînement CNB Bizerte — Quotidien',        '2026-05-22 07:00:00', '2026-05-22 09:00:00', 'SCHEDULED', NOW()),
+            -- Pool 5 – Complexe Aquatique de Nabeul
+            (5, 'Entraînement SNN Nabeul — Été',               '2026-05-22 07:00:00', '2026-05-22 09:00:00', 'SCHEDULED', NOW()),
+            (5, 'Entraînement ASH Hammamet — Visiteurs',       '2026-05-23 07:30:00', '2026-05-23 09:30:00', 'SCHEDULED', NOW()),
+            (5, 'Stage régional espoirs Cap Bon',               '2026-05-25 07:00:00', '2026-05-27 18:00:00', 'SCHEDULED', NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── NEWS / ACTUALITÉS (12 articles) ────────────────────── -->
+    <changeSet id="024-actualites" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM actualites WHERE titre = 'Yassine Ben Salah bat le record national du 100m nage libre'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO actualites (auteur_id, titre, contenu, categorie, date_publication, publie, created_at) VALUES
+            (NULL,
+             'Yassine Ben Salah bat le record national du 100m nage libre',
+             'Le nageur du Club Sportif Sfaxien Natation, Yassine Ben Salah, a réalisé une performance historique lors du Championnat National 2025 en établissant un nouveau record national du 100m nage libre avec un temps de 50.34 secondes. Cette marque efface l''ancien record qui tenait depuis 2019. Ben Salah, âgé de 19 ans, confirme son statut de future étoile de la natation tunisienne. Son entraîneur Mohamed Ben Ali a déclaré : "Yassine travaille avec une discipline exemplaire depuis deux ans. Ce record est la récompense d''un investissement total." Le nageur vise maintenant une qualification pour les prochains Jeux Méditerranéens.',
+             'COMPETITION', '2025-03-11 15:00:00', true, NOW()),
+
+            (NULL,
+             'La FTN annonce le programme officiel des championnats 2026',
+             'La Fédération Tunisienne de Natation a publié le programme complet des compétitions pour la saison 2026. Le calendrier comprend le Championnat National Jeunes en février à Tunis, le Grand Prix International en mai avec la participation de 15 délégations étrangères, et sept compétitions régionales réparties sur toute l''année. Les clubs ont jusqu''au 15 janvier 2026 pour confirmer leurs participations et soumettre les listes d''athlètes. Des nouveautés sont attendues cette saison avec l''introduction d''épreuves open pour les masters. Le programme complet est disponible sur le site officiel de la FTN.',
+             'FEDERATION', '2025-11-20 10:00:00', true, NOW()),
+
+            (NULL,
+             'Coupe Méditerranée 2025 : la Tunisie termine avec 7 médailles',
+             'L''équipe nationale de Tunisie a brillé lors de la Coupe Méditerranée 2025 organisée à Tunis, remportant 3 médailles d''or, 2 d''argent et 2 de bronze au classement général. Chaabane Nidhal s''est illustré en nage libre en battant deux des participants favoris, tandis que Rim Mbarki et Bilel Jebali ont dominé leurs épreuves respectives. La Tunisie termine 3e au classement général derrière la France et l''Italie, mais devant la Grèce et le Portugal. Le président de la FTN a salué cette performance comme "l''une des meilleures de l''histoire de la natation tunisienne en compétition internationale".',
+             'INTERNATIONAL', '2025-06-19 09:00:00', true, NOW()),
+
+            (NULL,
+             'Bilan du Championnat National 2025 : le CSS Sfax champion par équipes',
+             'Le Championnat National de Natation 2025 s''est clôturé sur une note brillante. Le Club Sportif Sfaxien Natation est sacré champion par équipes pour la 4e fois consécutive, devant l''EST Natation et le Club Africain Natation. Au total, 120 athlètes représentant 13 clubs ont participé à cet événement phare. Six nouveaux records nationaux ont été établis dont deux en nage libre senior. La compétition s''est déroulée sur trois jours à la Piscine Olympique de Tunis devant plus de 800 spectateurs chaque journée.',
+             'COMPETITION', '2025-03-13 14:00:00', true, NOW()),
+
+            (NULL,
+             'Guide nutrition pour nageurs compétitifs : les conseils de nos diététiciens',
+             'La performance en natation dépend autant de l''entraînement que de la nutrition. Les experts recommandent une alimentation riche en glucides complexes dans les 48h avant les compétitions, une hydratation optimale tout au long de la journée (minimum 3L pour un nageur adulte), et un apport protéique de 1.6 à 2g par kg de poids corporel pour optimiser la récupération musculaire. Il faut également éviter les aliments gras et épicés la veille des épreuves. Dr. Sonia Jemli, diététicienne officielle de la FTN, recommande également de tester votre plan nutritionnel lors des entraînements avant de l''appliquer en compétition.',
+             'SANTE', '2025-09-05 08:00:00', true, NOW()),
+
+            (NULL,
+             'Inauguration de la piscine rénovée de Sousse : une infrastructure de qualité olympique',
+             'La piscine régionale de Sousse a rouvert ses portes après 8 mois de travaux de rénovation majeurs. Le chantier, financé conjointement par le ministère des Sports et la municipalité, a permis d''agrandir la capacité d''accueil à 500 spectateurs, de moderniser entièrement les vestiaires et les espaces de récupération, et d''installer un nouveau système de filtration écologique réduisant la consommation de chlore de 40%. La piscine est désormais certifiée aux normes FINA et pourra accueillir des compétitions internationales. Le Club Olympique Sousse Natation sera le premier à utiliser les nouvelles installations lors d''un gala de natation le 15 août.',
+             'FEDERATION', '2025-07-15 11:00:00', true, NOW()),
+
+            (NULL,
+             'Les jeunes talents du Club Africain Natation se démarquent au stage national',
+             'Le stage national de détection des jeunes nageurs organisé par la FTN en août a révélé plusieurs talents promettteurs issus du Club Africain Natation. Jawher Ben Khalifa (15 ans), catégorie cadet, a réalisé les meilleurs chronos sur 100m nage libre parmi les garçons. Aymen Ouali (13 ans) a impressionné sur le 50m papillon, et Sabrine Chedly (13 ans) s''est distinguée en dos. Les trois nageurs seront intégrés dans le groupe espoirs national pour la saison 2025-2026, bénéficiant de deux entraînements supplémentaires par semaine encadrés par les techniciens fédéraux.',
+             'ENTRAINEMENT', '2025-08-28 09:00:00', true, NOW()),
+
+            (NULL,
+             'Améliorer votre départ : techniques et exercices pour gagner des dixièmes',
+             'Le départ est une phase cruciale en natation compétitive, pouvant représenter jusqu''à 10% du temps total sur un 50m. Notre coach national Hédi Gharbi partage ses meilleurs exercices. Pour le départ crawl : travaillez la réaction avec un chronomètre, puis l''angle de plongeon à 35-40° pour une entrée dans l''eau optimale, et enfin la phase de glisse sous-marine avec des ondulations efficaces. La règle des 15 mètres sous-marins est la limite légale à exploiter. Pour les départs en dos : positionnement optimal des pieds, coordination bras-pieds au moment du départ. Ces techniques, pratiquées 10 minutes à chaque séance, peuvent réduire votre temps de 0.2 à 0.5 secondes.',
+             'TECHNIQUE', '2025-10-12 07:00:00', true, NOW()),
+
+            (NULL,
+             'Interview exclusif : Maher Bouaziz se prépare pour les sélections olympiques',
+             'Le nageur de l''Union Sportive Monastir, Maher Bouaziz (22 ans), nous a accordé une interview exclusive sur sa préparation en vue des prochaines sélections pour les Jeux Méditerranéens 2026. Premier au 200m nage libre lors du Grand Prix de Tunis avec 1:48.90, un temps qui le place parmi les meilleurs de la région, il explique : "Je m''entraîne deux fois par jour, six jours sur sept. La récupération est tout aussi importante que l''entraînement." Son entraîneur Hédi Gharbi ajoute : "Maher a une technique d''exception et une tête de compétiteur. Il est capable de surprendre les meilleurs nageurs méditerranéens." Un nageur à suivre de très près cette saison.',
+             'COMPETITION', '2025-10-09 10:00:00', true, NOW()),
+
+            (NULL,
+             'Stage espoirs à Nabeul : 45 jeunes nageurs sélectionnés pour un camp intensif',
+             'La FTN organise un stage intensif de détection et de perfectionnement à Nabeul du 25 au 27 mai 2026. Quarante-cinq jeunes nageurs âgés de 12 à 16 ans, issus de 13 clubs tunisiens, ont été sélectionnés sur la base de leurs performances de la saison. Ce stage de trois jours comprend deux séances d''entraînement en eau, des évaluations techniques vidéo, des ateliers de préparation mentale et des sessions de nutrition sportive. Les meilleurs profils seront retenus pour intégrer le programme national espoirs 2026-2027.',
+             'ENTRAINEMENT', '2026-05-24 08:00:00', false, NOW()),
+
+            (NULL,
+             'La FTN renforce ses partenariats avec les clubs des régions intérieures',
+             'Dans le cadre de sa stratégie de développement 2025-2030, la Fédération Tunisienne de Natation a signé sept nouvelles conventions de partenariat avec des clubs des régions intérieures : Gafsa, Kasserine, Gabès, Médenine, Ben Arous, Ariana et Manouba. Ces conventions prévoient des subventions pour l''acquisition d''équipements, des formations certifiantes pour les entraîneurs locaux, l''attribution de créneaux horaires supplémentaires dans les piscines publiques, et l''accompagnement administratif pour les affiliations de nouveaux licenciés. Objectif : doubler le nombre de nageurs licenciés d''ici 2027.',
+             'FEDERATION', '2025-12-01 09:00:00', true, NOW()),
+
+            (NULL,
+             'Top 5 des erreurs de brasse à éviter pour progresser rapidement',
+             'La brasse est la nage la plus technique et la plus sujette aux erreurs de forme. Voici les 5 erreurs les plus fréquentes identifiées par notre analyste vidéo Karim Haddad lors des compétitions nationales. 1) Traction trop large : les mains ne doivent pas dépasser la largeur des épaules en fin de traction. 2) Tête qui se lève excessivement : gardez le menton dans l''eau pendant la propulsion. 3) Genoux trop écartés : les talons reviennent vers les fesses, genoux légèrement plus écartés que les hanches. 4) Phase de glisse trop courte : exploitez l''élan de chaque cycle. 5) Coudes qui tombent : gardez les coudes hauts pendant la traction. Ces corrections peuvent améliorer votre temps de 3 à 5 secondes sur 100m.',
+             'TECHNIQUE', '2025-11-15 07:30:00', true, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ── FORUM REPLIES (reponses to threads 1-9) ─────────────── -->
+    <changeSet id="024-reponses" author="AlainBx20">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM reponses WHERE sujet_id = 1</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO reponses (sujet_id, auteur_id, contenu, date_creation, nb_likes, signale, created_at) VALUES
+            -- Thread 1 : Bienvenue sur le forum FTN
+            (1, NULL, 'Merci pour ce forum ! Je suis entraîneur au Club Africain depuis 5 ans. Excellent espace d''échange.', NOW() - INTERVAL '10 days', 8,  false, NOW() - INTERVAL '10 days'),
+            (1, NULL, 'Super initiative de la FTN ! Enfin un lieu de discussion pour toute la communauté natation tunisienne.', NOW() - INTERVAL '9 days', 5,  false, NOW() - INTERVAL '9 days'),
+            (1, NULL, 'Bravo pour ce forum. Je le suis depuis le lancement et les discussions sont de qualité. Continuez ainsi !', NOW() - INTERVAL '8 days', 12, false, NOW() - INTERVAL '8 days'),
+            -- Thread 2 : Présentation clubs Championnat 2026
+            (2, NULL, 'Notre club CSS Sfax sera présent avec 18 nageurs dont 6 séniors. On vise le titre par équipes pour la 5e fois !', NOW() - INTERVAL '7 days', 15, false, NOW() - INTERVAL '7 days'),
+            (2, NULL, 'L''EST Natation arrive avec une équipe renouvelée. De belles surprises sont à attendre.', NOW() - INTERVAL '6 days', 11, false, NOW() - INTERVAL '6 days'),
+            (2, NULL, 'Club Africain Natation confirmé avec 12 nageurs. Hâte de retrouver les autres clubs !', NOW() - INTERVAL '5 days', 9,  false, NOW() - INTERVAL '5 days'),
+            -- Thread 3 : Règlement sportif 2026
+            (3, NULL, 'Enfin un règlement clair et précis sur les critères de qualification. Merci à la FTN pour ce travail.', NOW() - INTERVAL '6 days', 7,  false, NOW() - INTERVAL '6 days'),
+            (3, NULL, 'Question : les temps de qualification pour les juniors ont-ils changé par rapport à 2025 ?', NOW() - INTERVAL '4 days', 3,  false, NOW() - INTERVAL '4 days'),
+            (3, NULL, 'Oui, les minimums juniors ont été légèrement abaissés pour encourager plus de participants. Voir annexe 3 du règlement.', NOW() - INTERVAL '3 days', 6,  false, NOW() - INTERVAL '3 days'),
+            -- Thread 4 : Grand Prix Tunis 2025
+            (4, NULL, 'Félicitations à Yassine Ben Salah ! 50.34 sur 100m NL, c''est remarquable pour un nageur de 19 ans.', NOW() - INTERVAL '5 days', 22, false, NOW() - INTERVAL '5 days'),
+            (4, NULL, 'Le niveau général était vraiment élevé cette année. La natation tunisienne progresse fortement.', NOW() - INTERVAL '4 days', 18, false, NOW() - INTERVAL '4 days'),
+            (4, NULL, 'Maher Bouaziz aussi a été brillant sur le 200m. L''avenir de la natation tunisienne est radieux.', NOW() - INTERVAL '3 days', 14, false, NOW() - INTERVAL '3 days'),
+            (4, NULL, 'Les performances féminines étaient aussi très solides ! Rim Mbarki a nagé une course tactique parfaite.', NOW() - INTERVAL '2 days', 9,  false, NOW() - INTERVAL '2 days'),
+            -- Thread 5 : Programme entraînement hivernal
+            (5, NULL, 'En hiver, j''intègre beaucoup de foncier — endurance aérobie sur longues distances. Ça paye en compétition.', NOW() - INTERVAL '7 days', 14, false, NOW() - INTERVAL '7 days'),
+            (5, NULL, 'Le renforcement musculaire hors eau est aussi crucial : gainage, squats, élastiques. Ne négligez pas ça !', NOW() - INTERVAL '6 days', 11, false, NOW() - INTERVAL '6 days'),
+            (5, NULL, 'Je conseille 2 séances d''eau minimum par semaine même en période de trêve pour garder les sensations.', NOW() - INTERVAL '4 days', 8,  false, NOW() - INTERVAL '4 days'),
+            -- Thread 6 : Technique de virage
+            (6, NULL, 'La clé du virage crawl : toucher avec les deux pieds bien à plat et pousser fort ! La tête reste dans l''axe.', NOW() - INTERVAL '8 days', 19, false, NOW() - INTERVAL '8 days'),
+            (6, NULL, 'J''utilise l''exercice "nage vers le mur à mi-bassin" pour travailler la prise de repère. Très efficace pour les débutants.', NOW() - INTERVAL '7 days', 12, false, NOW() - INTERVAL '7 days'),
+            (6, NULL, 'Et pour le virage en dos ? C''est le plus difficile à maîtriser selon moi, des conseils ?', NOW() - INTERVAL '5 days', 7,  false, NOW() - INTERVAL '5 days'),
+            (6, NULL, 'Dos : comptez vos brassées depuis le fanion (généralement 5-6 brassées selon votre envergure). Ça donne un repère fiable.', NOW() - INTERVAL '3 days', 15, false, NOW() - INTERVAL '3 days'),
+            -- Thread 7 : Nutrition nageurs
+            (7, NULL, 'La veille : pâtes complètes le soir. Matin de course : une heure avant, banana + café + céréales légères.', NOW() - INTERVAL '6 days', 10, false, NOW() - INTERVAL '6 days'),
+            (7, NULL, 'Ne négligez pas la récupération ! Dans les 30 min post-effort : protéines (yaourt grec, whey) + glucides (fruits).', NOW() - INTERVAL '5 days', 13, false, NOW() - INTERVAL '5 days'),
+            (7, NULL, 'L''hydratation en natation est souvent négligée — on ne ressent pas la sueur dans l''eau. Buvez toutes les 20 min !', NOW() - INTERVAL '3 days', 17, false, NOW() - INTERVAL '3 days'),
+            -- Thread 8 : Calendrier FTN 2026
+            (8, NULL, 'Super programme ! Le Championnat National Jeunes en février va révéler de belles choses.', NOW() - INTERVAL '4 days', 6,  false, NOW() - INTERVAL '4 days'),
+            (8, NULL, 'Le Grand Prix International en mai va être fantastique. Des délégations étrangères sont-elles confirmées ?', NOW() - INTERVAL '3 days', 8,  false, NOW() - INTERVAL '3 days'),
+            (8, NULL, 'Selon mes informations, 15 délégations ont confirmé dont la France, l''Égypte, le Maroc et l''Algérie.', NOW() - INTERVAL '2 days', 11, false, NOW() - INTERVAL '2 days'),
+            -- Thread 9 : Résultats Championnat National 2025
+            (9, NULL, 'Bravo à tous ! Le 50m NL en 23.45 pour Ben Salah est une belle performance pour un cadet de 19 ans.', NOW() - INTERVAL '6 days', 8,  false, NOW() - INTERVAL '6 days'),
+            (9, NULL, 'Niveau nettement supérieur à 2024 dans toutes les épreuves. La natation tunisienne progresse !', NOW() - INTERVAL '5 days', 14, false, NOW() - INTERVAL '5 days'),
+            (9, NULL, 'Dommage pour quelques disqualifications sur faux départs. L''arbitrage devrait clarifier les procédures.', NOW() - INTERVAL '4 days', 5,  false, NOW() - INTERVAL '4 days'),
+            (9, NULL, 'Bilel Jebali en papillon a été exceptionnel. CSS Sfax champion par équipes, bien mérité !', NOW() - INTERVAL '2 days', 16, false, NOW() - INTERVAL '2 days');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

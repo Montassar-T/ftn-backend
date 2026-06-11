@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ═══════════════ CLUBS ═══════════════ -->
+    <changeSet id="017-clubs" author="MontassarTayari">
+        <sql>
+            INSERT INTO clubs (nom, ville, region, president_nom, date_affiliation, actif, created_at) VALUES
+            ('Club Sportif Sfaxien Natation',       'Sfax',     'Sfax',       'Mohamed Ben Ali',   '2001-03-15', true, NOW()),
+            ('Espérance Sportive Tunis Natation',   'Tunis',    'Grand Tunis','Karim Trabelsi',    '1998-06-20', true, NOW()),
+            ('Club Africain Natation',              'Tunis',    'Grand Tunis','Sami Belhaj',       '2000-09-10', true, NOW()),
+            ('Stade Nabeulien Natation',            'Nabeul',   'Cap Bon',   'Fatima Mansour',    '2003-01-25', true, NOW()),
+            ('Union Sportive Monastir Natation',    'Monastir', 'Sahel',     'Hédi Gharbi',       '2005-04-12', true, NOW()),
+            ('Club Olympique Sousse Natation',      'Sousse',   'Sousse',    'Leila Jebali',      '2002-11-08', true, NOW()),
+            ('Association Sportive Hammamet',       'Hammamet', 'Cap Bon',   'Riadh Chaâbane',    '2007-07-30', true, NOW()),
+            ('Club Natation Bizerte',               'Bizerte',  'Nord',      'Omar Boukadi',      '2004-02-14', true, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ POOLS ═══════════════ -->
+    <changeSet id="017-pools" author="MontassarTayari">
+        <sql>
+            INSERT INTO pools (nom, ville, adresse, longueur, nb_couloirs, type, actif, created_at) VALUES
+            ('Piscine Olympique de Tunis',       'Tunis',    'Avenue Habib Bourguiba, Tunis',      50, 10, 'INDOOR',  true, NOW()),
+            ('Piscine Municipale de Sfax',       'Sfax',     'Rue Ibn Khaldoun, Sfax',             50,  8, 'INDOOR',  true, NOW()),
+            ('Piscine Régionale de Sousse',      'Sousse',   'Boulevard de la Corniche, Sousse',   25,  6, 'INDOOR',  true, NOW()),
+            ('Piscine Municipale de Bizerte',    'Bizerte',  'Rue des Sports, Bizerte',            25,  6, 'INDOOR',  true, NOW()),
+            ('Complexe Aquatique de Nabeul',     'Nabeul',   'Route Touristique, Nabeul',          50,  8, 'OUTDOOR', true, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ COMPETITIONS ═══════════════ -->
+    <changeSet id="017-competitions" author="MontassarTayari">
+        <sql>
+            INSERT INTO competitions (nom, type, date_debut, date_fin, pool_id, statut, description, nb_participants, created_at) VALUES
+            ('Championnat National de Natation 2025',   'NATIONAL',      '2025-03-10', '2025-03-12', 1, 'TERMINE',  'Championnat national annuel FTN — toutes catégories.',       120, NOW()),
+            ('Open de Sfax Printemps 2025',             'REGIONAL',      '2025-04-05', '2025-04-06', 2, 'TERMINE',  'Open régional du printemps, épreuves nage libre et papillon.', 85, NOW()),
+            ('Coupe Méditerranée 2025',                 'INTERNATIONAL', '2025-06-15', '2025-06-18', 1, 'TERMINE',  'Compétition internationale réunissant 12 pays méditerranéens.',200, NOW()),
+            ('Championnat Régional Sahel 2025',         'REGIONAL',      '2025-08-20', '2025-08-21', 3, 'TERMINE',  'Championnat de la région Sahel, seniors et juniors.',          60, NOW()),
+            ('Grand Prix de Tunis Automne 2025',        'NATIONAL',      '2025-10-05', '2025-10-07', 1, 'TERMINE',  'Grand Prix national — qualification pour les championnats.',    95, NOW()),
+            ('Open de Bizerte Hiver 2025',              'REGIONAL',      '2025-12-14', '2025-12-15', 4, 'EN_COURS', 'Compétition hivernale de Bizerte — toutes catégories.',         72, NOW()),
+            ('Championnat National Jeunes 2026',        'NATIONAL',      '2026-02-20', '2026-02-22', 1, 'A_VENIR',  'Championnat national juniors, cadets et benjamins.',             0, NOW()),
+            ('Grand Prix International Tunis 2026',     'INTERNATIONAL', '2026-05-10', '2026-05-14', 1, 'A_VENIR',  'Grand Prix international annuel de la FTN.',                    0, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ ATHLETES ═══════════════ -->
+    <changeSet id="017-athletes" author="MontassarTayari">
+        <sql>
+            INSERT INTO athletes (nom, prenom, club_id, date_naissance, nationalite, categorie, sexe, created_at) VALUES
+            -- Club 1 - Sfax
+            ('Ben Salah',  'Yassine',   1, '2005-03-12', 'Tunisienne', 'CADET',  'MASCULIN', NOW()),
+            ('Chaieb',     'Fatma',     1, '2004-07-25', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Mrabet',     'Houssem',   1, '2006-01-18', 'Tunisienne', 'CADET',  'MASCULIN', NOW()),
+            -- Club 2 - EST
+            ('Mbarki',     'Rim',       2, '2003-09-14', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Chaabane',   'Nidhal',    2, '2002-11-30', 'Tunisienne', 'SENIOR', 'MASCULIN', NOW()),
+            ('Trabelsi',   'Meriem',    2, '2005-05-08', 'Tunisienne', 'CADET',  'FEMININ',  NOW()),
+            -- Club 3 - CA
+            ('Jebali',     'Bilel',     3, '2001-08-22', 'Tunisienne', 'SENIOR', 'MASCULIN', NOW()),
+            ('Hmidi',      'Ines',      3, '2004-03-16', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Ouali',      'Aymen',     3, '2007-12-05', 'Tunisienne', 'BENJAMIN','MASCULIN',NOW()),
+            -- Club 4 - Nabeul
+            ('Gharbi',     'Mariem',    4, '2003-06-28', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Zayani',     'Khalil',    4, '2005-10-11', 'Tunisienne', 'CADET',  'MASCULIN', NOW()),
+            ('Rejeb',      'Sirine',    4, '2006-04-23', 'Tunisienne', 'CADET',  'FEMININ',  NOW()),
+            -- Club 5 - Monastir
+            ('Bouaziz',    'Maher',     5, '2002-02-14', 'Tunisienne', 'SENIOR', 'MASCULIN', NOW()),
+            ('Dridi',      'Yosra',     5, '2004-08-30', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Fakhfakh',   'Tarek',     5, '2006-11-17', 'Tunisienne', 'CADET',  'MASCULIN', NOW()),
+            -- Club 6 - Sousse
+            ('Haddad',     'Nour',      6, '2003-01-09', 'Tunisienne', 'JUNIOR', 'FEMININ',  NOW()),
+            ('Keskes',     'Seifallah', 6, '2001-06-24', 'Tunisienne', 'SENIOR', 'MASCULIN', NOW()),
+            ('Louati',     'Amira',     6, '2005-09-03', 'Tunisienne', 'CADET',  'FEMININ',  NOW()),
+            -- Club 7 - Hammamet
+            ('Masmoudi',   'Aziz',      7, '2004-04-15', 'Tunisienne', 'JUNIOR', 'MASCULIN', NOW()),
+            ('Naceur',     'Sarra',     7, '2006-07-28', 'Tunisienne', 'CADET',  'FEMININ',  NOW()),
+            -- Club 8 - Bizerte
+            ('Osman',      'Walid',     8, '2002-12-01', 'Tunisienne', 'SENIOR', 'MASCULIN', NOW()),
+            ('Baccouche',  'Lina',      8, '2005-02-19', 'Tunisienne', 'CADET',  'FEMININ',  NOW()),
+            ('Guesmi',     'Hamza',     8, '2003-08-07', 'Tunisienne', 'JUNIOR', 'MASCULIN', NOW()),
+            ('Hamdi',      'Hela',      8, '2007-05-14', 'Tunisienne', 'BENJAMIN','FEMININ', NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ RESULTS (for TERMINE competitions) ═══════════════ -->
+    <changeSet id="017-results" author="MontassarTayari">
+        <sql>
+            INSERT INTO results (athlete_id, competition_id, epreuve, temps, rang, statut, created_at) VALUES
+            -- Championnat National 2025 (comp 1) - 100m Nage Libre H
+            (5,  1, '100m Nage Libre Messieurs',  '00:50.34', 1, 'VALIDE', NOW()),
+            (7,  1, '100m Nage Libre Messieurs',  '00:51.12', 2, 'VALIDE', NOW()),
+            (13, 1, '100m Nage Libre Messieurs',  '00:51.89', 3, 'VALIDE', NOW()),
+            (17, 1, '100m Nage Libre Messieurs',  '00:52.45', 4, 'VALIDE', NOW()),
+            (21, 1, '100m Nage Libre Messieurs',  '00:53.20', 5, 'VALIDE', NOW()),
+            -- Championnat National 2025 - 100m Nage Libre F
+            (2,  1, '100m Nage Libre Dames',      '00:54.67', 1, 'VALIDE', NOW()),
+            (4,  1, '100m Nage Libre Dames',      '00:55.12', 2, 'VALIDE', NOW()),
+            (10, 1, '100m Nage Libre Dames',      '00:55.89', 3, 'VALIDE', NOW()),
+            (16, 1, '100m Nage Libre Dames',      '00:56.40', 4, 'VALIDE', NOW()),
+            -- Championnat National 2025 - 200m Dos H
+            (13, 1, '200m Dos Messieurs',         '02:08.45', 1, 'VALIDE', NOW()),
+            (5,  1, '200m Dos Messieurs',         '02:09.33', 2, 'VALIDE', NOW()),
+            (23, 1, '200m Dos Messieurs',         '02:11.20', 3, 'VALIDE', NOW()),
+            -- Open Sfax (comp 2) - 100m Papillon H
+            (7,  2, '100m Papillon Messieurs',    '00:55.20', 1, 'VALIDE', NOW()),
+            (5,  2, '100m Papillon Messieurs',    '00:56.04', 2, 'VALIDE', NOW()),
+            (13, 2, '100m Papillon Messieurs',    '00:56.88', 3, 'VALIDE', NOW()),
+            (17, 2, '100m Papillon Messieurs',    '00:57.70', 4, 'VALIDE', NOW()),
+            -- Open Sfax - 100m Brasse F
+            (8,  2, '100m Brasse Dames',          '01:10.55', 1, 'VALIDE', NOW()),
+            (2,  2, '100m Brasse Dames',          '01:11.30', 2, 'VALIDE', NOW()),
+            (14, 2, '100m Brasse Dames',          '01:12.45', 3, 'VALIDE', NOW()),
+            -- Coupe Méditerranée (comp 3) - 400m Nage Libre H
+            (5,  3, '400m Nage Libre Messieurs',  '03:54.12', 1, 'VALIDE', NOW()),
+            (7,  3, '400m Nage Libre Messieurs',  '03:56.88', 2, 'VALIDE', NOW()),
+            (13, 3, '400m Nage Libre Messieurs',  '03:58.34', 3, 'VALIDE', NOW()),
+            (21, 3, '400m Nage Libre Messieurs',  '04:01.55', 4, 'VALIDE', NOW()),
+            -- Coupe Méditerranée - 200m 4 Nages F
+            (4,  3, '200m 4 Nages Dames',         '02:20.34', 1, 'VALIDE', NOW()),
+            (10, 3, '200m 4 Nages Dames',         '02:21.80', 2, 'VALIDE', NOW()),
+            (8,  3, '200m 4 Nages Dames',         '02:23.15', 3, 'VALIDE', NOW()),
+            -- Championnat Sahel (comp 4) - 50m Nage Libre H
+            (1,  4, '50m Nage Libre Messieurs',   '00:23.45', 1, 'VALIDE', NOW()),
+            (11, 4, '50m Nage Libre Messieurs',   '00:23.98', 2, 'VALIDE', NOW()),
+            (15, 4, '50m Nage Libre Messieurs',   '00:24.32', 3, 'VALIDE', NOW()),
+            -- Championnat Sahel - 50m Nage Libre F
+            (6,  4, '50m Nage Libre Dames',       '00:26.78', 1, 'VALIDE', NOW()),
+            (12, 4, '50m Nage Libre Dames',       '00:27.10', 2, 'VALIDE', NOW()),
+            (18, 4, '50m Nage Libre Dames',       '00:27.56', 3, 'VALIDE', NOW()),
+            -- Grand Prix Tunis Automne (comp 5) - 200m Nage Libre H
+            (5,  5, '200m Nage Libre Messieurs',  '01:48.90', 1, 'VALIDE', NOW()),
+            (7,  5, '200m Nage Libre Messieurs',  '01:49.77', 2, 'VALIDE', NOW()),
+            (23, 5, '200m Nage Libre Messieurs',  '01:51.23', 3, 'VALIDE', NOW()),
+            -- Grand Prix Tunis Automne - 200m Nage Libre F
+            (4,  5, '200m Nage Libre Dames',      '01:58.44', 1, 'VALIDE', NOW()),
+            (2,  5, '200m Nage Libre Dames',      '01:59.20', 2, 'VALIDE', NOW()),
+            (16, 5, '200m Nage Libre Dames',      '02:01.55', 3, 'VALIDE', NOW()),
+            -- Open Bizerte EN_COURS (comp 6) - pending results
+            (21, 6, '100m Nage Libre Messieurs',  '00:51.40', 1, 'EN_ATTENTE', NOW()),
+            (17, 6, '100m Nage Libre Messieurs',  '00:52.10', 2, 'EN_ATTENTE', NOW()),
+            (7,  6, '100m Nage Libre Messieurs',  '00:52.80', 3, 'EN_ATTENTE', NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ FORUMS ═══════════════ -->
+    <changeSet id="017-forums" author="MontassarTayari">
+        <sql>
+            INSERT INTO forums (nom, description, categorie, nb_sujets, created_at) VALUES
+            ('Général',                  'Discussions générales sur la natation et la FTN.',                     'GENERAL',    4, NOW()),
+            ('Technique &amp; Entraînement', 'Conseils techniques, programmes d''entraînement et performances.', 'TECHNIQUE',  3, NOW()),
+            ('Actualités FTN',           'Annonces officielles, résultats et nouvelles de la fédération.',        'ANNONCE',    2, NOW());
+        </sql>
+    </changeSet>
+
+    <!-- ═══════════════ SUJETS ═══════════════ -->
+    <changeSet id="017-sujets" author="MontassarTayari">
+        <sql>
+            INSERT INTO sujets (forum_id, auteur_id, titre, contenu, date_creation, epingle, ferme, nb_vues, nb_reponses, created_at) VALUES
+            (1, NULL, 'Bienvenue sur le forum FTN !',
+             'Bienvenue à tous les membres de la Fédération Tunisienne de Natation. Ce forum est votre espace d''échange.',
+             NOW(), true, false, 245, 12, NOW()),
+            (1, NULL, 'Présentation des clubs participants au Championnat 2026',
+             'Voici la liste des clubs qui ont confirmé leur participation au Championnat National 2026.',
+             NOW(), false, false, 128, 5, NOW()),
+            (1, NULL, 'Règlement sportif mis à jour pour 2026',
+             'Le nouveau règlement sportif de la FTN pour la saison 2026 est maintenant disponible en téléchargement.',
+             NOW(), false, false, 87, 3, NOW()),
+            (1, NULL, 'Retour sur le Grand Prix de Tunis Automne 2025',
+             'Félicitations à tous les participants du Grand Prix. Les performances ont été exceptionnelles cette année.',
+             NOW(), false, false, 312, 18, NOW()),
+            (2, NULL, 'Programme d''entraînement hivernal — conseils',
+             'Comment maintenir la forme et progresser pendant la période hivernale ? Partagez vos programmes.',
+             NOW(), false, false, 156, 9, NOW()),
+            (2, NULL, 'Technique de virage : conseils et exercices',
+             'Le virage est souvent le point faible de nombreux nageurs. Voici quelques exercices pour l''améliorer.',
+             NOW(), false, false, 203, 14, NOW()),
+            (2, NULL, 'Nutrition pour nageurs compétitifs',
+             'L''alimentation joue un rôle clé dans la performance. Discutons des meilleures pratiques nutritionnelles.',
+             NOW(), false, false, 175, 11, NOW()),
+            (3, NULL, 'Calendrier des compétitions FTN 2026',
+             'Le calendrier officiel des compétitions FTN pour la saison 2026 est maintenant publié.',
+             NOW(), true, false, 420, 7, NOW()),
+            (3, NULL, 'Résultats Championnat National 2025 — Officiel',
+             'Voici les résultats officiels du Championnat National de Natation 2025. Bravo à tous les médaillés !',
+             NOW(), false, false, 389, 22, NOW());
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

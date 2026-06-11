@@ -16,4 +16,6 @@ public interface LicenceRepository extends JpaRepository<Licence, Long>, JpaSpec
     List<Licence> findByStatutAndDeletedAtIsNull(StatutLicenceEnum statut);
 
     List<Licence> findByClub_IdAndDeletedAtIsNull(Long clubId);
+
+    long countByDeletedAtIsNull();
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Seed users for staff/club management. Password for all: Password123! -->
+    <changeSet id="027-seed-users" author="admin">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM users WHERE email = 'khaled.mzoughi@ftn.tn'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO users (first_name, last_name, email, password, role, status, created_at) VALUES
+            ('Khaled',   'Mzoughi',   'khaled.mzoughi@ftn.tn',   '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
+            ('Sarra',    'Belhadj',   'sarra.belhadj@ftn.tn',    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
+            ('Amine',    'Chaabani',  'amine.chaabani@ftn.tn',   '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
+            ('Nadia',    'Trabelsi',  'nadia.trabelsi@ftn.tn',   '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
+            ('Yassine',  'Gharbi',    'yassine.gharbi@ftn.tn',   '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
+            ('Rim',      'Hamdi',     'rim.hamdi@ftn.tn',        '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'USER',  'ACTIVE', NOW()),
+            ('Maher',    'Slimani',   'maher.slimani@ftn.tn',    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'USER',  'ACTIVE', NOW()),
+            ('Olfa',     'Bouzid',    'olfa.bouzid@ftn.tn',      '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'USER',  'ACTIVE', NOW()),
+            ('Tarek',    'Ayari',     'tarek.ayari@ftn.tn',      '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'USER',  'ACTIVE', NOW()),
+            ('Intissar', 'Khelifi',   'intissar.khelifi@ftn.tn', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'USER',  'ACTIVE', NOW());
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

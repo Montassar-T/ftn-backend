@@ -3,7 +3,11 @@ package com.ftn.backend.service;
 import com.ftn.backend.dtos.AuthResponse;
 import com.ftn.backend.dtos.LoginDto;
 import com.ftn.backend.dtos.LoginResult;
+import com.ftn.backend.dtos.NewUserDto;
+import com.ftn.backend.enums.Role;
+import com.ftn.backend.enums.UserStatus;
 import com.ftn.backend.exception.auth.AuthenticationException;
+import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.model.User;
 import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.security.JwtService;
@@ -22,6 +26,36 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    @Transactional
+    public LoginResult register(NewUserDto request) {
+        String email = EmailUtils.normalize(request.getEmail());
+        if (userRepository.findByEmailAndDeletedAtIsNull(email).isPresent()) {
+            throw new ConflictException("Un compte avec cet email existe déjà.");
+        }
+        User user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(email)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .status(UserStatus.ACTIVE)
+                .role(request.getRole() != null ? request.getRole() : Role.USER)
+                .build();
+        User saved = userRepository.save(user);
+        String accessToken = jwtService.generateAccessToken(saved.getEmail());
+        String refreshToken = jwtService.generateRefreshToken(saved.getEmail());
+        AuthResponse authResponse = AuthResponse.builder()
+                .accessToken(accessToken)
+                .email(saved.getEmail())
+                .firstName(saved.getFirstName())
+                .lastName(saved.getLastName())
+                .role(saved.getRole())
+                .build();
+        return LoginResult.builder()
+                .authResponse(authResponse)
+                .refreshToken(refreshToken)
+                .build();
+    }
 
     @Transactional
     public LoginResult login(LoginDto request) {
