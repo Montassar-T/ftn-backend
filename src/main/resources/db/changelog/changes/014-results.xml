@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="014-1" author="MontassarTayari">
+        <createTable tableName="results">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="athlete_id" type="BIGINT">
+                <constraints foreignKeyName="fk_result_athlete" references="athletes(id)"/>
+            </column>
+            <column name="competition_id" type="BIGINT">
+                <constraints foreignKeyName="fk_result_competition" references="competitions(id)"/>
+            </column>
+            <column name="epreuve" type="VARCHAR(255)"/>
+            <column name="temps" type="VARCHAR(50)"/>
+            <column name="rang" type="INT"/>
+            <column name="statut" type="VARCHAR(50)" defaultValue="EN_ATTENTE"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

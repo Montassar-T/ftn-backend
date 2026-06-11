@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="017-1" author="Ella">
+        <createTable tableName="reservations">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pool_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_reservation_pool"
+                             references="pools(id)"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="heure_debut" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="heure_fin" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="numero_couloir" type="INT"/>
+            <column name="reservee_par" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nom_club" type="VARCHAR(255)"/>
+            <column name="statut" type="VARCHAR(50)" defaultValue="EN_ATTENTE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(500)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

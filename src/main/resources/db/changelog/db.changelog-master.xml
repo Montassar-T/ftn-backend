@@ -7,5 +7,21 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="db/changelog/changes/001-init.xml" />
+    <include file="db/changelog/changes/002-clubs.xml" />
+    <include file="db/changelog/changes/003-athletes.xml" />
+    <include file="db/changelog/changes/004-licences.xml" />
+    <include file="db/changelog/changes/005-equipes-nationales.xml" />
+    <include file="db/changelog/changes/006-inscriptions.xml" />
+    <include file="db/changelog/changes/007-actualites.xml" />
+    <include file="db/changelog/changes/008-forums.xml" />
+    <include file="db/changelog/changes/009-sujets.xml" />
+    <include file="db/changelog/changes/010-reponses.xml" />
+    <include file="db/changelog/changes/011-clubs-update.xml" />
+    <include file="db/changelog/changes/012-pools.xml" />
+    <include file="db/changelog/changes/013-competitions.xml" />
+    <include file="db/changelog/changes/014-results.xml" />
+    <include file="db/changelog/changes/015-users-add-role.xml" />
+    <include file="db/changelog/changes/016-athletes-add-name.xml" />
+    <include file="db/changelog/changes/017-reservations.xml" />
 
 </databaseChangeLog>
