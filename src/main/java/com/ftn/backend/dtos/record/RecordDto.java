@@ -5,13 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordDto {
     private Long id;
+
+    // --- HEAD fields ---
     private Long athleteId;
     private String athleteNom;
     private String athletePrenom;
@@ -22,5 +24,13 @@ public class RecordDto {
     private String tempsDisplay;
     private LocalDate recordDate;
     private RecordTypeEnum type;
+
+    // --- Upstream fields ---
+    private String typeStr;
+    private String swimStyle;
+    private String distance;
+    private Integer time;
+    private LocalDate date;
+
     private LocalDateTime createdAt;
 }

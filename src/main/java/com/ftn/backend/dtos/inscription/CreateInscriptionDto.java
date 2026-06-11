@@ -1,6 +1,5 @@
 package com.ftn.backend.dtos.inscription;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -10,10 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateInscriptionDto {
 
-    @NotNull(message = "L'athlète est obligatoire")
-    @JsonProperty("athlete_id")
+    @NotNull(message = "Athlete is required")
     private Long athleteId;
 
-    @JsonProperty("epreuve_id")
-    private Long epreuveId;
+    @NotNull(message = "Event is required")
+    private Long eventId;
+
+    private String seedTime;
 }

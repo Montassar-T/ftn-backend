@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="022-alter-classements" author="Codex">
+        <!-- Drop old unique constraint -->
+        <sql>ALTER TABLE classements DROP CONSTRAINT IF EXISTS uk_classement_scope</sql>
+
+        <!-- Add epreuve_id FK (replaces swim_style + distance) -->
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS epreuve_id BIGINT REFERENCES epreuves(id)</sql>
+
+        <!-- Rename best_time to best_time_ms -->
+        <sql>ALTER TABLE classements RENAME COLUMN best_time TO best_time_ms</sql>
+
+        <!-- Add new scraping columns -->
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS best_time_display VARCHAR(20)</sql>
+        <sql>ALTER TABLE classements ADD COLUMN IF NOT EXISTS points_fina DECIMAL(8,2)</sql>
+
+        <!-- Drop old denormalized columns -->
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS swim_style</sql>
+        <sql>ALTER TABLE classements DROP COLUMN IF EXISTS distance</sql>
+
+        <!-- Add new unique constraint -->
+        <sql>ALTER TABLE classements ADD CONSTRAINT uk_classement_scope
+             UNIQUE (athlete_id, epreuve_id, season)</sql>
+
+        <!-- Index on epreuve_id for query performance -->
+        <sql>CREATE INDEX IF NOT EXISTS idx_classements_epreuve ON classements(epreuve_id)</sql>
+    </changeSet>
+
+</databaseChangeLog>

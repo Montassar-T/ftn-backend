@@ -7,15 +7,16 @@ import com.ftn.backend.dtos.inscription.InscriptionDto;
 import com.ftn.backend.service.InscriptionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/inscriptions")
+@RequestMapping("/api/v1/registrations")
 @RequiredArgsConstructor
-@Tag(name = "Inscription", description = "Competition inscription APIs")
+@Tag(name = "Registration", description = "Event registration APIs")
 public class InscriptionController {
 
     private final InscriptionService inscriptionService;
@@ -30,6 +31,21 @@ public class InscriptionController {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.getById(id)));
     }
 
+    @GetMapping("/athlete/{athleteId}")
+    public ResponseEntity<List<InscriptionDto>> getByAthlete(@PathVariable Long athleteId) {
+        return ResponseEntity.ok(inscriptionService.getByAthlete(athleteId));
+    }
+
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<InscriptionDto>> getByEvent(@PathVariable Long eventId) {
+        return ResponseEntity.ok(inscriptionService.getByEvent(eventId));
+    }
+
+    @GetMapping("/competition/{competitionId}")
+    public ResponseEntity<List<InscriptionDto>> getByCompetition(@PathVariable Long competitionId) {
+        return ResponseEntity.ok(inscriptionService.getByCompetition(competitionId));
+    }
+
     @PostMapping
     public ResponseEntity<SingleResultDto<InscriptionDto>> create(@Valid @RequestBody CreateInscriptionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.create(dto)));
@@ -41,13 +57,13 @@ public class InscriptionController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/valider")
-    public ResponseEntity<SingleResultDto<InscriptionDto>> valider(@PathVariable Long id) {
+    @PutMapping("/{id}/validate")
+    public ResponseEntity<SingleResultDto<InscriptionDto>> validate(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.valider(id)));
     }
 
-    @PutMapping("/{id}/annuler")
-    public ResponseEntity<SingleResultDto<InscriptionDto>> annuler(@PathVariable Long id) {
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<SingleResultDto<InscriptionDto>> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.annuler(id)));
     }
 }

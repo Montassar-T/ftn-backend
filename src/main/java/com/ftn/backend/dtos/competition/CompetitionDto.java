@@ -14,6 +14,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CompetitionDto {
     private Long id;
+
+    // --- HEAD fields ---
     private String nom;
     private CompetitionTypeEnum type;
 
@@ -34,6 +36,19 @@ public class CompetitionDto {
 
     @JsonProperty("nb_participants")
     private Integer nbParticipants;
+
+    // --- Upstream fields ---
+    private String code;
+    private String name;
+    private String typeStr;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDateTime registrationDeadline;
+    private String lane;
+    private String ageCategories;
+    private String sourceUrl;
+    private Long createdById;
+    private String status;
 
     @JsonProperty("created_at")
     private LocalDateTime createdAt;

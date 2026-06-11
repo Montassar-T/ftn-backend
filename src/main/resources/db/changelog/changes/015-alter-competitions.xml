@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="15-alter-competitions" author="Codex">
+        <!-- Drop old indexes (IF EXISTS to be safe with existing DBs) -->
+        <sql>DROP INDEX IF EXISTS idx_competitions_discipline</sql>
+        <sql>DROP INDEX IF EXISTS idx_competitions_region</sql>
+        <sql>DROP INDEX IF EXISTS idx_competitions_niveau</sql>
+        <sql>DROP INDEX IF EXISTS idx_competitions_date_debut</sql>
+
+        <!-- Add new columns (only if they don't already exist) -->
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS name VARCHAR(255)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS type VARCHAR(50)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS start_date DATE</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS end_date DATE</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS registration_deadline TIMESTAMP</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS pool_id BIGINT</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS created_by BIGINT REFERENCES users(id)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'PLANIFIEE'</sql>
+
+        <!-- Copy data from old columns to new -->
+        <sql>UPDATE competitions SET name = nom WHERE name IS NULL AND nom IS NOT NULL</sql>
+        <sql>UPDATE competitions SET start_date = DATE(date_debut) WHERE start_date IS NULL AND date_debut IS NOT NULL</sql>
+        <sql>UPDATE competitions SET end_date = DATE(date_fin) WHERE end_date IS NULL AND date_fin IS NOT NULL</sql>
+        <sql>UPDATE competitions SET status = statut WHERE status IS NULL AND statut IS NOT NULL</sql>
+        <sql>UPDATE competitions SET type = 'NATATION' WHERE type IS NULL</sql>
+        <sql>UPDATE competitions SET status = 'PLANIFIEE' WHERE status IS NULL</sql>
+
+        <!-- Drop old columns (IF EXISTS) -->
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS nom</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS discipline</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS date_debut</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS date_fin</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS lieu</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS region</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS niveau</sql>
+        <sql>ALTER TABLE competitions DROP COLUMN IF EXISTS statut</sql>
+
+        <!-- Add NOT NULL constraints after data migration -->
+        <sql>ALTER TABLE competitions ALTER COLUMN name SET NOT NULL</sql>
+        <sql>ALTER TABLE competitions ALTER COLUMN type SET NOT NULL</sql>
+        <sql>ALTER TABLE competitions ALTER COLUMN start_date SET NOT NULL</sql>
+        <sql>ALTER TABLE competitions ALTER COLUMN end_date SET NOT NULL</sql>
+        <sql>ALTER TABLE competitions ALTER COLUMN status SET NOT NULL</sql>
+
+        <!-- Add new indexes -->
+        <sql>CREATE INDEX IF NOT EXISTS idx_competitions_status ON competitions(status)</sql>
+        <sql>CREATE INDEX IF NOT EXISTS idx_competitions_start_date ON competitions(start_date)</sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -18,9 +18,28 @@ public class Record extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // --- Upstream fields ---
+
+    @Column(nullable = false, length = 50)
+    private String type;
+
+    @Column(name = "swim_style", nullable = false, length = 50)
+    private String swimStyle;
+
+    @Column(nullable = false, length = 100)
+    private String distance;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "athlete_id", nullable = false)
     private Athlete athlete;
+
+    @Column(nullable = false)
+    private Integer time;
+
+    @Column(nullable = false)
+    private LocalDate date;
+
+    // --- HEAD fields ---
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
@@ -40,6 +59,6 @@ public class Record extends BaseEntity {
     private LocalDate recordDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private RecordTypeEnum type;
+    @Column(name = "record_type", length = 20)
+    private RecordTypeEnum recordType;
 }
