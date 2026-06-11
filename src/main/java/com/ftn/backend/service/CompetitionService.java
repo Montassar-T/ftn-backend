@@ -79,7 +79,6 @@ public class CompetitionService {
                 .endDate(dto.getEndDate())
                 .registrationDeadline(dto.getRegistrationDeadline())
                 .pool(pool)
-                .poolId(dto.getPoolId())
                 .lane(dto.getLane())
                 .ageCategories(dto.getAgeCategories())
                 .sourceUrl(dto.getSourceUrl())
@@ -116,7 +115,6 @@ public class CompetitionService {
                     .findByIdAndDeletedAtIsNull(dto.getPoolId())
                     .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
             competition.setPool(pool);
-            competition.setPoolId(dto.getPoolId());
         }
         if (dto.getCreatedById() != null) {
             User createdBy = userRepository
@@ -204,7 +202,7 @@ public class CompetitionService {
                 .startDate(competition.getStartDate())
                 .endDate(competition.getEndDate())
                 .registrationDeadline(competition.getRegistrationDeadline())
-                .poolId(competition.getPool() != null ? competition.getPool().getId() : competition.getPoolId())
+                .poolId(competition.getPool() != null ? competition.getPool().getId() : null)
                 .poolNom(competition.getPool() != null ? competition.getPool().getNom() : null)
                 .lane(competition.getLane())
                 .ageCategories(competition.getAgeCategories())

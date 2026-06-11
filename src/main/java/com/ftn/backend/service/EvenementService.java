@@ -4,6 +4,7 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.evenement.CreateEvenementDto;
 import com.ftn.backend.dtos.evenement.EvenementDto;
 import com.ftn.backend.dtos.evenement.UpdateEvenementDto;
+import com.ftn.backend.enums.CompetitionTypeEnum;
 import com.ftn.backend.enums.EvenementStatus;
 import com.ftn.backend.enums.EvenementType;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
@@ -78,11 +79,17 @@ public class EvenementService {
                     .startDate(dto.getDateDebut().toLocalDate())
                     .endDate(dto.getDateFin().toLocalDate())
                     .code(dto.getCompetitionCode() != null ? dto.getCompetitionCode() : "")
-                    .type(dto.getCompetitionType() != null ? dto.getCompetitionType() : "NATIONAL")
+                    .type(
+                            dto.getCompetitionType() != null
+                                    ? CompetitionTypeEnum.valueOf(
+                                            dto.getCompetitionType().toUpperCase())
+                                    : CompetitionTypeEnum.NATIONAL)
                     .lane(dto.getLane())
                     .ageCategories(dto.getAgeCategories())
-                    .registrationDeadline(dto.getRegistrationDeadline() != null
-                            ? dto.getRegistrationDeadline().atStartOfDay() : null)
+                    .registrationDeadline(
+                            dto.getRegistrationDeadline() != null
+                                    ? dto.getRegistrationDeadline().atStartOfDay()
+                                    : null)
                     .status("PLANIFIEE")
                     .evenement(saved)
                     .build();
@@ -113,9 +120,12 @@ public class EvenementService {
         if (evenement.getType() == EvenementType.COMPETITION) {
             competitionRepository.findByEvenement_IdAndDeletedAtIsNull(id).ifPresent(comp -> {
                 if (dto.getTitre() != null) comp.setName(dto.getTitre());
-                if (dto.getDateDebut() != null) comp.setStartDate(dto.getDateDebut().toLocalDate());
+                if (dto.getDateDebut() != null)
+                    comp.setStartDate(dto.getDateDebut().toLocalDate());
                 if (dto.getDateFin() != null) comp.setEndDate(dto.getDateFin().toLocalDate());
-                if (dto.getCompetitionType() != null) comp.setType(dto.getCompetitionType());
+                if (dto.getCompetitionType() != null)
+                    comp.setType(
+                            CompetitionTypeEnum.valueOf(dto.getCompetitionType().toUpperCase()));
                 if (dto.getLane() != null) comp.setLane(dto.getLane());
                 if (dto.getAgeCategories() != null) comp.setAgeCategories(dto.getAgeCategories());
                 if (dto.getCompetitionCode() != null) comp.setCode(dto.getCompetitionCode());
@@ -159,7 +169,8 @@ public class EvenementService {
 
         Long competitionId = null;
         if (e.getType() == EvenementType.COMPETITION) {
-            competitionId = competitionRepository.findByEvenement_IdAndDeletedAtIsNull(e.getId())
+            competitionId = competitionRepository
+                    .findByEvenement_IdAndDeletedAtIsNull(e.getId())
                     .map(Competition::getId)
                     .orElse(null);
         }

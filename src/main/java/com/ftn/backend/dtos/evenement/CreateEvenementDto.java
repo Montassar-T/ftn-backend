@@ -39,6 +39,7 @@ public class CreateEvenementDto {
     private String competitionType;
     /** Taille de bassin : 25m ou 50m */
     private String lane;
+
     private String ageCategories;
     private LocalDate registrationDeadline;
 }

@@ -121,8 +121,14 @@ public class RecordService {
                 .athleteNom(record.getAthlete().getNom())
                 .athletePrenom(record.getAthlete().getPrenom())
                 .eventId(record.getEvent() != null ? record.getEvent().getId() : null)
-                .competitionId(record.getCompetition() != null ? record.getCompetition().getId() : null)
-                .competitionNom(record.getCompetition() != null ? record.getCompetition().getNom() : null)
+                .competitionId(
+                        record.getCompetition() != null
+                                ? record.getCompetition().getId()
+                                : null)
+                .competitionNom(
+                        record.getCompetition() != null
+                                ? record.getCompetition().getNom()
+                                : null)
                 .type(record.getRecordType())
                 .typeStr(record.getType())
                 .swimStyle(record.getSwimStyle())
