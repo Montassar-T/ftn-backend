@@ -6,10 +6,14 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@MappedSuperclass
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@MappedSuperclass
 public abstract class BaseEntity {
 
     @Column(name = "created_at")

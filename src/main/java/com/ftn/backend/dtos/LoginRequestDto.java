@@ -1,10 +1,12 @@
 package com.ftn.backend.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-public class ResetPasswordDto {
+@Data
+public class LoginRequestDto {
+    @NotBlank
+    private String email;
     @NotBlank
     private String password;
 }

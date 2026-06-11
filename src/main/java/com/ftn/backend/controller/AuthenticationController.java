@@ -1,67 +1,90 @@
 package com.ftn.backend.controller;
 
 import com.ftn.backend.dtos.*;
-import com.ftn.backend.security.CookieService;
-import com.ftn.backend.security.principal.UserPrincipal;
-import com.ftn.backend.service.AuthenticationService;
+import com.ftn.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Authentication APIs")
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
-    private final CookieService cookieService;
+    private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<SingleResultDto<UserDto>> register(
+            @Valid @RequestBody RegisterRequestDto request
+    ) {
+        return ResponseEntity.ok(
+                new SingleResultDto<>(userService.register(request))
+        );
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<SingleResultDto<AuthResponse>> login(@RequestBody LoginDto request) {
+    public ResponseEntity<SingleResultDto<TokenResponseDto>> login(
+            @Valid @RequestBody LoginRequestDto request,
+            HttpServletResponse response
+    ) {
+        TokenResponseDto token = userService.login(request);
 
-        LoginResult result = authenticationService.login(request);
+        Cookie cookie = new Cookie("refresh_token", token.getRefreshToken());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth");
+        cookie.setMaxAge(60 * 60 * 24 * 30);
+        response.addCookie(cookie);
 
-        ResponseCookie cookie = cookieService.buildRefreshCookie(result.getRefreshToken());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(SingleResultDto.<AuthResponse>builder()
-                        .data(result.getAuthResponse())
-                        .build());
+        token.setRefreshToken(null);
+        return ResponseEntity.ok(new SingleResultDto<>(token));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<SingleResultDto<AuthResponse>> refresh(@CookieValue("refreshToken") String refreshToken) {
+    public ResponseEntity<SingleResultDto<TokenResponseDto>> refresh(
+            @CookieValue("refresh_token") String refreshToken,
+            HttpServletResponse response
+    ) {
+        TokenResponseDto token = userService.refresh(refreshToken);
 
-        LoginResult result = authenticationService.refresh(refreshToken);
+        Cookie cookie = new Cookie("refresh_token", token.getRefreshToken());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth");
+        cookie.setMaxAge(60 * 60 * 24 * 30);
+        response.addCookie(cookie);
 
-        ResponseCookie cookie = cookieService.buildRefreshCookie(result.getRefreshToken());
+        token.setRefreshToken(null);
+        return ResponseEntity.ok(new SingleResultDto<>(token));
+    }
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(SingleResultDto.<AuthResponse>builder()
-                        .data(result.getAuthResponse())
-                        .build());
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @CookieValue("refresh_token") String refreshToken,
+            HttpServletResponse response
+    ) {
+        userService.logout(refreshToken);
+
+        Cookie cookie = new Cookie("refresh_token", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<SingleResultDto<UserDto>> me(Authentication authentication) {
-
-        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-
-        UserDto userDto = UserDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .build();
-
+    public ResponseEntity<SingleResultDto<UserDto>> getCurrentUser(
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         return ResponseEntity.ok(
-                SingleResultDto.<UserDto>builder().data(userDto).build());
+                new SingleResultDto<>(userService.getCurrentUser(jwt.getSubject()))
+        );
     }
 }
