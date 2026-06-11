@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="021-alter-competitions" author="Codex">
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS code VARCHAR(50)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS lane VARCHAR(10)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS age_categories VARCHAR(200)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS source_url TEXT</sql>
+    </changeSet>
+
+    <changeSet id="021-alter-epreuves" author="Codex">
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS age_category VARCHAR(50)</sql>
+    </changeSet>
+
+    <changeSet id="021-alter-resultats" author="Codex">
+        <!-- Rename final_time to temps_ms -->
+        <sql>ALTER TABLE resultats RENAME COLUMN final_time TO temps_ms</sql>
+        <!-- Add new scraping columns -->
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS temps_display VARCHAR(20)</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS points_fina DECIMAL(8,2)</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS tour VARCHAR(50)</sql>
+    </changeSet>
+
+</databaseChangeLog>

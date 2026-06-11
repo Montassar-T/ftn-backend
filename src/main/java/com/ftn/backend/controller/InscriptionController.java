@@ -36,6 +36,16 @@ public class InscriptionController {
         return ResponseEntity.ok(inscriptionService.getByAthlete(athleteId));
     }
 
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<InscriptionDto>> getByEvent(@PathVariable Long eventId) {
+        return ResponseEntity.ok(inscriptionService.getByEvent(eventId));
+    }
+
+    @GetMapping("/competition/{competitionId}")
+    public ResponseEntity<List<InscriptionDto>> getByCompetition(@PathVariable Long competitionId) {
+        return ResponseEntity.ok(inscriptionService.getByCompetition(competitionId));
+    }
+
     @PostMapping
     public ResponseEntity<SingleResultDto<InscriptionDto>> create(@Valid @RequestBody CreateInscriptionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.create(dto)));

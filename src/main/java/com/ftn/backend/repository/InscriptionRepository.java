@@ -13,4 +13,6 @@ public interface InscriptionRepository extends JpaRepository<Inscription, Long>,
     List<Inscription> findByAthlete_IdAndDeletedAtIsNull(Long athleteId);
 
     List<Inscription> findByEpreuve_IdAndDeletedAtIsNull(Long epreuveId);
+
+    List<Inscription> findByEpreuve_Competition_IdAndDeletedAtIsNull(Long competitionId);
 }

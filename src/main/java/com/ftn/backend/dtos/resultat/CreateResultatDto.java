@@ -1,6 +1,7 @@
 package com.ftn.backend.dtos.resultat;
 
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.*;
 
 @Getter
@@ -17,7 +18,13 @@ public class CreateResultatDto {
 
     private Integer lane;
 
-    private Integer finalTime;
+    private Integer tempsMs;
+
+    private String tempsDisplay;
+
+    private BigDecimal pointsFina;
+
+    private String tour;
 
     @NotNull
     private Integer rank;

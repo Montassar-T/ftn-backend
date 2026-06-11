@@ -63,6 +63,7 @@ public class EpreuveService {
                 .swimStyle(dto.getSwimStyle())
                 .distance(dto.getDistance())
                 .gender(dto.getGender())
+                .ageCategory(dto.getAgeCategory())
                 .round(dto.getRound())
                 .scheduledDate(dto.getScheduledDate())
                 .build();
@@ -79,6 +80,7 @@ public class EpreuveService {
         if (dto.getSwimStyle() != null) epreuve.setSwimStyle(dto.getSwimStyle());
         if (dto.getDistance() != null) epreuve.setDistance(dto.getDistance());
         if (dto.getGender() != null) epreuve.setGender(dto.getGender());
+        if (dto.getAgeCategory() != null) epreuve.setAgeCategory(dto.getAgeCategory());
         if (dto.getRound() != null) epreuve.setRound(dto.getRound());
         if (dto.getScheduledDate() != null) epreuve.setScheduledDate(dto.getScheduledDate());
         if (dto.getStatus() != null) epreuve.setStatus(dto.getStatus());
@@ -102,6 +104,7 @@ public class EpreuveService {
                 .swimStyle(epreuve.getSwimStyle())
                 .distance(epreuve.getDistance())
                 .gender(epreuve.getGender())
+                .ageCategory(epreuve.getAgeCategory())
                 .round(epreuve.getRound())
                 .scheduledDate(epreuve.getScheduledDate())
                 .status(epreuve.getStatus())

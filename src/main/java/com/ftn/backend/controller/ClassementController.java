@@ -32,14 +32,12 @@ public class ClassementController {
     }
 
     @GetMapping("/national")
-    public ResponseEntity<List<ClassementDto>> getNational(
-            @RequestParam String swimStyle, @RequestParam String distance, @RequestParam String season) {
-        return ResponseEntity.ok(classementService.getNationalRanking(swimStyle, distance, season));
+    public ResponseEntity<List<ClassementDto>> getNational(@RequestParam Long eventId, @RequestParam String season) {
+        return ResponseEntity.ok(classementService.getNationalRanking(eventId, season));
     }
 
     @PostMapping("/rebuild")
     public ResponseEntity<SingleResultDto<List<ClassementDto>>> rebuild(@Valid @RequestBody RebuildClassementDto dto) {
-        return ResponseEntity.ok(new SingleResultDto<>(
-                classementService.rebuild(dto.getSwimStyle(), dto.getDistance(), dto.getSeason())));
+        return ResponseEntity.ok(new SingleResultDto<>(classementService.rebuild(dto.getEventId(), dto.getSeason())));
     }
 }

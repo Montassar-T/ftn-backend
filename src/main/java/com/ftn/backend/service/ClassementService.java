@@ -2,9 +2,12 @@ package com.ftn.backend.service;
 
 import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.classement.ClassementDto;
+import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Classement;
+import com.ftn.backend.model.Epreuve;
 import com.ftn.backend.model.Resultat;
 import com.ftn.backend.repository.ClassementRepository;
+import com.ftn.backend.repository.EpreuveRepository;
 import com.ftn.backend.repository.ResultatRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
@@ -25,6 +28,7 @@ public class ClassementService {
 
     private final ClassementRepository classementRepository;
     private final ResultatRepository resultatRepository;
+    private final EpreuveRepository epreuveRepository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<ClassementDto>> getAll(Map<String, String> params) {
@@ -45,34 +49,32 @@ public class ClassementService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClassementDto> getNationalRanking(String swimStyle, String distance, String season) {
-        return classementRepository
-                .findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(swimStyle, distance, season)
-                .stream()
+    public List<ClassementDto> getNationalRanking(Long eventId, String season) {
+        return classementRepository.findByEpreuve_IdAndSeasonAndDeletedAtIsNullOrderByRankAsc(eventId, season).stream()
                 .map(this::toDto)
                 .toList();
     }
 
     @Transactional
-    public List<ClassementDto> rebuild(String swimStyle, String distance, String season) {
+    public List<ClassementDto> rebuild(Long eventId, String season) {
+        Epreuve epreuve = epreuveRepository
+                .findByIdAndDeletedAtIsNull(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
         List<Resultat> matchingResults = new ArrayList<>();
-        for (Resultat r : resultatRepository.findAll()) {
-            if (r.getDeletedAt() != null) continue;
-            Resultat resultat = r;
-            if (!swimStyle.equals(resultat.getEpreuve().getSwimStyle())) continue;
-            if (!distance.equals(resultat.getEpreuve().getDistance())) continue;
+        for (Resultat r : resultatRepository.findByEpreuve_IdAndDeletedAtIsNull(eventId)) {
+            if (r.getTempsMs() == null) continue;
             String resultSeason =
-                    String.valueOf(resultat.getEpreuve().getScheduledDate().getYear());
+                    String.valueOf(r.getEpreuve().getScheduledDate().getYear());
             if (!season.equals(resultSeason)) continue;
-            if (resultat.getFinalTime() == null) continue;
-            matchingResults.add(resultat);
+            matchingResults.add(r);
         }
 
         Map<Long, Integer> bestTimeByAthlete = new HashMap<>();
         Map<Long, Resultat> sourceByAthlete = new HashMap<>();
         for (Resultat r : matchingResults) {
             Long athleteId = r.getAthlete().getId();
-            int time = r.getFinalTime();
+            int time = r.getTempsMs();
             if (!bestTimeByAthlete.containsKey(athleteId) || time < bestTimeByAthlete.get(athleteId)) {
                 bestTimeByAthlete.put(athleteId, time);
                 sourceByAthlete.put(athleteId, r);
@@ -84,8 +86,7 @@ public class ClassementService {
                 .toList();
 
         List<Classement> oldRows =
-                classementRepository.findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(
-                        swimStyle, distance, season);
+                classementRepository.findByEpreuve_IdAndSeasonAndDeletedAtIsNullOrderByRankAsc(eventId, season);
         LocalDateTime now = LocalDateTime.now();
         oldRows.forEach(row -> row.setDeletedAt(now));
         classementRepository.saveAll(oldRows);
@@ -96,9 +97,10 @@ public class ClassementService {
             Resultat source = sourceByAthlete.get(entry.getKey());
             Classement classement = Classement.builder()
                     .athlete(source.getAthlete())
-                    .swimStyle(swimStyle)
-                    .distance(distance)
-                    .bestTime(entry.getValue())
+                    .epreuve(epreuve)
+                    .bestTimeMs(entry.getValue())
+                    .bestTimeDisplay(source.getTempsDisplay())
+                    .pointsFina(source.getPointsFina())
                     .rank(rank++)
                     .season(season)
                     .build();
@@ -110,12 +112,41 @@ public class ClassementService {
     }
 
     public ClassementDto toDto(Classement classement) {
+        Epreuve epreuve = classement.getEpreuve();
+        com.ftn.backend.model.Athlete athlete = classement.getAthlete();
+
+        String athleteName = null;
+        String athleteNationality = null;
+        Long clubId = null;
+        String clubName = null;
+        if (athlete != null) {
+            if (athlete.getUser() != null) {
+                String fn = athlete.getUser().getFirstName();
+                String ln = athlete.getUser().getLastName();
+                athleteName = ((fn != null ? fn : "") + " " + (ln != null ? ln : "")).trim();
+            }
+            athleteNationality = athlete.getNationalite();
+            if (athlete.getClub() != null) {
+                clubId = athlete.getClub().getId();
+                clubName = athlete.getClub().getNom();
+            }
+        }
+
         return ClassementDto.builder()
                 .id(classement.getId())
-                .athleteId(classement.getAthlete().getId())
-                .swimStyle(classement.getSwimStyle())
-                .distance(classement.getDistance())
-                .bestTime(classement.getBestTime())
+                .athleteId(athlete != null ? athlete.getId() : null)
+                .athleteName(athleteName)
+                .athleteNationality(athleteNationality)
+                .clubId(clubId)
+                .clubName(clubName)
+                .eventId(epreuve.getId())
+                .swimStyle(epreuve.getSwimStyle())
+                .distance(epreuve.getDistance())
+                .gender(epreuve.getGender())
+                .ageCategory(epreuve.getAgeCategory())
+                .bestTimeMs(classement.getBestTimeMs())
+                .bestTimeDisplay(classement.getBestTimeDisplay())
+                .pointsFina(classement.getPointsFina())
                 .rank(classement.getRank())
                 .season(classement.getSeason())
                 .createdAt(classement.getCreatedAt())

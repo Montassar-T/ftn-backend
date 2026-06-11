@@ -30,6 +30,9 @@ public class Epreuve extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String gender;
 
+    @Column(name = "age_category", length = 50)
+    private String ageCategory;
+
     @Column(length = 50)
     private String round;
 

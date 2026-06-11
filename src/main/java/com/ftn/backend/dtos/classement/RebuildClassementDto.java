@@ -1,6 +1,7 @@
 package com.ftn.backend.dtos.classement;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -9,11 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 public class RebuildClassementDto {
 
-    @NotBlank
-    private String swimStyle;
-
-    @NotBlank
-    private String distance;
+    @NotNull
+    private Long eventId;
 
     @NotBlank
     private String season;

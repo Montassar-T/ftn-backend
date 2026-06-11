@@ -12,9 +12,8 @@ public interface ClassementRepository extends JpaRepository<Classement, Long>, J
 
     List<Classement> findByAthlete_IdAndDeletedAtIsNull(Long athleteId);
 
-    List<Classement> findBySwimStyleAndDistanceAndSeasonAndDeletedAtIsNullOrderByRankAsc(
-            String swimStyle, String distance, String season);
+    List<Classement> findByEpreuve_IdAndSeasonAndDeletedAtIsNullOrderByRankAsc(Long epreuveId, String season);
 
-    Optional<Classement> findByAthlete_IdAndSwimStyleAndDistanceAndSeasonAndDeletedAtIsNull(
-            Long athleteId, String swimStyle, String distance, String season);
+    Optional<Classement> findByAthlete_IdAndEpreuve_IdAndSeasonAndDeletedAtIsNull(
+            Long athleteId, Long epreuveId, String season);
 }

@@ -12,6 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateCompetitionDto {
 
+    private String code;
+
     @NotBlank
     private String name;
 
@@ -27,6 +29,12 @@ public class CreateCompetitionDto {
     private LocalDateTime registrationDeadline;
 
     private Long poolId;
+
+    private String lane;
+
+    private String ageCategories;
+
+    private String sourceUrl;
 
     private Long createdById;
 }

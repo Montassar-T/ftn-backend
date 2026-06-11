@@ -15,6 +15,7 @@ public class EpreuveDto {
     private String swimStyle;
     private String distance;
     private String gender;
+    private String ageCategory;
     private String round;
     private LocalDate scheduledDate;
     private String status;

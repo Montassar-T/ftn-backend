@@ -23,6 +23,8 @@ public class CreateEpreuveDto {
     @NotBlank
     private String gender;
 
+    private String ageCategory;
+
     private String round;
 
     @NotNull

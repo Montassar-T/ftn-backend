@@ -1,6 +1,7 @@
 package com.ftn.backend.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.*;
 
 @Entity
@@ -27,8 +28,17 @@ public class Resultat extends BaseEntity {
     @Column(name = "lane")
     private Integer lane;
 
-    @Column(name = "final_time")
-    private Integer finalTime;
+    @Column(name = "temps_ms")
+    private Integer tempsMs;
+
+    @Column(name = "temps_display", length = 20)
+    private String tempsDisplay;
+
+    @Column(name = "points_fina", precision = 8, scale = 2)
+    private BigDecimal pointsFina;
+
+    @Column(name = "tour", length = 50)
+    private String tour;
 
     @Column(nullable = false, length = 50)
     @Builder.Default

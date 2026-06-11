@@ -112,6 +112,20 @@ public class InscriptionService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<InscriptionDto> getByEvent(Long eventId) {
+        return inscriptionRepository.findByEpreuve_IdAndDeletedAtIsNull(eventId).stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<InscriptionDto> getByCompetition(Long competitionId) {
+        return inscriptionRepository.findByEpreuve_Competition_IdAndDeletedAtIsNull(competitionId).stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     public InscriptionDto toDto(Inscription inscription) {
         return InscriptionDto.builder()
                 .id(inscription.getId())
