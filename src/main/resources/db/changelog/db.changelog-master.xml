@@ -36,4 +36,8 @@
     <include file="db/changelog/changes/028-seed-staff-and-links.xml" />
     <include file="db/changelog/changes/030-club-staff.xml" />
 
+    <!-- mezen_branch: news + comments module -->
+    <include file="db/changelog/changes/002-news.xml" />
+    <include file="db/changelog/changes/003-alter-users.xml" />
+
 </databaseChangeLog>
