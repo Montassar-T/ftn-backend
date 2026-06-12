@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ftn.backend.enums.CompetitionStatutEnum;
 import com.ftn.backend.enums.CompetitionTypeEnum;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateCompetitionDto {
+
+    // --- HEAD fields ---
     private String nom;
     private CompetitionTypeEnum type;
 
@@ -28,4 +31,17 @@ public class UpdateCompetitionDto {
 
     @JsonProperty("nb_participants")
     private Integer nbParticipants;
+
+    // --- Upstream fields ---
+    private String code;
+    private String name;
+    private String typeStr;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDateTime registrationDeadline;
+    private String lane;
+    private String ageCategories;
+    private String sourceUrl;
+    private Long createdById;
+    private String status;
 }

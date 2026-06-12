@@ -1,6 +1,7 @@
 package com.ftn.backend.dtos.record;
 
 import com.ftn.backend.enums.RecordTypeEnum;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.*;
@@ -10,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRecordDto {
+
+    // --- HEAD fields ---
     @NotNull
     private Long athleteId;
 
@@ -19,4 +22,20 @@ public class CreateRecordDto {
     private String tempsDisplay;
     private LocalDate recordDate;
     private RecordTypeEnum type;
+
+    // --- Upstream fields ---
+    @NotBlank
+    private String typeStr;
+
+    @NotBlank
+    private String swimStyle;
+
+    @NotBlank
+    private String distance;
+
+    @NotNull
+    private Integer time;
+
+    @NotNull
+    private LocalDate date;
 }

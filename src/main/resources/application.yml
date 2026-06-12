@@ -30,6 +30,20 @@ app:
   cookie:
     secure: ${APP_COOKIE_SECURE}
 
+  cors:
+    allowed-origins:
+      - "http://localhost:*"
+      - "http://127.0.0.1:*"
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      - PATCH
+    allowed-headers:
+      - "*"
+
 jwt:
   secret: ${JWT_SECRET}
   access-expiration: ${JWT_ACCESS_EXPIRATION}

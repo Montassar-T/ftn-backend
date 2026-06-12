@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="11-create-competitions-table" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="competitions"/></not>
+        </preConditions>
+        <createTable tableName="competitions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="nom" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="discipline" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_debut" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_fin" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="lieu" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="region" type="VARCHAR(255)"/>
+
+            <column name="niveau" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="statut" type="VARCHAR(50)" defaultValue="PLANIFIEE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="competitions" indexName="idx_competitions_discipline">
+            <column name="discipline"/>
+        </createIndex>
+
+        <createIndex tableName="competitions" indexName="idx_competitions_region">
+            <column name="region"/>
+        </createIndex>
+
+        <createIndex tableName="competitions" indexName="idx_competitions_niveau">
+            <column name="niveau"/>
+        </createIndex>
+
+        <createIndex tableName="competitions" indexName="idx_competitions_date_debut">
+            <column name="date_debut"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

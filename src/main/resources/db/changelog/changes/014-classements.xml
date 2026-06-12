@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="14-create-classements-table" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="classements"/></not>
+        </preConditions>
+        <createTable tableName="classements">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="athlete_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_classement_athlete" references="athletes(id)"/>
+            </column>
+
+            <column name="discipline" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="categorie" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sexe" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="annee" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="points_total" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="rang" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="classements"
+                             columnNames="athlete_id, discipline, categorie, sexe, annee"
+                             constraintName="uk_classement_scope"/>
+
+        <createIndex tableName="classements" indexName="idx_classements_scope">
+            <column name="discipline"/>
+            <column name="categorie"/>
+            <column name="sexe"/>
+            <column name="annee"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
