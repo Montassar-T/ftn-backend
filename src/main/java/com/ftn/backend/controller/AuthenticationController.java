@@ -35,6 +35,20 @@ public class AuthenticationController {
                         .build());
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<SingleResultDto<AuthResponse>> register(@RequestBody NewUserDto request) {
+
+        LoginResult result = authenticationService.register(request);
+
+        ResponseCookie cookie = cookieService.buildRefreshCookie(result.getRefreshToken());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(SingleResultDto.<AuthResponse>builder()
+                        .data(result.getAuthResponse())
+                        .build());
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<SingleResultDto<AuthResponse>> refresh(@CookieValue("refreshToken") String refreshToken) {
 

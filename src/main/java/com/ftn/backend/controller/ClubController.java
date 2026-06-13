@@ -4,7 +4,9 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.SingleResultDto;
 import com.ftn.backend.dtos.athlete.AthleteDto;
 import com.ftn.backend.dtos.club.ClubDto;
+import com.ftn.backend.dtos.club.ClubStaffDto;
 import com.ftn.backend.dtos.club.CreateClubDto;
+import com.ftn.backend.dtos.club.CreateClubStaffDto;
 import com.ftn.backend.dtos.club.UpdateClubDto;
 import com.ftn.backend.service.ClubService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,5 +54,26 @@ public class ClubController {
     @GetMapping("/{id}/athletes")
     public ResponseEntity<List<AthleteDto>> getAthletes(@PathVariable Long id) {
         return ResponseEntity.ok(clubService.getAthletes(id));
+    }
+
+    @GetMapping("/{id}/staff")
+    public ResponseEntity<List<ClubStaffDto>> getStaff(@PathVariable Long id) {
+        return ResponseEntity.ok(clubService.getStaff(id));
+    }
+
+    @PostMapping("/{id}/staff")
+    public ResponseEntity<ClubStaffDto> addStaff(@PathVariable Long id, @RequestBody CreateClubStaffDto dto) {
+        return ResponseEntity.ok(clubService.addStaff(id, dto));
+    }
+
+    @DeleteMapping("/{id}/staff/{staffId}")
+    public ResponseEntity<Void> removeStaff(@PathVariable Long id, @PathVariable Long staffId) {
+        clubService.removeStaff(id, staffId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/staff/all")
+    public ResponseEntity<List<ClubStaffDto>> getAllStaff() {
+        return ResponseEntity.ok(clubService.getAllStaff());
     }
 }

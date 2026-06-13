@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Fix seeded licences: 'ACTIVE' is not a valid StatutLicenceEnum value.
+         Valid values: EN_ATTENTE, VALIDEE, REJETEE, EXPIREE -->
+    <changeSet id="026-fix-licences-statut" author="admin">
+        <sql>
+            UPDATE licences SET statut = 'VALIDEE'    WHERE statut = 'ACTIVE';
+            UPDATE licences SET statut = 'EN_ATTENTE'  WHERE statut NOT IN ('EN_ATTENTE','VALIDEE','REJETEE','EXPIREE') OR statut IS NULL;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

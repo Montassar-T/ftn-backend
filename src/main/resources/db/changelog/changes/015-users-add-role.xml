@@ -9,7 +9,7 @@
     <changeSet id="015-1" author="MontassarTayari">
         <preConditions onFail="MARK_RAN">
             <not>
-                <columnExists tableName="users" columnName="role"/>
+                <columnExists tableName="users" columnName="role" />
             </not>
         </preConditions>
         <addColumn tableName="users">

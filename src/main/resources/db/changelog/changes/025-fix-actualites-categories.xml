@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Fix seeded actualites that have invalid CategorieActuEnum values -->
+    <changeSet id="025-fix-actualites-categories" author="admin">
+        <sql>
+            UPDATE actualites SET categorie = 'COMPETITION'   WHERE categorie IN ('COMPETITION');
+            UPDATE actualites SET categorie = 'FORMATION'     WHERE categorie IN ('ENTRAINEMENT', 'TECHNIQUE', 'SANTE');
+            UPDATE actualites SET categorie = 'GOUVERNANCE'   WHERE categorie IN ('FEDERATION', 'GOUVERNANCE');
+            UPDATE actualites SET categorie = 'INFRASTRUCTURE' WHERE categorie IN ('INFRASTRUCTURE', 'INTERNATIONAL');
+            UPDATE actualites SET categorie = 'GENERAL'       WHERE categorie NOT IN ('COMPETITION','FORMATION','GOUVERNANCE','INFRASTRUCTURE','GENERAL') OR categorie IS NULL;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

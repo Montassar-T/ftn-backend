@@ -16,4 +16,6 @@ public interface ActualiteRepository extends JpaRepository<Actualite, Long>, Jpa
     List<Actualite> findByCategorieAndDeletedAtIsNull(CategorieActuEnum categorie);
 
     List<Actualite> findByTitreContainingIgnoreCaseAndDeletedAtIsNull(String titre);
+
+    long countByDeletedAtIsNull();
 }
