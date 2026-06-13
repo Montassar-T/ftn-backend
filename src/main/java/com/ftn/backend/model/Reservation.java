@@ -1,11 +1,11 @@
 package com.ftn.backend.model;
 
 import com.ftn.backend.enums.ReservationStatutEnum;
+import com.ftn.backend.enums.TypeReservationEnum;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import lombok.*;
 
 @Entity
 @Table(name = "reservations")
@@ -33,15 +33,27 @@ public class Reservation extends BaseEntity {
     @Column(name = "heure_fin", nullable = false)
     private LocalTime heureFin;
 
-    // null means full pool, a number means that specific lane
+    @Column(name = "nb_couloirs")
+    private Integer nbCouloirs;
+
+    // Kept for backward compatibility (single lane, athlete mode)
     @Column(name = "numero_couloir")
     private Integer numeroCouloir;
 
+    // Comma-separated lane numbers for club mode, e.g. "1,2,3". Null/empty = whole pool.
+    @Column(name = "numeros_couloirs", length = 100)
+    private String numerosCouloirs;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_reservation", nullable = false, length = 20)
+    @Builder.Default
+    private TypeReservationEnum typeReservation = TypeReservationEnum.ATHLETE;
+
     @Column(name = "reservee_par", nullable = false, length = 255)
-    private String reserveePar; // email of the user
+    private String reserveePar;
 
     @Column(name = "nom_club", length = 255)
-    private String nomClub; // optional club name
+    private String nomClub;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)

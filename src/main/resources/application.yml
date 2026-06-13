@@ -26,9 +26,21 @@ spring:
 server:
   port: ${SERVER_PORT}
 
+
 app:
   cookie:
     secure: ${APP_COOKIE_SECURE}
+  cors:
+    allowed-origins:
+      - http://localhost:4200
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowed-headers:
+      - "*"
 
 jwt:
   secret: ${JWT_SECRET}

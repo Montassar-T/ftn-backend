@@ -8,12 +8,11 @@ import com.ftn.backend.dtos.reservation.UpdateReservationDto;
 import com.ftn.backend.service.ReservationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -49,7 +48,8 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SingleResultDto<ReservationDto>> update(@PathVariable Long id, @RequestBody UpdateReservationDto dto) {
+    public ResponseEntity<SingleResultDto<ReservationDto>> update(
+            @PathVariable Long id, @RequestBody UpdateReservationDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reservationService.update(id, dto)));
     }
 
