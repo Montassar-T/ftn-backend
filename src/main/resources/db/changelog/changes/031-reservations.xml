@@ -7,6 +7,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="017-1" author="Ella">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="reservations"/>
+            </not>
+        </preConditions>
         <createTable tableName="reservations">
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>

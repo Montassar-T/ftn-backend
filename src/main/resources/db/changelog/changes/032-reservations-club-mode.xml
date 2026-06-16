@@ -7,15 +7,27 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="018-1" author="Ella">
-        <addColumn tableName="reservations">
-            <column name="type_reservation" type="VARCHAR(20)" defaultValue="ATHLETE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="numeros_couloirs" type="VARCHAR(100)"/>
-        </addColumn>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="reservations"/>
+        </preConditions>
+        <sql>
+            ALTER TABLE reservations
+            ADD COLUMN IF NOT EXISTS type_reservation VARCHAR(20) DEFAULT 'ATHLETE' NOT NULL;
+        </sql>
+        <sql>
+            ALTER TABLE reservations
+            ADD COLUMN IF NOT EXISTS numeros_couloirs VARCHAR(100);
+        </sql>
     </changeSet>
 
     <changeSet id="018-2" author="Ella">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="reservations"/>
+                <columnExists tableName="reservations" columnName="numero_couloir"/>
+                <columnExists tableName="reservations" columnName="numeros_couloirs"/>
+            </and>
+        </preConditions>
         <sql>
             UPDATE reservations
             SET numeros_couloirs = CAST(numero_couloir AS VARCHAR)
