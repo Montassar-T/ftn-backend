@@ -25,6 +25,14 @@ public class ClubDto {
     @JsonProperty("president_nom")
     private String presidentNom;
 
+    @JsonProperty("pool_id")
+    private Long poolId;
+
+    @JsonProperty("pool_nom")
+    private String poolNom;
+
+    private Integer lane;
+
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 }

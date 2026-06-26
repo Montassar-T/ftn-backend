@@ -61,4 +61,7 @@
     <!-- programs module (training programs by age group) -->
     <include file="db/changelog/changes/031-programs.xml" />
 
+    <!-- club pool/lane assignment -->
+    <include file="db/changelog/changes/032-club-pool-lane.xml" />
+
 </databaseChangeLog>

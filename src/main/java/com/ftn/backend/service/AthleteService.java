@@ -5,6 +5,7 @@ import com.ftn.backend.dtos.athlete.AthleteDto;
 import com.ftn.backend.dtos.athlete.CreateAthleteDto;
 import com.ftn.backend.dtos.athlete.UpdateAthleteDto;
 import com.ftn.backend.dtos.licence.LicenceDto;
+import com.ftn.backend.enums.CategorieEnum;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Athlete;
 import com.ftn.backend.model.Club;
@@ -14,7 +15,9 @@ import com.ftn.backend.repository.ClubRepository;
 import com.ftn.backend.repository.LicenceRepository;
 import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +56,14 @@ public class AthleteService {
 
     @Transactional
     public AthleteDto create(CreateAthleteDto dto) {
+        CategorieEnum categorie =
+                dto.getCategorie() != null ? dto.getCategorie() : deriveCategorie(dto.getDateNaissance());
         Athlete.AthleteBuilder builder = Athlete.builder()
                 .nom(dto.getNom())
                 .prenom(dto.getPrenom())
                 .dateNaissance(dto.getDateNaissance())
                 .nationalite(dto.getNationalite())
-                .categorie(dto.getCategorie())
+                .categorie(categorie)
                 .sexe(dto.getSexe());
 
         if (dto.getClubId() != null) {
@@ -96,6 +101,9 @@ public class AthleteService {
         if (dto.getNationalite() != null) athlete.setNationalite(dto.getNationalite());
         if (dto.getCategorie() != null) athlete.setCategorie(dto.getCategorie());
         if (dto.getSexe() != null) athlete.setSexe(dto.getSexe());
+        if (athlete.getCategorie() == null && athlete.getDateNaissance() != null) {
+            athlete.setCategorie(deriveCategorie(athlete.getDateNaissance()));
+        }
 
         return toDto(athleteRepository.save(athlete));
     }
@@ -147,9 +155,23 @@ public class AthleteService {
                 .clubNom(athlete.getClub() != null ? athlete.getClub().getNom() : null)
                 .dateNaissance(athlete.getDateNaissance())
                 .nationalite(athlete.getNationalite())
-                .categorie(athlete.getCategorie())
+                .categorie(
+                        athlete.getCategorie() != null
+                                ? athlete.getCategorie()
+                                : deriveCategorie(athlete.getDateNaissance()))
                 .sexe(athlete.getSexe())
                 .createdAt(athlete.getCreatedAt())
                 .build();
+    }
+
+    private CategorieEnum deriveCategorie(LocalDate dateNaissance) {
+        if (dateNaissance == null) return null;
+        int age = Year.now().getValue() - dateNaissance.getYear();
+        if (age <= 10) return CategorieEnum.POUSSIN;
+        if (age <= 12) return CategorieEnum.BENJAMIN;
+        if (age <= 14) return CategorieEnum.MINIME;
+        if (age <= 16) return CategorieEnum.CADET;
+        if (age <= 18) return CategorieEnum.JUNIOR;
+        return CategorieEnum.SENIOR;
     }
 }
