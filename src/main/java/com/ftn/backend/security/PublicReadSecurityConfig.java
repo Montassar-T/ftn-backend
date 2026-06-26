@@ -28,6 +28,7 @@ public class PublicReadSecurityConfig {
                         new AntPathRequestMatcher("/api/v1/competitions/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/events/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/results/**", "GET"),
+                        new AntPathRequestMatcher("/api/v1/resultats/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/rankings/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/records/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/licences/**", "GET"),
@@ -37,7 +38,9 @@ public class PublicReadSecurityConfig {
                         new AntPathRequestMatcher("/api/v1/reponses/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/forum-categories/**", "GET"),
                         new AntPathRequestMatcher("/api/v1/threads/**", "GET"),
-                        new AntPathRequestMatcher("/api/v1/posts/**", "GET")))
+                        new AntPathRequestMatcher("/api/v1/posts/**", "GET"),
+                        new AntPathRequestMatcher("/api/v1/dashboard/**", "GET"),
+                        new AntPathRequestMatcher("/api/v1/programs/**", "GET")))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());

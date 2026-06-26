@@ -149,7 +149,7 @@ public class ResultService {
                                 : null)
                 .competitionNom(
                         result.getCompetition() != null
-                                ? result.getCompetition().getNom()
+                                ? result.getCompetition().getName()
                                 : null)
                 .epreuve(result.getEpreuve())
                 .temps(result.getTemps())

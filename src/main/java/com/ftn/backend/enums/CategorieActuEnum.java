@@ -5,5 +5,6 @@ public enum CategorieActuEnum {
     FORMATION,
     GOUVERNANCE,
     INFRASTRUCTURE,
-    GENERAL
+    GENERAL,
+    NATATION
 }

@@ -15,16 +15,7 @@ import lombok.*;
 public class CreateCompetitionDto {
 
     // --- HEAD fields ---
-    @NotBlank(message = "Le nom de la compétition est obligatoire")
-    private String nom;
-
     private CompetitionTypeEnum type;
-
-    @JsonProperty("date_debut")
-    private LocalDate dateDebut;
-
-    @JsonProperty("date_fin")
-    private LocalDate dateFin;
 
     @JsonProperty("pool_id")
     private Long poolId;

@@ -130,10 +130,18 @@ public class AthleteService {
     }
 
     public AthleteDto toDto(Athlete athlete) {
+        String nom = athlete.getNom();
+        String prenom = athlete.getPrenom();
+        if ((nom == null || nom.isBlank()) && athlete.getUser() != null) {
+            nom = athlete.getUser().getLastName();
+        }
+        if ((prenom == null || prenom.isBlank()) && athlete.getUser() != null) {
+            prenom = athlete.getUser().getFirstName();
+        }
         return AthleteDto.builder()
                 .id(athlete.getId())
-                .nom(athlete.getNom())
-                .prenom(athlete.getPrenom())
+                .nom(nom)
+                .prenom(prenom)
                 .userId(athlete.getUser() != null ? athlete.getUser().getId() : null)
                 .clubId(athlete.getClub() != null ? athlete.getClub().getId() : null)
                 .clubNom(athlete.getClub() != null ? athlete.getClub().getNom() : null)

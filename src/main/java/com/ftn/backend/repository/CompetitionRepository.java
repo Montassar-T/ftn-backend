@@ -1,6 +1,5 @@
 package com.ftn.backend.repository;
 
-import com.ftn.backend.enums.CompetitionStatutEnum;
 import com.ftn.backend.model.Competition;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,15 +17,13 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long>,
 
     List<Competition> findAllByDeletedAtIsNull();
 
-    List<Competition> findByStatutAndDeletedAtIsNull(CompetitionStatutEnum statut);
-
     List<Competition> findByStatusAndDeletedAtIsNull(String status);
 
     List<Competition> findByPool_IdAndDeletedAtIsNull(Long poolId);
 
     long countByDeletedAtIsNull();
 
-    long countByStatutAndDeletedAtIsNull(CompetitionStatutEnum statut);
+    long countByStatusAndDeletedAtIsNull(String status);
 
     List<Competition> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 

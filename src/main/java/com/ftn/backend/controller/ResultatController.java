@@ -15,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/results")
+@RequestMapping("/api/v1/resultats")
 @RequiredArgsConstructor
-@Tag(name = "Result", description = "Results management APIs")
+@Tag(name = "Resultat", description = "Competition-module results management APIs")
 public class ResultatController {
 
     private final ResultatService resultatService;

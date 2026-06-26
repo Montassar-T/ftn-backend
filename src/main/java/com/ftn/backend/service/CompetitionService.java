@@ -4,7 +4,6 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.competition.CompetitionDto;
 import com.ftn.backend.dtos.competition.CreateCompetitionDto;
 import com.ftn.backend.dtos.competition.UpdateCompetitionDto;
-import com.ftn.backend.enums.CompetitionStatutEnum;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Competition;
 import com.ftn.backend.model.Pool;
@@ -69,12 +68,9 @@ public class CompetitionService {
         }
 
         Competition competition = Competition.builder()
-                .nom(dto.getNom())
                 .code(dto.getCode())
                 .name(dto.getName())
                 .type(dto.getType())
-                .dateDebut(dto.getDateDebut())
-                .dateFin(dto.getDateFin())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .registrationDeadline(dto.getRegistrationDeadline())
@@ -94,16 +90,12 @@ public class CompetitionService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
 
-        if (dto.getNom() != null) competition.setNom(dto.getNom());
         if (dto.getCode() != null) competition.setCode(dto.getCode());
         if (dto.getName() != null) competition.setName(dto.getName());
         if (dto.getType() != null) competition.setType(dto.getType());
-        if (dto.getDateDebut() != null) competition.setDateDebut(dto.getDateDebut());
-        if (dto.getDateFin() != null) competition.setDateFin(dto.getDateFin());
         if (dto.getStartDate() != null) competition.setStartDate(dto.getStartDate());
         if (dto.getEndDate() != null) competition.setEndDate(dto.getEndDate());
         if (dto.getRegistrationDeadline() != null) competition.setRegistrationDeadline(dto.getRegistrationDeadline());
-        if (dto.getStatut() != null) competition.setStatut(dto.getStatut());
         if (dto.getStatus() != null) competition.setStatus(dto.getStatus());
         if (dto.getDescription() != null) competition.setDescription(dto.getDescription());
         if (dto.getNbParticipants() != null) competition.setNbParticipants(dto.getNbParticipants());
@@ -140,7 +132,7 @@ public class CompetitionService {
         Competition competition = competitionRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
-        competition.setStatut(CompetitionStatutEnum.EN_COURS);
+        competition.setStatus("EN_COURS");
         return toDto(competitionRepository.save(competition));
     }
 
@@ -149,7 +141,7 @@ public class CompetitionService {
         Competition competition = competitionRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
-        competition.setStatut(CompetitionStatutEnum.TERMINE);
+        competition.setStatus("TERMINEE");
         return toDto(competitionRepository.save(competition));
     }
 
@@ -193,12 +185,9 @@ public class CompetitionService {
     public CompetitionDto toDto(Competition competition) {
         return CompetitionDto.builder()
                 .id(competition.getId())
-                .nom(competition.getNom())
                 .code(competition.getCode())
                 .name(competition.getName())
                 .type(competition.getType())
-                .dateDebut(competition.getDateDebut())
-                .dateFin(competition.getDateFin())
                 .startDate(competition.getStartDate())
                 .endDate(competition.getEndDate())
                 .registrationDeadline(competition.getRegistrationDeadline())
@@ -211,7 +200,6 @@ public class CompetitionService {
                         competition.getCreatedBy() != null
                                 ? competition.getCreatedBy().getId()
                                 : null)
-                .statut(competition.getStatut())
                 .status(competition.getStatus())
                 .description(competition.getDescription())
                 .nbParticipants(competition.getNbParticipants())
