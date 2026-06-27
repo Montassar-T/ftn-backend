@@ -6,6 +6,7 @@ import com.ftn.backend.dtos.forum.ForumReactionDto;
 import com.ftn.backend.service.ForumReactionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,10 @@ public class ForumReactionController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reactionService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/sujets/{sujetId}/reactions")
+    public ResponseEntity<List<ForumReactionDto>> getForSujet(@PathVariable Long sujetId) {
+        return ResponseEntity.ok(reactionService.getForSujet(sujetId));
     }
 }

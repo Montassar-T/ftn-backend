@@ -11,4 +11,6 @@ public interface ForumReactionRepository extends JpaRepository<ForumReaction, Lo
     List<ForumReaction> findByPost_IdAndDeletedAtIsNull(Long postId);
 
     List<ForumReaction> findByThread_IdAndDeletedAtIsNull(Long threadId);
+
+    List<ForumReaction> findByPost_Sujet_IdAndDeletedAtIsNull(Long sujetId);
 }

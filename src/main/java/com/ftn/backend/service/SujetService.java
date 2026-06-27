@@ -77,6 +77,7 @@ public class SujetService {
                 .auteur(getCurrentUser())
                 .titre(dto.getTitre())
                 .contenu(dto.getContenu())
+                .imageUrl(dto.getImageUrl())
                 .dateCreation(LocalDateTime.now())
                 .build();
 
@@ -93,6 +94,7 @@ public class SujetService {
                 .orElseThrow(() -> new ResourceNotFoundException("Sujet not found"));
         if (dto.getTitre() != null) sujet.setTitre(dto.getTitre());
         if (dto.getContenu() != null) sujet.setContenu(dto.getContenu());
+        if (dto.getImageUrl() != null) sujet.setImageUrl(dto.getImageUrl());
         return toDto(sujetRepository.save(sujet));
     }
 
@@ -162,6 +164,7 @@ public class SujetService {
                 .ferme(sujet.getFerme())
                 .nbVues(sujet.getNbVues())
                 .nbReponses(sujet.getNbReponses())
+                .imageUrl(sujet.getImageUrl())
                 .createdAt(sujet.getCreatedAt())
                 .build();
     }

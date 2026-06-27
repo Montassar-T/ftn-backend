@@ -66,6 +66,7 @@ public class ReponseService {
                 .sujet(sujet)
                 .auteur(getCurrentUser())
                 .contenu(dto.getContenu())
+                .imageUrl(dto.getImageUrl())
                 .dateCreation(LocalDateTime.now())
                 .build();
 
@@ -81,6 +82,7 @@ public class ReponseService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reponse not found"));
         if (dto.getContenu() != null) reponse.setContenu(dto.getContenu());
+        if (dto.getImageUrl() != null) reponse.setImageUrl(dto.getImageUrl());
         return toDto(reponseRepository.save(reponse));
     }
 
@@ -144,6 +146,7 @@ public class ReponseService {
                 .dateCreation(reponse.getDateCreation())
                 .nbLikes(reponse.getNbLikes())
                 .signale(reponse.getSignale())
+                .imageUrl(reponse.getImageUrl())
                 .createdAt(reponse.getCreatedAt())
                 .build();
     }

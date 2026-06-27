@@ -49,4 +49,7 @@ public class Sujet extends BaseEntity {
     @Column(name = "nb_reponses", nullable = false)
     @Builder.Default
     private Integer nbReponses = 0;
+
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 }

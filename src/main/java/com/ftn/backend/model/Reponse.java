@@ -42,4 +42,7 @@ public class Reponse extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_reponse_id")
     private Reponse parentReponse;
+
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 }
