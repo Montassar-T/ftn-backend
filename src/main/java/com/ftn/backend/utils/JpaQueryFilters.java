@@ -34,6 +34,8 @@ public class JpaQueryFilters<T> {
     private static final String ORDER_BY = "order_by";
     private static final String LIMIT = "limit";
     private static final String OFFSET = "offset";
+    private static final String PAGE = "page";
+    private static final String SIZE = "size";
     private static final int DEFAULT_OFFSET = 0;
     private static final int DEFAULT_LIMIT = 10;
     private static final int MAX_LIMIT = 9999;
@@ -946,6 +948,17 @@ public class JpaQueryFilters<T> {
         try {
             String limit = params.remove(LIMIT);
             String offset = params.remove(OFFSET);
+            String page = params.remove(PAGE);
+            String size = params.remove(SIZE);
+
+            // Spring-style page/size pagination (0-indexed page) is translated to offset/limit
+            // when limit/offset weren't explicitly provided.
+            if (limit == null) limit = size;
+            if (offset == null && page != null && !page.isBlank()) {
+                int parsedPage = Integer.parseInt(page);
+                int sizeForOffset = (limit != null && !limit.isBlank()) ? Integer.parseInt(limit) : DEFAULT_LIMIT;
+                offset = String.valueOf(parsedPage * sizeForOffset);
+            }
 
             int parsedLimit = (limit != null && !limit.isBlank()) ? Integer.parseInt(limit) : DEFAULT_LIMIT;
             if (parsedLimit < 1) {

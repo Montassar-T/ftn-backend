@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="12-create-epreuves-table" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="epreuves"/></not>
+        </preConditions>
+        <createTable tableName="epreuves">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="competition_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_epreuve_competition" references="competitions(id)"/>
+            </column>
+
+            <column name="nom" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="discipline" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="categorie" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sexe" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="distance" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="style" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_heure" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modified_at" type="TIMESTAMP"/>
+
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="epreuves" indexName="idx_epreuves_competition">
+            <column name="competition_id"/>
+        </createIndex>
+
+        <createIndex tableName="epreuves" indexName="idx_epreuves_discipline">
+            <column name="discipline"/>
+        </createIndex>
+
+        <createIndex tableName="epreuves" indexName="idx_epreuves_categorie">
+            <column name="categorie"/>
+        </createIndex>
+
+        <createIndex tableName="epreuves" indexName="idx_epreuves_date_heure">
+            <column name="date_heure"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="12b-add-fk-inscription-epreuve" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyTableName="inscriptions" foreignKeyName="fk_inscription_epreuve"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="inscriptions"
+                                 baseColumnNames="epreuve_id"
+                                 referencedTableName="epreuves"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_inscription_epreuve"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -45,6 +45,7 @@ public class AuthenticationService {
         String accessToken = jwtService.generateAccessToken(saved.getEmail());
         String refreshToken = jwtService.generateRefreshToken(saved.getEmail());
         AuthResponse authResponse = AuthResponse.builder()
+                .id(saved.getId())
                 .accessToken(accessToken)
                 .email(saved.getEmail())
                 .firstName(saved.getFirstName())
@@ -73,6 +74,7 @@ public class AuthenticationService {
         String refreshToken = jwtService.generateRefreshToken(user.getEmail());
 
         AuthResponse authResponse = AuthResponse.builder()
+                .id(user.getId())
                 .accessToken(accessToken)
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
@@ -102,6 +104,7 @@ public class AuthenticationService {
         String newAccessToken = jwtService.generateAccessToken(user.getEmail());
 
         AuthResponse authResponse = AuthResponse.builder()
+                .id(user.getId())
                 .accessToken(newAccessToken)
                 .email(user.getEmail())
                 .firstName(user.getFirstName())

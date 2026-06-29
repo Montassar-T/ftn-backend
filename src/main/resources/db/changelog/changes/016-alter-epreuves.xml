@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="16-alter-epreuves" author="Codex">
+        <!-- Drop old indexes -->
+        <sql>DROP INDEX IF EXISTS idx_epreuves_discipline</sql>
+        <sql>DROP INDEX IF EXISTS idx_epreuves_categorie</sql>
+        <sql>DROP INDEX IF EXISTS idx_epreuves_date_heure</sql>
+
+        <!-- Add new columns -->
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS swim_style VARCHAR(50)</sql>
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS gender VARCHAR(10)</sql>
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS round VARCHAR(50)</sql>
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS scheduled_date DATE</sql>
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'PLANIFIEE'</sql>
+        <sql>ALTER TABLE epreuves ADD COLUMN IF NOT EXISTS distance_str VARCHAR(100)</sql>
+
+        <!-- Copy data -->
+        <sql>UPDATE epreuves SET swim_style = style WHERE swim_style IS NULL AND style IS NOT NULL</sql>
+        <sql>UPDATE epreuves SET gender = sexe WHERE gender IS NULL AND sexe IS NOT NULL</sql>
+        <sql>UPDATE epreuves SET scheduled_date = DATE(date_heure) WHERE scheduled_date IS NULL AND date_heure IS NOT NULL</sql>
+        <sql>UPDATE epreuves SET status = 'PLANIFIEE' WHERE status IS NULL</sql>
+        <sql>UPDATE epreuves SET distance_str = CAST(distance AS VARCHAR) WHERE distance_str IS NULL AND distance IS NOT NULL</sql>
+        <sql>UPDATE epreuves SET swim_style = 'NAGE_LIBRE' WHERE swim_style IS NULL</sql>
+        <sql>UPDATE epreuves SET gender = 'M' WHERE gender IS NULL</sql>
+        <sql>UPDATE epreuves SET scheduled_date = CURRENT_DATE WHERE scheduled_date IS NULL</sql>
+        <sql>UPDATE epreuves SET distance_str = '0' WHERE distance_str IS NULL</sql>
+
+        <!-- Drop old columns -->
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS nom</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS discipline</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS categorie</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS sexe</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS distance</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS style</sql>
+        <sql>ALTER TABLE epreuves DROP COLUMN IF EXISTS date_heure</sql>
+
+        <!-- Rename distance_str to distance -->
+        <sql>ALTER TABLE epreuves RENAME COLUMN distance_str TO distance</sql>
+
+        <!-- Add NOT NULL constraints -->
+        <sql>ALTER TABLE epreuves ALTER COLUMN swim_style SET NOT NULL</sql>
+        <sql>ALTER TABLE epreuves ALTER COLUMN gender SET NOT NULL</sql>
+        <sql>ALTER TABLE epreuves ALTER COLUMN scheduled_date SET NOT NULL</sql>
+        <sql>ALTER TABLE epreuves ALTER COLUMN status SET NOT NULL</sql>
+        <sql>ALTER TABLE epreuves ALTER COLUMN distance SET NOT NULL</sql>
+
+        <!-- Add new indexes -->
+        <sql>CREATE INDEX IF NOT EXISTS idx_epreuves_swim_style ON epreuves(swim_style)</sql>
+        <sql>CREATE INDEX IF NOT EXISTS idx_epreuves_scheduled_date ON epreuves(scheduled_date)</sql>
+    </changeSet>
+
+</databaseChangeLog>

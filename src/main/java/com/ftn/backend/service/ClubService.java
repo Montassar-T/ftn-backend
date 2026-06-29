@@ -12,10 +12,12 @@ import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Club;
 import com.ftn.backend.model.ClubStaff;
+import com.ftn.backend.model.Pool;
 import com.ftn.backend.model.User;
 import com.ftn.backend.repository.AthleteRepository;
 import com.ftn.backend.repository.ClubRepository;
 import com.ftn.backend.repository.ClubStaffRepository;
+import com.ftn.backend.repository.PoolRepository;
 import com.ftn.backend.repository.UserRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
@@ -36,6 +38,7 @@ public class ClubService {
     private final AthleteService athleteService;
     private final ClubStaffRepository clubStaffRepository;
     private final UserRepository userRepository;
+    private final PoolRepository poolRepository;
 
     @Transactional(readOnly = true)
     public ClubDto getById(Long id) {
@@ -58,6 +61,12 @@ public class ClubService {
 
     @Transactional
     public ClubDto create(CreateClubDto dto) {
+        Pool pool = null;
+        if (dto.getPoolId() != null) {
+            pool = poolRepository
+                    .findByIdAndDeletedAtIsNull(dto.getPoolId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
+        }
         Club club = Club.builder()
                 .nom(dto.getNom())
                 .ville(dto.getVille())
@@ -66,6 +75,8 @@ public class ClubService {
                 .dateAffiliation(dto.getDateAffiliation())
                 .actif(dto.getActif() != null ? dto.getActif() : true)
                 .presidentNom(dto.getPresidentNom())
+                .pool(pool)
+                .lane(dto.getLane())
                 .build();
         return toDto(clubRepository.save(club));
     }
@@ -82,6 +93,13 @@ public class ClubService {
         if (dto.getDateAffiliation() != null) club.setDateAffiliation(dto.getDateAffiliation());
         if (dto.getActif() != null) club.setActif(dto.getActif());
         if (dto.getPresidentNom() != null) club.setPresidentNom(dto.getPresidentNom());
+        if (dto.getPoolId() != null) {
+            Pool pool = poolRepository
+                    .findByIdAndDeletedAtIsNull(dto.getPoolId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
+            club.setPool(pool);
+        }
+        if (dto.getLane() != null) club.setLane(dto.getLane());
         return toDto(clubRepository.save(club));
     }
 
@@ -162,6 +180,9 @@ public class ClubService {
                 .dateAffiliation(club.getDateAffiliation())
                 .actif(club.getActif())
                 .presidentNom(club.getPresidentNom())
+                .poolId(club.getPool() != null ? club.getPool().getId() : null)
+                .poolNom(club.getPool() != null ? club.getPool().getNom() : null)
+                .lane(club.getLane())
                 .createdAt(club.getCreatedAt())
                 .build();
     }

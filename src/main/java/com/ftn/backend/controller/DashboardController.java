@@ -2,7 +2,6 @@ package com.ftn.backend.controller;
 
 import com.ftn.backend.dtos.DashboardStatsDto;
 import com.ftn.backend.dtos.competition.CompetitionDto;
-import com.ftn.backend.enums.CompetitionStatutEnum;
 import com.ftn.backend.model.Competition;
 import com.ftn.backend.repository.ActualiteRepository;
 import com.ftn.backend.repository.AthleteRepository;
@@ -16,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +36,7 @@ public class DashboardController {
     private final CompetitionStaffRepository staffRepository;
 
     @GetMapping("/stats")
+    @Transactional(readOnly = true)
     public ResponseEntity<DashboardStatsDto> getStats() {
 
         List<Competition> recent = competitionRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
@@ -43,13 +44,13 @@ public class DashboardController {
         List<CompetitionDto> recentDtos = recent.stream()
                 .map(c -> CompetitionDto.builder()
                         .id(c.getId())
-                        .nom(c.getNom())
+                        .name(c.getName())
                         .type(c.getType())
-                        .dateDebut(c.getDateDebut())
-                        .dateFin(c.getDateFin())
+                        .startDate(c.getStartDate())
+                        .endDate(c.getEndDate())
                         .poolId(c.getPool() != null ? c.getPool().getId() : null)
                         .poolNom(c.getPool() != null ? c.getPool().getNom() : null)
-                        .statut(c.getStatut())
+                        .status(c.getStatus())
                         .nbParticipants(c.getNbParticipants())
                         .createdAt(c.getCreatedAt())
                         .build())
@@ -64,8 +65,7 @@ public class DashboardController {
                 .nbResults(resultRepository.countByDeletedAtIsNull())
                 .nbActualites(actualiteRepository.countByDeletedAtIsNull())
                 .nbStaff(staffRepository.countByDeletedAtIsNull())
-                .nbActiveCompetitions(
-                        competitionRepository.countByStatutAndDeletedAtIsNull(CompetitionStatutEnum.EN_COURS))
+                .nbActiveCompetitions(competitionRepository.countByStatusAndDeletedAtIsNull("EN_COURS"))
                 .recentCompetitions(recentDtos)
                 .build();
 

@@ -17,4 +17,7 @@ public class CreateReponseDto {
 
     @NotBlank(message = "Le contenu est obligatoire")
     private String contenu;
+
+    @JsonProperty("image_url")
+    private String imageUrl;
 }

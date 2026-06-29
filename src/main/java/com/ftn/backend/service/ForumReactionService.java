@@ -12,6 +12,8 @@ import com.ftn.backend.repository.ReponseRepository;
 import com.ftn.backend.repository.SujetRepository;
 import com.ftn.backend.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,15 @@ public class ForumReactionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Reaction not found"));
         reaction.setDeletedAt(LocalDateTime.now());
         reactionRepository.save(reaction);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ForumReactionDto> getForSujet(Long sujetId) {
+        List<ForumReaction> threadReactions = reactionRepository.findByThread_IdAndDeletedAtIsNull(sujetId);
+        List<ForumReaction> postReactions = reactionRepository.findByPost_Sujet_IdAndDeletedAtIsNull(sujetId);
+        return Stream.concat(threadReactions.stream(), postReactions.stream())
+                .map(this::toDto)
+                .toList();
     }
 
     public ForumReactionDto toDto(ForumReaction r) {

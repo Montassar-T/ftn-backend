@@ -38,4 +38,11 @@ public class Club extends BaseEntity {
 
     @Column(name = "president_nom", length = 255)
     private String presidentNom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pool_id")
+    private Pool pool;
+
+    @Column
+    private Integer lane;
 }

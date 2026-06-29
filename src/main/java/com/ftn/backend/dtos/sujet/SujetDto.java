@@ -49,6 +49,9 @@ public class SujetDto {
     @JsonProperty("nb_reponses")
     private Integer nbReponses;
 
+    @JsonProperty("image_url")
+    private String imageUrl;
+
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 }

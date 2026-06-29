@@ -13,34 +13,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/legacy-events")
 @RequiredArgsConstructor
 @Tag(name = "Events", description = "Competition event management APIs")
 public class EventController {
 
     private final EventService eventService;
 
-    @GetMapping("/events/competition/{competitionId}")
+    @GetMapping("/competition/{competitionId}")
     public ResponseEntity<SingleResultDto<List<EventDto>>> getByCompetition(@PathVariable Long competitionId) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.getByCompetition(competitionId)));
     }
 
-    @GetMapping("/events/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SingleResultDto<EventDto>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.getById(id)));
     }
 
-    @PostMapping("/events")
+    @PostMapping
     public ResponseEntity<SingleResultDto<EventDto>> create(@Valid @RequestBody CreateEventDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.create(dto)));
     }
 
-    @PutMapping("/events/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SingleResultDto<EventDto>> update(@PathVariable Long id, @RequestBody UpdateEventDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.update(id, dto)));
     }
 
-    @DeleteMapping("/events/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         eventService.delete(id);
         return ResponseEntity.noContent().build();

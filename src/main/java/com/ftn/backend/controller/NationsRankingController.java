@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/rankings")
+@RequestMapping("/api/v1/nations-rankings")
 @RequiredArgsConstructor
 @Tag(name = "NationsRanking", description = "National rankings APIs")
 public class NationsRankingController {

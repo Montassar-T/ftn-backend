@@ -11,27 +11,68 @@
             <not><tableExists tableName="records"/></not>
         </preConditions>
         <createTable tableName="records">
-            <column name="id" type="BIGSERIAL">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="swim_style" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="distance" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="athlete_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_records_athlete"
                              references="athletes(id)"/>
             </column>
+
             <column name="event_id" type="BIGINT">
                 <constraints foreignKeyName="fk_records_event" references="events(id)"/>
             </column>
+
             <column name="competition_id" type="BIGINT">
                 <constraints foreignKeyName="fk_records_competition" references="competitions(id)"/>
             </column>
+
+            <column name="time" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="temps_ms" type="BIGINT"/>
             <column name="temps_display" type="VARCHAR(20)"/>
+
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
             <column name="record_date" type="DATE"/>
-            <column name="type" type="VARCHAR(20)"/>
-            <column name="created_at" type="TIMESTAMP"/>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="modified_at" type="TIMESTAMP"/>
+
             <column name="deleted_at" type="TIMESTAMP"/>
         </createTable>
+
+        <createIndex tableName="records" indexName="idx_records_athlete">
+            <column name="athlete_id"/>
+        </createIndex>
+
+        <createIndex tableName="records" indexName="idx_records_swim_style_distance">
+            <column name="swim_style"/>
+            <column name="distance"/>
+        </createIndex>
+
+        <createIndex tableName="records" indexName="idx_records_type">
+            <column name="type"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
