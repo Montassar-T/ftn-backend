@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ftn.backend.dtos.reservation.CreateReservationDto;
+import com.ftn.backend.dtos.reservation.ReservationDto;
+import com.ftn.backend.enums.ReservationStatutEnum;
 import com.ftn.backend.enums.TypeReservationEnum;
 import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.model.Pool;
@@ -48,7 +51,7 @@ class ReservationServiceTest {
     @BeforeEach
     void setUp() {
         pool = Pool.builder().id(POOL_ID).nom("Main pool").ville("Tunis").build();
-        when(poolRepository.findByIdAndDeletedAtIsNullForUpdate(POOL_ID)).thenReturn(Optional.of(pool));
+        lenient().when(poolRepository.findByIdAndDeletedAtIsNullForUpdate(POOL_ID)).thenReturn(Optional.of(pool));
     }
 
     @Test
@@ -112,6 +115,34 @@ class ReservationServiceTest {
         reservationService.create(request);
 
         verify(reservationRepository).findOverlapping(eq(POOL_ID), eq(DATE), eq(START), eq(END));
+    }
+
+    @Test
+    void approveConfirmsPendingReservation() {
+        Reservation existing = existingReservation(2, null);
+        existing.setId(20L);
+        existing.setStatut(ReservationStatutEnum.EN_ATTENTE);
+        when(reservationRepository.findByIdAndDeletedAtIsNull(20L)).thenReturn(Optional.of(existing));
+        when(reservationRepository.save(any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ReservationDto result = reservationService.approve(20L);
+
+        assertEquals(ReservationStatutEnum.CONFIRMEE, result.getStatut());
+        verify(reservationRepository).save(existing);
+    }
+
+    @Test
+    void denyCancelsPendingReservation() {
+        Reservation existing = existingReservation(2, null);
+        existing.setId(21L);
+        existing.setStatut(ReservationStatutEnum.EN_ATTENTE);
+        when(reservationRepository.findByIdAndDeletedAtIsNull(21L)).thenReturn(Optional.of(existing));
+        when(reservationRepository.save(any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ReservationDto result = reservationService.deny(21L);
+
+        assertEquals(ReservationStatutEnum.ANNULEE, result.getStatut());
+        verify(reservationRepository).save(existing);
     }
 
     private CreateReservationDto athleteReservation(Integer lane) {

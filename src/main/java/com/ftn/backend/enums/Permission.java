@@ -16,5 +16,6 @@ public enum Permission {
     REPONSE_DELETE_ANY,
     FORUM_CREATE,
     FORUM_UPDATE,
-    FORUM_DELETE
+    FORUM_DELETE,
+    RESERVATION_APPROVE
 }

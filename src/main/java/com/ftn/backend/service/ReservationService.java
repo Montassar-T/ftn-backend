@@ -4,6 +4,7 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.reservation.CreateReservationDto;
 import com.ftn.backend.dtos.reservation.ReservationDto;
 import com.ftn.backend.dtos.reservation.UpdateReservationDto;
+import com.ftn.backend.enums.ReservationStatutEnum;
 import com.ftn.backend.enums.TypeReservationEnum;
 import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
@@ -122,8 +123,27 @@ public class ReservationService {
         if (dto.getNumerosCouloirs() != null) r.setNumerosCouloirs(toCsv(dto.getNumerosCouloirs()));
         if (dto.getNomClub() != null) r.setNomClub(dto.getNomClub());
         if (dto.getNotes() != null) r.setNotes(dto.getNotes());
-        if (dto.getStatut() != null) r.setStatut(dto.getStatut());
 
+        return toDto(reservationRepository.save(r));
+    }
+
+    @Transactional
+    public ReservationDto approve(Long id) {
+        Reservation r = reservationRepository
+                .findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+        r.setStatut(ReservationStatutEnum.CONFIRMEE);
+        return toDto(reservationRepository.save(r));
+    }
+
+    @Transactional
+    public ReservationDto deny(Long id) {
+        Reservation r = reservationRepository
+                .findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+        r.setStatut(ReservationStatutEnum.ANNULEE);
         return toDto(reservationRepository.save(r));
     }
 

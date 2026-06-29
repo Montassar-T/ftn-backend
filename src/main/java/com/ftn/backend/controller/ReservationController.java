@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,6 +52,18 @@ public class ReservationController {
     public ResponseEntity<SingleResultDto<ReservationDto>> update(
             @PathVariable Long id, @RequestBody UpdateReservationDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reservationService.update(id, dto)));
+    }
+
+    @PutMapping("/{id}/approve")
+    @PreAuthorize("hasAuthority('RESERVATION_APPROVE')")
+    public ResponseEntity<SingleResultDto<ReservationDto>> approve(@PathVariable Long id) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.approve(id)));
+    }
+
+    @PutMapping("/{id}/deny")
+    @PreAuthorize("hasAuthority('RESERVATION_APPROVE')")
+    public ResponseEntity<SingleResultDto<ReservationDto>> deny(@PathVariable Long id) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.deny(id)));
     }
 
     @DeleteMapping("/{id}")

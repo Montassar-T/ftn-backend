@@ -1,6 +1,5 @@
 package com.ftn.backend.dtos.reservation;
 
-import com.ftn.backend.enums.ReservationStatutEnum;
 import com.ftn.backend.enums.TypeReservationEnum;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,5 +22,4 @@ public class UpdateReservationDto {
     private List<Integer> numerosCouloirs;
     private String nomClub;
     private String notes;
-    private ReservationStatutEnum statut;
 }
