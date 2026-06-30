@@ -61,6 +61,12 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<ReservationDto> getByUser(String email) {
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("RESERVATION_APPROVE"));
+        if (!isAdmin && !auth.getName().equals(email)) {
+            throw new com.ftn.backend.exception.auth.AuthException("You cannot view another user's reservations");
+        }
         return reservationRepository.findByReserveeParAndDeletedAtIsNull(email).stream()
                 .map(this::toDto)
                 .toList();
@@ -68,6 +74,9 @@ public class ReservationService {
 
     @Transactional
     public ReservationDto create(CreateReservationDto dto) {
+        String currentUserEmail = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
         Pool pool = poolRepository
                 .findByIdAndDeletedAtIsNullForUpdate(dto.getPoolId())
                 .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
@@ -96,7 +105,7 @@ public class ReservationService {
                 .nbCouloirs(dto.getNbCouloirs())
                 .numeroCouloir(dto.getNumeroCouloir())
                 .numerosCouloirs(toCsv(dto.getNumerosCouloirs()))
-                .reserveePar(dto.getReserveePar())
+                .reserveePar(currentUserEmail)
                 .nomClub(dto.getNomClub())
                 .notes(dto.getNotes())
                 .build();
@@ -113,6 +122,19 @@ public class ReservationService {
         Reservation r = reservationRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("RESERVATION_APPROVE"));
+        boolean isOwner = r.getReserveePar().equals(auth.getName());
+
+        if (!isAdmin && !isOwner) {
+            throw new com.ftn.backend.exception.auth.AuthException("You cannot edit this reservation");
+        }
+        if (!isAdmin && r.getStatut() != ReservationStatutEnum.EN_ATTENTE) {
+            throw new ConflictException("Reservation already reviewed, it can no longer be edited");
+        }
+
 
         if (dto.getDate() != null) r.setDate(dto.getDate());
         if (dto.getHeureDebut() != null) r.setHeureDebut(dto.getHeureDebut());
@@ -152,6 +174,16 @@ public class ReservationService {
         Reservation r = reservationRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("RESERVATION_APPROVE"));
+        boolean isOwner = r.getReserveePar().equals(auth.getName());
+
+        if (!isAdmin && !isOwner) {
+            throw new com.ftn.backend.exception.auth.AuthException("You cannot delete this reservation");
+        }
+
         r.setDeletedAt(LocalDateTime.now());
         reservationRepository.save(r);
     }

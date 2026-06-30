@@ -42,10 +42,6 @@ public class SecurityConfig {
                                 "/api/v1/pools/**",
                                 "/api/v1/reservations/**")
                         .permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/reservations/**")
-                        .permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/v1/reservations/**")
-                        .permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/pools/**")
                         .permitAll()
                         .anyRequest()

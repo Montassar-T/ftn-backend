@@ -75,7 +75,7 @@ public class CompetitionStaffService {
         return CompetitionStaffDto.builder()
                 .id(s.getId())
                 .competitionId(s.getCompetition().getId())
-                .competitionNom(s.getCompetition().getNom())
+                .competitionNom(s.getCompetition().getName())
                 .userId(s.getUser().getId())
                 .userNom(s.getUser().getFirstName() + " " + s.getUser().getLastName())
                 .userEmail(s.getUser().getEmail())
