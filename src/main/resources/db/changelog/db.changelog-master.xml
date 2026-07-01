@@ -37,6 +37,10 @@
     <include file="db/changelog/changes/027-seed-users.xml" />
     <include file="db/changelog/changes/028-seed-staff-and-links.xml" />
     <include file="db/changelog/changes/030-club-staff.xml" />
+    <include file="db/changelog/changes/031-reservations.xml" />
+    <include file="db/changelog/changes/032-reservations-club-mode.xml" />
+    <include file="db/changelog/changes/033-reservations-add-nb-couloirs.xml" />
+    <include file="db/changelog/changes/034-reservation-conflict-index.xml" />
 
     <!-- mezen_branch: news + comments module -->
     <include file="db/changelog/changes/002-news.xml" />
@@ -66,5 +70,8 @@
 
     <!-- forum thread/reply image attachments -->
     <include file="db/changelog/changes/033-forum-images.xml" />
+
+    <include file="db/changelog/changes/035-reservations-seen-by-user.xml" />
+    <include file="db/changelog/changes/036-reservations-recurrence.xml" />
 
 </databaseChangeLog>

@@ -127,7 +127,7 @@ public class RecordService {
                                 : null)
                 .competitionNom(
                         record.getCompetition() != null
-                                ? record.getCompetition().getNom()
+                                ? record.getCompetition().getName()
                                 : null)
                 .type(record.getRecordType())
                 .typeStr(record.getType())

@@ -38,7 +38,11 @@ public class SecurityConfig {
                                 org.springframework.http.HttpMethod.GET,
                                 "/api/v1/forums/**",
                                 "/api/v1/sujets/**",
-                                "/api/v1/reponses/**")
+                                "/api/v1/reponses/**",
+                                "/api/v1/pools/**",
+                                "/api/v1/reservations/**")
+                        .permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/pools/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

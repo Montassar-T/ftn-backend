@@ -24,11 +24,11 @@ public class DataInitializer implements CommandLineRunner {
                     .firstName("Admin")
                     .lastName("FTN")
                     .email("admin@ftn.tn")
-                    .password(passwordEncoder.encode("Admin@2024"))
+                    .password(passwordEncoder.encode("CHANGE_ME"))
                     .role(Role.ADMIN)
                     .build();
             userRepository.save(admin);
-            log.info("Seeded admin user: admin@ftn.tn / Admin@2024");
+            log.info("Admin user created successfully");
         }
     }
 }

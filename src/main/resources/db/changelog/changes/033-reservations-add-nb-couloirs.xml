@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="019-1" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="reservations" columnName="nb_couloirs"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="reservations">
+            <column name="nb_couloirs" type="INT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="019-2" author="Codex">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="reservations" columnName="nb_couloirs"/>
+        </preConditions>
+        <sql>
+            UPDATE reservations
+            SET nb_couloirs = CASE
+                WHEN numeros_couloirs IS NULL OR TRIM(numeros_couloirs) = '' THEN 1
+                ELSE array_length(string_to_array(numeros_couloirs, ','), 1)
+            END
+            WHERE nb_couloirs IS NULL;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

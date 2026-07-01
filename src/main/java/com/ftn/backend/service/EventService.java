@@ -80,7 +80,7 @@ public class EventService {
         return EventDto.builder()
                 .id(e.getId())
                 .competitionId(e.getCompetition().getId())
-                .competitionNom(e.getCompetition().getNom())
+                .competitionNom(e.getCompetition().getName())
                 .swimStyle(e.getSwimStyle())
                 .distance(e.getDistance())
                 .gender(e.getGender())
