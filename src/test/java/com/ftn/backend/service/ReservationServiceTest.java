@@ -2,6 +2,7 @@ package com.ftn.backend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
@@ -33,6 +34,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ReservationServiceTest {
 
     private static final Long POOL_ID = 1L;
+    private static final Integer POOL_LANES = 6;
     private static final LocalDate DATE = LocalDate.of(2026, 6, 12);
     private static final LocalTime START = LocalTime.of(10, 0);
     private static final LocalTime END = LocalTime.of(11, 0);
@@ -50,55 +52,41 @@ class ReservationServiceTest {
 
     @BeforeEach
     void setUp() {
-        pool = Pool.builder().id(POOL_ID).nom("Main pool").ville("Tunis").build();
+        pool = Pool.builder().id(POOL_ID).nom("Main pool").ville("Tunis").nbCouloirs(POOL_LANES).build();
         lenient().when(poolRepository.findByIdAndDeletedAtIsNullForUpdate(POOL_ID)).thenReturn(Optional.of(pool));
     }
 
+    // ---- create() ----
+
     @Test
-    void createRejectsReservationWhenSameLaneOverlaps() {
-        CreateReservationDto request = athleteReservation(2);
-        Reservation existing = existingReservation(2, null);
+    void createRejectsWhenRequestExceedsPoolTotalLanes() {
+        CreateReservationDto request = reservationRequest(POOL_LANES + 1);
+
+        ConflictException exception = assertThrows(ConflictException.class, () -> reservationService.create(request));
+
+        assertEquals("This pool only has " + POOL_LANES + " lanes", exception.getMessage());
+        verify(reservationRepository, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void createRejectsWhenNotEnoughRemainingCapacity() {
+        CreateReservationDto request = reservationRequest(2);
+        Reservation existing = existingReservation(5, ReservationStatutEnum.EN_ATTENTE);
         when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of(existing));
 
         ConflictException exception = assertThrows(ConflictException.class, () -> reservationService.create(request));
 
-        assertEquals("Lane is already reserved for this time slot", exception.getMessage());
-        verify(reservationRepository, never()).save(any());
+        assertTrue(exception.getMessage().contains("Not enough available lanes"));
+        verify(reservationRepository, never()).saveAndFlush(any());
     }
 
     @Test
-    void createRejectsWholePoolReservationWhenPoolHasOverlappingReservation() {
-        CreateReservationDto request = clubReservation(null);
-        Reservation existing = existingReservation(2, null);
+    void createAllowsReservationWhenCapacityIsAvailable() {
+        CreateReservationDto request = reservationRequest(2);
+        Reservation existing = existingReservation(3, ReservationStatutEnum.EN_ATTENTE);
         when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of(existing));
-
-        ConflictException exception = assertThrows(ConflictException.class, () -> reservationService.create(request));
-
-        assertEquals("Pool is already reserved for this time slot", exception.getMessage());
-        verify(reservationRepository, never()).save(any());
-    }
-
-    @Test
-    void createRejectsLaneReservationWhenWholePoolIsAlreadyReserved() {
-        CreateReservationDto request = athleteReservation(2);
-        Reservation existing = existingReservation(null, null);
-        when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of(existing));
-
-        ConflictException exception = assertThrows(ConflictException.class, () -> reservationService.create(request));
-
-        assertEquals(
-                "Cannot reserve lane because the pool is already reserved for this time slot", exception.getMessage());
-        verify(reservationRepository, never()).save(any());
-    }
-
-    @Test
-    void createAllowsDifferentLaneDuringOverlappingTimeSlot() {
-        CreateReservationDto request = athleteReservation(3);
-        Reservation existing = existingReservation(2, null);
-        Reservation saved = existingReservation(3, null);
-        saved.setId(10L);
-        when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of(existing));
-        when(reservationRepository.saveAndFlush(any(Reservation.class))).thenReturn(saved);
+        when(reservationRepository.saveAndFlush(any(Reservation.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         reservationService.create(request);
 
@@ -107,7 +95,7 @@ class ReservationServiceTest {
 
     @Test
     void createChecksForOverlappingReservationsInSamePoolAndTimeSlot() {
-        CreateReservationDto request = athleteReservation(2);
+        CreateReservationDto request = reservationRequest(2);
         when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of());
         when(reservationRepository.saveAndFlush(any(Reservation.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
@@ -117,25 +105,72 @@ class ReservationServiceTest {
         verify(reservationRepository).findOverlapping(eq(POOL_ID), eq(DATE), eq(START), eq(END));
     }
 
+    // ---- approve() ----
+
     @Test
-    void approveConfirmsPendingReservation() {
-        Reservation existing = existingReservation(2, null);
+    void approveAssignsLanesAndConfirmsReservation() {
+        Reservation existing = existingReservation(2, ReservationStatutEnum.EN_ATTENTE);
         existing.setId(20L);
-        existing.setStatut(ReservationStatutEnum.EN_ATTENTE);
         when(reservationRepository.findByIdAndDeletedAtIsNull(20L)).thenReturn(Optional.of(existing));
+        when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of());
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        ReservationDto result = reservationService.approve(20L);
+        ReservationDto result = reservationService.approve(20L, List.of(3, 4));
 
         assertEquals(ReservationStatutEnum.CONFIRMEE, result.getStatut());
+        assertEquals(List.of(3, 4), result.getNumerosCouloirs());
         verify(reservationRepository).save(existing);
     }
 
     @Test
+    void approveRejectsWhenLaneCountDoesNotMatchRequestedCount() {
+        Reservation existing = existingReservation(2, ReservationStatutEnum.EN_ATTENTE);
+        existing.setId(20L);
+        when(reservationRepository.findByIdAndDeletedAtIsNull(20L)).thenReturn(Optional.of(existing));
+
+        ConflictException exception =
+                assertThrows(ConflictException.class, () -> reservationService.approve(20L, List.of(3)));
+
+        assertEquals("Number of assigned lanes must match the requested number (2)", exception.getMessage());
+        verify(reservationRepository, never()).save(any());
+    }
+
+    @Test
+    void approveRejectsWhenLaneIsOutOfRange() {
+        Reservation existing = existingReservation(1, ReservationStatutEnum.EN_ATTENTE);
+        existing.setId(20L);
+        when(reservationRepository.findByIdAndDeletedAtIsNull(20L)).thenReturn(Optional.of(existing));
+
+        ConflictException exception =
+                assertThrows(ConflictException.class, () -> reservationService.approve(20L, List.of(99)));
+
+        assertEquals("Lane 99 does not exist in this pool", exception.getMessage());
+        verify(reservationRepository, never()).save(any());
+    }
+
+    @Test
+    void approveRejectsWhenLaneAlreadyAssignedToConfirmedOverlap() {
+        Reservation existing = existingReservation(1, ReservationStatutEnum.EN_ATTENTE);
+        existing.setId(20L);
+        Reservation otherConfirmed = existingReservation(1, ReservationStatutEnum.CONFIRMEE);
+        otherConfirmed.setId(21L);
+        otherConfirmed.setNumerosCouloirs("3");
+        when(reservationRepository.findByIdAndDeletedAtIsNull(20L)).thenReturn(Optional.of(existing));
+        when(reservationRepository.findOverlapping(POOL_ID, DATE, START, END)).thenReturn(List.of(otherConfirmed));
+
+        ConflictException exception =
+                assertThrows(ConflictException.class, () -> reservationService.approve(20L, List.of(3)));
+
+        assertEquals("Lane 3 is already assigned to another confirmed reservation", exception.getMessage());
+        verify(reservationRepository, never()).save(any());
+    }
+
+    // ---- deny() ----
+
+    @Test
     void denyCancelsPendingReservation() {
-        Reservation existing = existingReservation(2, null);
+        Reservation existing = existingReservation(2, ReservationStatutEnum.EN_ATTENTE);
         existing.setId(21L);
-        existing.setStatut(ReservationStatutEnum.EN_ATTENTE);
         when(reservationRepository.findByIdAndDeletedAtIsNull(21L)).thenReturn(Optional.of(existing));
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -145,41 +180,29 @@ class ReservationServiceTest {
         verify(reservationRepository).save(existing);
     }
 
-    private CreateReservationDto athleteReservation(Integer lane) {
+    // ---- helpers ----
+
+    private CreateReservationDto reservationRequest(Integer nbCouloirs) {
         return CreateReservationDto.builder()
                 .poolId(POOL_ID)
                 .date(DATE)
                 .heureDebut(START)
                 .heureFin(END)
                 .typeReservation(TypeReservationEnum.ATHLETE)
-                .nbCouloirs(1)
-                .numeroCouloir(lane)
+                .nbCouloirs(nbCouloirs)
                 .reserveePar("swimmer@example.com")
                 .build();
     }
 
-    private CreateReservationDto clubReservation(List<Integer> lanes) {
-        return CreateReservationDto.builder()
-                .poolId(POOL_ID)
-                .date(DATE)
-                .heureDebut(START)
-                .heureFin(END)
-                .typeReservation(TypeReservationEnum.CLUB)
-                .nbCouloirs(1)
-                .numerosCouloirs(lanes)
-                .reserveePar("club@example.com")
-                .build();
-    }
-
-    private Reservation existingReservation(Integer lane, String lanes) {
+    private Reservation existingReservation(Integer nbCouloirs, ReservationStatutEnum statut) {
         return Reservation.builder()
                 .pool(pool)
                 .date(DATE)
                 .heureDebut(START)
                 .heureFin(END)
                 .typeReservation(TypeReservationEnum.ATHLETE)
-                .numeroCouloir(lane)
-                .numerosCouloirs(lanes)
+                .nbCouloirs(nbCouloirs)
+                .statut(statut)
                 .reserveePar("existing@example.com")
                 .build();
     }

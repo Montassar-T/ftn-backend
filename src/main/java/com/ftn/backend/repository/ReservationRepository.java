@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Modifying;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, JpaSpecificationExecutor<Reservation> {
@@ -37,4 +38,28 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
             @Param("date") LocalDate date,
             @Param("heureDebut") LocalTime heureDebut,
             @Param("heureFin") LocalTime heureFin);
+	@Query("""
+    SELECT COUNT(r) FROM Reservation r
+    WHERE r.reserveePar = :email
+    AND r.statut <> com.ftn.backend.enums.ReservationStatutEnum.EN_ATTENTE
+    AND r.seenByUser = false
+    AND r.deletedAt IS NULL
+""")
+	long countUnseenForUser(@Param("email") String email);
+
+	@Query("""
+    SELECT COUNT(r) FROM Reservation r
+    WHERE r.statut = com.ftn.backend.enums.ReservationStatutEnum.EN_ATTENTE
+    AND r.deletedAt IS NULL
+""")
+	long countPending();
+
+	@Modifying
+	@Query("""
+    UPDATE Reservation r SET r.seenByUser = true
+    WHERE r.reserveePar = :email
+    AND r.statut <> com.ftn.backend.enums.ReservationStatutEnum.EN_ATTENTE
+    AND r.deletedAt IS NULL
+""")
+	int markSeenForUser(@Param("email") String email);
 }

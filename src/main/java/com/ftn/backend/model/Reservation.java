@@ -60,6 +60,10 @@ public class Reservation extends BaseEntity {
     @Builder.Default
     private ReservationStatutEnum statut = ReservationStatutEnum.EN_ATTENTE;
 
+    @Column(name = "seen_by_user", nullable = false)
+    @Builder.Default
+    private Boolean seenByUser = true;
+
     @Column(length = 500)
     private String notes;
 }

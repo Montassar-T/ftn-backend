@@ -5,7 +5,6 @@ import com.ftn.backend.dtos.reservation.CreateReservationDto;
 import com.ftn.backend.dtos.reservation.ReservationDto;
 import com.ftn.backend.dtos.reservation.UpdateReservationDto;
 import com.ftn.backend.enums.ReservationStatutEnum;
-import com.ftn.backend.enums.TypeReservationEnum;
 import com.ftn.backend.exception.business.ConflictException;
 import com.ftn.backend.exception.business.ResourceNotFoundException;
 import com.ftn.backend.model.Pool;
@@ -81,19 +80,24 @@ public class ReservationService {
                 .findByIdAndDeletedAtIsNullForUpdate(dto.getPoolId())
                 .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
 
-        // Determine requested lanes: null/empty list = whole pool
-        List<Integer> requestedLanes =
-                resolveRequestedLanes(dto.getTypeReservation(), dto.getNumeroCouloir(), dto.getNumerosCouloirs());
+        int totalLanes = pool.getNbCouloirs() != null ? pool.getNbCouloirs() : 0;
 
-        // Check conflicts against existing overlapping reservations
+        if (dto.getNbCouloirs() > totalLanes) {
+            throw new ConflictException("This pool only has " + totalLanes + " lanes");
+        }
+
+        // Check remaining capacity against every overlapping, non-cancelled reservation
         List<Reservation> overlapping = reservationRepository.findOverlapping(
                 dto.getPoolId(), dto.getDate(), dto.getHeureDebut(), dto.getHeureFin());
 
-        for (Reservation existing : overlapping) {
-            List<Integer> existingLanes = resolveExistingLanes(existing);
-            if (lanesConflict(requestedLanes, existingLanes)) {
-                throw new ConflictException(conflictMessage(requestedLanes, existingLanes));
-            }
+        int alreadyReserved = overlapping.stream()
+                .mapToInt(r -> r.getNbCouloirs() != null ? r.getNbCouloirs() : 0)
+                .sum();
+
+        if (alreadyReserved + dto.getNbCouloirs() > totalLanes) {
+            int remaining = Math.max(totalLanes - alreadyReserved, 0);
+            throw new ConflictException(
+                    "Not enough available lanes for this time slot (only " + remaining + " remaining)");
         }
 
         Reservation reservation = Reservation.builder()
@@ -103,8 +107,6 @@ public class ReservationService {
                 .heureFin(dto.getHeureFin())
                 .typeReservation(dto.getTypeReservation())
                 .nbCouloirs(dto.getNbCouloirs())
-                .numeroCouloir(dto.getNumeroCouloir())
-                .numerosCouloirs(toCsv(dto.getNumerosCouloirs()))
                 .reserveePar(currentUserEmail)
                 .nomClub(dto.getNomClub())
                 .notes(dto.getNotes())
@@ -113,7 +115,7 @@ public class ReservationService {
         try {
             return toDto(reservationRepository.saveAndFlush(reservation));
         } catch (DataIntegrityViolationException ex) {
-            throw new ConflictException(conflictMessage(requestedLanes, null));
+            throw new ConflictException("Not enough available lanes for this time slot");
         }
     }
 
@@ -135,14 +137,11 @@ public class ReservationService {
             throw new ConflictException("Reservation already reviewed, it can no longer be edited");
         }
 
-
         if (dto.getDate() != null) r.setDate(dto.getDate());
         if (dto.getHeureDebut() != null) r.setHeureDebut(dto.getHeureDebut());
         if (dto.getHeureFin() != null) r.setHeureFin(dto.getHeureFin());
         if (dto.getTypeReservation() != null) r.setTypeReservation(dto.getTypeReservation());
         if (dto.getNbCouloirs() != null) r.setNbCouloirs(dto.getNbCouloirs());
-        if (dto.getNumeroCouloir() != null) r.setNumeroCouloir(dto.getNumeroCouloir());
-        if (dto.getNumerosCouloirs() != null) r.setNumerosCouloirs(toCsv(dto.getNumerosCouloirs()));
         if (dto.getNomClub() != null) r.setNomClub(dto.getNomClub());
         if (dto.getNotes() != null) r.setNotes(dto.getNotes());
 
@@ -150,12 +149,44 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationDto approve(Long id) {
+    public ReservationDto approve(Long id, List<Integer> lanes) {
         Reservation r = reservationRepository
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
 
+        if (lanes == null || lanes.isEmpty()) {
+            throw new ConflictException("You must assign at least one lane");
+        }
+        if (r.getNbCouloirs() != null && lanes.size() != r.getNbCouloirs()) {
+            throw new ConflictException(
+                    "Number of assigned lanes must match the requested number (" + r.getNbCouloirs() + ")");
+        }
+
+        int totalLanes = r.getPool().getNbCouloirs() != null ? r.getPool().getNbCouloirs() : 0;
+        for (Integer lane : lanes) {
+            if (lane < 1 || lane > totalLanes) {
+                throw new ConflictException("Lane " + lane + " does not exist in this pool");
+            }
+        }
+
+        List<Reservation> overlapping = reservationRepository.findOverlapping(
+                r.getPool().getId(), r.getDate(), r.getHeureDebut(), r.getHeureFin());
+
+        for (Reservation other : overlapping) {
+            if (other.getId().equals(r.getId())) continue;
+            if (other.getStatut() != ReservationStatutEnum.CONFIRMEE) continue;
+            List<Integer> otherLanes = fromCsv(other.getNumerosCouloirs());
+            for (Integer lane : lanes) {
+                if (otherLanes.contains(lane)) {
+                    throw new ConflictException(
+                            "Lane " + lane + " is already assigned to another confirmed reservation");
+                }
+            }
+        }
+
+        r.setNumerosCouloirs(toCsv(lanes));
         r.setStatut(ReservationStatutEnum.CONFIRMEE);
+        r.setSeenByUser(false);
         return toDto(reservationRepository.save(r));
     }
 
@@ -166,7 +197,29 @@ public class ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
 
         r.setStatut(ReservationStatutEnum.ANNULEE);
+        r.setSeenByUser(false);
         return toDto(reservationRepository.save(r));
+    }
+
+    @Transactional(readOnly = true)
+    public long getUnseenCount() {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return reservationRepository.countUnseenForUser(email);
+    }
+
+    @Transactional(readOnly = true)
+    public long getPendingCount() {
+        return reservationRepository.countPending();
+    }
+
+    @Transactional
+    public void markSeen() {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        reservationRepository.markSeenForUser(email);
     }
 
     @Transactional
@@ -189,58 +242,6 @@ public class ReservationService {
     }
 
     // ---- Helpers ----
-
-    /** Returns null to mean "whole pool", otherwise the list of requested lane numbers. */
-    private List<Integer> resolveRequestedLanes(
-            TypeReservationEnum type, Integer numeroCouloir, List<Integer> numerosCouloirs) {
-        if (type == TypeReservationEnum.CLUB) {
-            if (numerosCouloirs == null || numerosCouloirs.isEmpty()) {
-                return null; // whole pool
-            }
-            return numerosCouloirs;
-        } else {
-            // ATHLETE
-            if (numeroCouloir == null) {
-                return null; // whole pool (rare)
-            }
-            return List.of(numeroCouloir);
-        }
-    }
-
-    private List<Integer> resolveExistingLanes(Reservation r) {
-        if (r.getNumerosCouloirs() != null && !r.getNumerosCouloirs().isBlank()) {
-            return Arrays.stream(r.getNumerosCouloirs().split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-        }
-        if (r.getNumeroCouloir() != null) {
-            return List.of(r.getNumeroCouloir());
-        }
-        return null; // whole pool
-    }
-
-    /** Conflict if either side is "whole pool" (null), or if lane lists intersect. */
-    private boolean lanesConflict(List<Integer> requested, List<Integer> existing) {
-        if (requested == null || existing == null) {
-            return true; // one of them occupies the whole pool
-        }
-        for (Integer lane : requested) {
-            if (existing.contains(lane)) return true;
-        }
-        return false;
-    }
-
-    private String conflictMessage(List<Integer> requested, List<Integer> existing) {
-        if (requested == null) {
-            return "Pool is already reserved for this time slot";
-        }
-        if (existing == null) {
-            return "Cannot reserve lane because the pool is already reserved for this time slot";
-        }
-        return "Lane is already reserved for this time slot";
-    }
 
     private String toCsv(List<Integer> lanes) {
         if (lanes == null || lanes.isEmpty()) return null;

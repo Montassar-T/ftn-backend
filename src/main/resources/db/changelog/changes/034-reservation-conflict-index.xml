@@ -6,8 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="020-1" author="Codex">
-        <preConditions onFail="MARK_RAN">
+    <changeSet id="034-1" author="Codex">        <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*)
                 FROM pg_indexes

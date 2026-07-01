@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.ftn.backend.dtos.reservation.AssignLanesDto;
+
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -26,6 +28,22 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<PageDto<ReservationDto>> getAll(@RequestParam Map<String, String> params) {
         return reservationService.getAll(params);
+    }
+    @GetMapping("/unseen-count")
+    public ResponseEntity<Map<String, Long>> getUnseenCount() {
+        return ResponseEntity.ok(Map.of("count", reservationService.getUnseenCount()));
+    }
+
+    @GetMapping("/pending-count")
+    @PreAuthorize("hasAuthority('RESERVATION_APPROVE')")
+    public ResponseEntity<Map<String, Long>> getPendingCount() {
+        return ResponseEntity.ok(Map.of("count", reservationService.getPendingCount()));
+    }
+
+    @PutMapping("/mark-seen")
+    public ResponseEntity<Void> markSeen() {
+        reservationService.markSeen();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
@@ -56,8 +74,9 @@ public class ReservationController {
 
     @PutMapping("/{id}/approve")
     @PreAuthorize("hasAuthority('RESERVATION_APPROVE')")
-    public ResponseEntity<SingleResultDto<ReservationDto>> approve(@PathVariable Long id) {
-        return ResponseEntity.ok(new SingleResultDto<>(reservationService.approve(id)));
+    public ResponseEntity<SingleResultDto<ReservationDto>> approve(
+            @PathVariable Long id, @Valid @RequestBody AssignLanesDto dto) {
+        return ResponseEntity.ok(new SingleResultDto<>(reservationService.approve(id, dto.getLanes())));
     }
 
     @PutMapping("/{id}/deny")
