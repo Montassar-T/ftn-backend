@@ -66,4 +66,7 @@ public class Reservation extends BaseEntity {
 
     @Column(length = 500)
     private String notes;
+
+    @Column(name = "groupe_recurrence_id", length = 36)
+    private String groupeRecurrenceId;
 }

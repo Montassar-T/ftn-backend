@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.ftn.backend.dtos.reservation.AssignLanesDto;
+import com.ftn.backend.dtos.reservation.CreateRecurringReservationDto;
 
 
 @RestController
@@ -65,6 +66,13 @@ public class ReservationController {
     public ResponseEntity<SingleResultDto<ReservationDto>> create(@Valid @RequestBody CreateReservationDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(reservationService.create(dto)));
     }
+
+    @PostMapping("/recurring")
+    public ResponseEntity<List<ReservationDto>> createRecurring(
+            @Valid @RequestBody CreateRecurringReservationDto dto) {
+        return ResponseEntity.ok(reservationService.createRecurring(dto));
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<SingleResultDto<ReservationDto>> update(

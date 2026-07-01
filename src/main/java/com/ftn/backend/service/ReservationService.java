@@ -24,6 +24,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ftn.backend.dtos.reservation.CreateRecurringReservationDto;
+import java.time.LocalDate;
+import java.util.UUID;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -116,6 +121,76 @@ public class ReservationService {
             return toDto(reservationRepository.saveAndFlush(reservation));
         } catch (DataIntegrityViolationException ex) {
             throw new ConflictException("Not enough available lanes for this time slot");
+        }
+    }
+
+    @Transactional
+    public List<ReservationDto> createRecurring(CreateRecurringReservationDto dto) {
+        String currentUserEmail = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        // Same lock as create(): FOR UPDATE on the pool row. This is what makes it
+        // "integrated" — while this transaction is running, any other create() or
+        // createRecurring() call on the SAME pool blocks until this one commits or
+        // rolls back. So a concurrent user can't sneak a conflicting booking in
+        // between our week-1 check and our week-8 check.
+        Pool pool = poolRepository
+                .findByIdAndDeletedAtIsNullForUpdate(dto.getPoolId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
+
+        int totalLanes = pool.getNbCouloirs() != null ? pool.getNbCouloirs() : 0;
+
+        if (dto.getNbCouloirs() > totalLanes) {
+            throw new ConflictException("This pool only has " + totalLanes + " lanes");
+        }
+
+        // One id links every row generated from this single request.
+        String groupeRecurrenceId = UUID.randomUUID().toString();
+
+        List<Reservation> toCreate = new ArrayList<>();
+
+        for (int week = 0; week < dto.getOccurrences(); week++) {
+            LocalDate occurrenceDate = dto.getStartDate().plusWeeks(week);
+
+            // Exact same conflict check as create(), just run once per week.
+            List<Reservation> overlapping = reservationRepository.findOverlapping(
+                    dto.getPoolId(), occurrenceDate, dto.getHeureDebut(), dto.getHeureFin());
+
+            int alreadyReserved = overlapping.stream()
+                    .mapToInt(r -> r.getNbCouloirs() != null ? r.getNbCouloirs() : 0)
+                    .sum();
+
+            if (alreadyReserved + dto.getNbCouloirs() > totalLanes) {
+                int remaining = Math.max(totalLanes - alreadyReserved, 0);
+                // All-or-nothing: throwing here rolls back the WHOLE transaction,
+                // so no row from this series gets persisted, even the earlier weeks
+                // we already validated in this loop.
+                throw new ConflictException(
+                        "Not enough available lanes on " + occurrenceDate
+                                + " (only " + remaining + " remaining). No reservation in the series was created.");
+            }
+
+            toCreate.add(Reservation.builder()
+                    .pool(pool)
+                    .date(occurrenceDate)
+                    .heureDebut(dto.getHeureDebut())
+                    .heureFin(dto.getHeureFin())
+                    .typeReservation(dto.getTypeReservation())
+                    .nbCouloirs(dto.getNbCouloirs())
+                    .reserveePar(currentUserEmail)
+                    .nomClub(dto.getNomClub())
+                    .notes(dto.getNotes())
+                    .groupeRecurrenceId(groupeRecurrenceId)
+                    .build());
+        }
+
+        try {
+            return reservationRepository.saveAllAndFlush(toCreate).stream()
+                    .map(this::toDto)
+                    .toList();
+        } catch (DataIntegrityViolationException ex) {
+            throw new ConflictException("Not enough available lanes for one of the requested weeks");
         }
     }
 

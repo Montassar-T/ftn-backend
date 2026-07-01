@@ -72,4 +72,6 @@
     <include file="db/changelog/changes/033-forum-images.xml" />
 
     <include file="db/changelog/changes/035-reservations-seen-by-user.xml" />
+    <include file="db/changelog/changes/036-reservations-recurrence.xml" />
+
 </databaseChangeLog>
