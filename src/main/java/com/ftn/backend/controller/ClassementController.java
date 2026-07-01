@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/rankings")
+@RequestMapping("/api/v1/classements")
 @RequiredArgsConstructor
 @Tag(name = "NationalRanking", description = "National ranking management APIs")
 public class ClassementController {

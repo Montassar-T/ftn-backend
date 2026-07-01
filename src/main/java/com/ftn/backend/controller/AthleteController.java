@@ -50,6 +50,11 @@ public class AthleteController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<SingleResultDto<AthleteDto>> getByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(new SingleResultDto<>(athleteService.getByUserId(userId)));
+    }
+
     @GetMapping("/{id}/licences")
     public ResponseEntity<List<LicenceDto>> getLicences(@PathVariable Long id) {
         return ResponseEntity.ok(athleteService.getLicences(id));

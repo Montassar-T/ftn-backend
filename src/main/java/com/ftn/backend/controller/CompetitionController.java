@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,28 +34,33 @@ public class CompetitionController {
         return ResponseEntity.ok(new SingleResultDto<>(competitionService.getById(id)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SingleResultDto<CompetitionDto>> create(@Valid @RequestBody CreateCompetitionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(competitionService.create(dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SingleResultDto<CompetitionDto>> update(
             @PathVariable Long id, @RequestBody UpdateCompetitionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(competitionService.update(id, dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         competitionService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/demarrer")
     public ResponseEntity<SingleResultDto<CompetitionDto>> demarrer(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(competitionService.demarrer(id)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/terminer")
     public ResponseEntity<SingleResultDto<CompetitionDto>> terminer(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(competitionService.terminer(id)));

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="033-create-resultats-table" author="ftn-dev">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="resultats"/></not>
+        </preConditions>
+        <createTable tableName="resultats">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="athlete_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_resultat_athlete" references="athletes(id)"/>
+            </column>
+            <column name="epreuve_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_resultat_epreuve" references="epreuves(id)"/>
+            </column>
+            <column name="lane" type="INTEGER"/>
+            <column name="temps_ms" type="INTEGER"/>
+            <column name="temps_display" type="VARCHAR(20)"/>
+            <column name="points_fina" type="DECIMAL(8,2)"/>
+            <column name="tour" type="VARCHAR(50)"/>
+            <column name="status" type="VARCHAR(50)" defaultValue="EN_ATTENTE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rank" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_record" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validated_by" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="resultats"
+                baseColumnNames="validated_by"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_resultat_validated_by"/>
+        <createIndex tableName="resultats" indexName="idx_resultats_athlete_id">
+            <column name="athlete_id"/>
+        </createIndex>
+        <createIndex tableName="resultats" indexName="idx_resultats_epreuve_id">
+            <column name="epreuve_id"/>
+        </createIndex>
+        <createIndex tableName="resultats" indexName="idx_resultats_status">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="033-create-classements-table" author="ftn-dev">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="classements"/></not>
+        </preConditions>
+        <createTable tableName="classements">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="athlete_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_classement_athlete" references="athletes(id)"/>
+            </column>
+            <column name="epreuve_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_classement_epreuve" references="epreuves(id)"/>
+            </column>
+            <column name="best_time_ms" type="INTEGER"/>
+            <column name="best_time_display" type="VARCHAR(20)"/>
+            <column name="points_fina" type="DECIMAL(8,2)"/>
+            <column name="rank" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="season" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        <addUniqueConstraint
+                tableName="classements"
+                columnNames="athlete_id, epreuve_id, season"
+                constraintName="uk_classement_scope"/>
+        <createIndex tableName="classements" indexName="idx_classements_season">
+            <column name="season"/>
+        </createIndex>
+        <createIndex tableName="classements" indexName="idx_classements_rank">
+            <column name="rank"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

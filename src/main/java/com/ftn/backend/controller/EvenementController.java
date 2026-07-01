@@ -7,12 +7,10 @@ import com.ftn.backend.dtos.evenement.EvenementDto;
 import com.ftn.backend.dtos.evenement.UpdateEvenementDto;
 import com.ftn.backend.dtos.participation.CreateParticipationDto;
 import com.ftn.backend.dtos.participation.ParticipationDto;
-import com.ftn.backend.enums.ParticipationStatus;
 import com.ftn.backend.service.EvenementService;
 import com.ftn.backend.service.ParticipationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,22 +53,11 @@ public class EvenementController {
     }
 
     // Participation sub-resource
-    @GetMapping("/{id}/participations")
-    public ResponseEntity<List<ParticipationDto>> getParticipations(@PathVariable Long id) {
-        return ResponseEntity.ok(participationService.getByEvenement(id));
-    }
-
     @PostMapping("/{id}/participations")
     public ResponseEntity<SingleResultDto<ParticipationDto>> register(
             @PathVariable Long id, @Valid @RequestBody CreateParticipationDto dto) {
         dto.setEvenementId(id);
         return ResponseEntity.ok(new SingleResultDto<>(participationService.create(dto)));
-    }
-
-    @PatchMapping("/participations/{participationId}/status")
-    public ResponseEntity<SingleResultDto<ParticipationDto>> updateParticipationStatus(
-            @PathVariable Long participationId, @RequestParam ParticipationStatus status) {
-        return ResponseEntity.ok(new SingleResultDto<>(participationService.updateStatus(participationId, status)));
     }
 
     @DeleteMapping("/participations/{participationId}")

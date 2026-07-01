@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class ForumReactionController {
 
     private final ForumReactionService reactionService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/posts/{postId}/react")
     public ResponseEntity<SingleResultDto<ForumReactionDto>> reactToPost(
             @PathVariable Long postId, @Valid @RequestBody CreateReactionDto dto) {
@@ -25,6 +27,7 @@ public class ForumReactionController {
         return ResponseEntity.ok(new SingleResultDto<>(reactionService.react(dto)));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/threads/{threadId}/react")
     public ResponseEntity<SingleResultDto<ForumReactionDto>> reactToThread(
             @PathVariable Long threadId, @Valid @RequestBody CreateReactionDto dto) {
@@ -32,6 +35,7 @@ public class ForumReactionController {
         return ResponseEntity.ok(new SingleResultDto<>(reactionService.react(dto)));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/reactions/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reactionService.delete(id);

@@ -1,6 +1,6 @@
 package com.ftn.backend.model;
 
-import com.ftn.backend.enums.ParticipationStatus;
+import com.ftn.backend.enums.ParticipationStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,5 +31,5 @@ public class Participation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     @Builder.Default
-    private ParticipationStatus status = ParticipationStatus.EN_ATTENTE;
+    private ParticipationStatusEnum status = ParticipationStatusEnum.EN_ATTENTE;
 }

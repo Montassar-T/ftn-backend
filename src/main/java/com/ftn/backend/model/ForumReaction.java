@@ -1,5 +1,6 @@
 package com.ftn.backend.model;
 
+import com.ftn.backend.enums.ForumReactionTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class ForumReaction extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
-    private String type;
+    private ForumReactionTypeEnum type;
 }

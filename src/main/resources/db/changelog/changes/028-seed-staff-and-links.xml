@@ -11,7 +11,7 @@
       Uses the 10 users seeded in 027 (IDs assigned by sequence)
       We resolve their IDs with sub-selects on email to be safe.
 
-      Password for all 027 users: Password123!
+      Password for all 027 users: password
       Admin: admin@ftn.tn / Admin@2024
     -->
 
@@ -266,7 +266,7 @@
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM users WHERE email = 'fatma.ben.ali@ftn.tn'</sqlCheck>
         </preConditions>
         <sql>
-            -- Password for all: Password123!
+            -- Password for all: password
             INSERT INTO users (first_name, last_name, email, password, role, status, created_at) VALUES
             ('Fatma',    'Ben Ali',    'fatma.ben.ali@ftn.tn',    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),
             ('Hedi',     'Gharbi',    'hedi.gharbi@ftn.tn',      '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'COACH', 'ACTIVE', NOW()),

@@ -33,10 +33,7 @@ public class CompetitionStaffService {
 
     @Transactional(readOnly = true)
     public List<CompetitionStaffDto> getAll() {
-        return staffRepository.findAll().stream()
-                .filter(s -> s.getDeletedAt() == null)
-                .map(this::toDto)
-                .toList();
+        return staffRepository.findByDeletedAtIsNull().stream().map(this::toDto).toList();
     }
 
     @Transactional

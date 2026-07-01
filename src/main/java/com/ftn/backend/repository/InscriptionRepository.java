@@ -12,7 +12,15 @@ public interface InscriptionRepository extends JpaRepository<Inscription, Long>,
 
     List<Inscription> findByAthlete_IdAndDeletedAtIsNull(Long athleteId);
 
+    List<Inscription> findByEpreuve_IdAndDeletedAtIsNullOrderByRegisteredAtAsc(Long epreuveId);
+
     List<Inscription> findByEpreuve_IdAndDeletedAtIsNull(Long epreuveId);
 
+    List<Inscription> findByEpreuve_Competition_IdAndDeletedAtIsNullOrderByRegisteredAtAsc(Long competitionId);
+
     List<Inscription> findByEpreuve_Competition_IdAndDeletedAtIsNull(Long competitionId);
+
+    boolean existsByAthlete_IdAndEpreuve_IdAndDeletedAtIsNull(Long athleteId, Long epreuveId);
+
+    long countByEpreuve_IdAndStatusAndDeletedAtIsNull(Long epreuveId, String status);
 }

@@ -4,6 +4,7 @@ import com.ftn.backend.dtos.PageDto;
 import com.ftn.backend.dtos.evenement.CreateEvenementDto;
 import com.ftn.backend.dtos.evenement.EvenementDto;
 import com.ftn.backend.dtos.evenement.UpdateEvenementDto;
+import com.ftn.backend.enums.CompetitionStatutEnum;
 import com.ftn.backend.enums.CompetitionTypeEnum;
 import com.ftn.backend.enums.EvenementStatus;
 import com.ftn.backend.enums.EvenementType;
@@ -90,7 +91,7 @@ public class EvenementService {
                             dto.getRegistrationDeadline() != null
                                     ? dto.getRegistrationDeadline().atStartOfDay()
                                     : null)
-                    .status("PLANIFIEE")
+                    .statut(CompetitionStatutEnum.A_VENIR)
                     .evenement(saved)
                     .build();
             competitionRepository.save(comp);
@@ -131,7 +132,7 @@ public class EvenementService {
                 if (dto.getCompetitionCode() != null) comp.setCode(dto.getCompetitionCode());
                 if (dto.getRegistrationDeadline() != null)
                     comp.setRegistrationDeadline(dto.getRegistrationDeadline().atStartOfDay());
-                if (dto.getStatus() != null) comp.setStatus(toCompetitionStatus(dto.getStatus()));
+                if (dto.getStatus() != null) comp.setStatut(toCompetitionStatus(dto.getStatus()));
                 competitionRepository.save(comp);
             });
         }
@@ -192,13 +193,12 @@ public class EvenementService {
                 .build();
     }
 
-    /** Maps EvenementStatus → Competition status string */
-    private String toCompetitionStatus(EvenementStatus status) {
-        if (status == null) return "PLANIFIEE";
+    private CompetitionStatutEnum toCompetitionStatus(EvenementStatus status) {
+        if (status == null) return CompetitionStatutEnum.A_VENIR;
         return switch (status) {
-            case EN_COURS -> "EN_COURS";
-            case TERMINE, ARCHIVE -> "TERMINEE";
-            default -> "PLANIFIEE";
+            case EN_COURS -> CompetitionStatutEnum.EN_COURS;
+            case TERMINE, ARCHIVE -> CompetitionStatutEnum.TERMINE;
+            default -> CompetitionStatutEnum.A_VENIR;
         };
     }
 }

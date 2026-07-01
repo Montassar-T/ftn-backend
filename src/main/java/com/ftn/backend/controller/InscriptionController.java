@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,22 +47,26 @@ public class InscriptionController {
         return ResponseEntity.ok(inscriptionService.getByCompetition(competitionId));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<SingleResultDto<InscriptionDto>> create(@Valid @RequestBody CreateInscriptionDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.create(dto)));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         inscriptionService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/validate")
     public ResponseEntity<SingleResultDto<InscriptionDto>> validate(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.valider(id)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/cancel")
     public ResponseEntity<SingleResultDto<InscriptionDto>> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(new SingleResultDto<>(inscriptionService.annuler(id)));

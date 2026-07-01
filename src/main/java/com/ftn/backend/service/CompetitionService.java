@@ -104,7 +104,6 @@ public class CompetitionService {
         if (dto.getEndDate() != null) competition.setEndDate(dto.getEndDate());
         if (dto.getRegistrationDeadline() != null) competition.setRegistrationDeadline(dto.getRegistrationDeadline());
         if (dto.getStatut() != null) competition.setStatut(dto.getStatut());
-        if (dto.getStatus() != null) competition.setStatus(dto.getStatus());
         if (dto.getDescription() != null) competition.setDescription(dto.getDescription());
         if (dto.getNbParticipants() != null) competition.setNbParticipants(dto.getNbParticipants());
         if (dto.getLane() != null) competition.setLane(dto.getLane());
@@ -170,23 +169,23 @@ public class CompetitionService {
      */
     @Transactional
     public void updateStatusesForDate(LocalDate today) {
-        // PLANIFIEE → EN_COURS
-        competitionRepository.findByStatusAndDeletedAtIsNull("PLANIFIEE").stream()
+        // A_VENIR → EN_COURS
+        competitionRepository.findByStatutAndDeletedAtIsNull(CompetitionStatutEnum.A_VENIR).stream()
                 .filter(c -> c.getStartDate() != null && !today.isBefore(c.getStartDate()))
                 .filter(c -> c.getEndDate() != null && !today.isAfter(c.getEndDate()))
                 .forEach(c -> {
-                    c.setStatus("EN_COURS");
+                    c.setStatut(CompetitionStatutEnum.EN_COURS);
                     competitionRepository.save(c);
-                    log.info("Competition [{}] '{}' → EN_COURS", c.getId(), c.getName());
+                    log.info("Competition [{}] '{}' → EN_COURS", c.getId(), c.getNom());
                 });
 
-        // EN_COURS → TERMINEE
-        competitionRepository.findByStatusAndDeletedAtIsNull("EN_COURS").stream()
+        // EN_COURS → TERMINE
+        competitionRepository.findByStatutAndDeletedAtIsNull(CompetitionStatutEnum.EN_COURS).stream()
                 .filter(c -> c.getEndDate() != null && today.isAfter(c.getEndDate()))
                 .forEach(c -> {
-                    c.setStatus("TERMINEE");
+                    c.setStatut(CompetitionStatutEnum.TERMINE);
                     competitionRepository.save(c);
-                    log.info("Competition [{}] '{}' → TERMINEE", c.getId(), c.getName());
+                    log.info("Competition [{}] '{}' → TERMINE", c.getId(), c.getNom());
                 });
     }
 
@@ -212,7 +211,6 @@ public class CompetitionService {
                                 ? competition.getCreatedBy().getId()
                                 : null)
                 .statut(competition.getStatut())
-                .status(competition.getStatus())
                 .description(competition.getDescription())
                 .nbParticipants(competition.getNbParticipants())
                 .createdAt(competition.getCreatedAt())

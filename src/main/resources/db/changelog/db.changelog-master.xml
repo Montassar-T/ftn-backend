@@ -16,8 +16,6 @@
     <include file="db/changelog/changes/008-forums.xml" />
     <include file="db/changelog/changes/009-sujets.xml" />
     <include file="db/changelog/changes/010-reponses.xml" />
-
-    <!-- HEAD (local dev: RBAC, forum, club staff) -->
     <include file="db/changelog/changes/011-clubs-update.xml" />
     <include file="db/changelog/changes/012-pools.xml" />
     <include file="db/changelog/changes/013-competitions.xml" />
@@ -37,21 +35,8 @@
     <include file="db/changelog/changes/027-seed-users.xml" />
     <include file="db/changelog/changes/028-seed-staff-and-links.xml" />
     <include file="db/changelog/changes/030-club-staff.xml" />
-
-    <!-- Upstream (competition management module) -->
-    <include file="db/changelog/changes/011-competitions.xml" />
-    <include file="db/changelog/changes/012-epreuves.xml" />
-    <include file="db/changelog/changes/013-resultats.xml" />
-    <include file="db/changelog/changes/014-classements.xml" />
-    <include file="db/changelog/changes/015-alter-competitions.xml" />
-    <include file="db/changelog/changes/016-alter-epreuves.xml" />
-    <include file="db/changelog/changes/017-alter-inscriptions.xml" />
-    <include file="db/changelog/changes/018-alter-resultats.xml" />
-    <include file="db/changelog/changes/019-alter-classements.xml" />
-    <include file="db/changelog/changes/021-alter-competitions-epreuves-resultats.xml" />
-    <include file="db/changelog/changes/022-alter-classements.xml" />
-    <include file="db/changelog/changes/023-alter-users-role.xml" />
-    <include file="db/changelog/changes/024-seed-ftn-data.sql" />
-    <include file="db/changelog/changes/025-evenements.xml" />
+    <include file="db/changelog/changes/031-evenements.xml" />
+    <include file="db/changelog/changes/032-competition-upstream-fields.xml" />
+    <include file="db/changelog/changes/033-resultats-classements.xml" />
 
 </databaseChangeLog>

@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <!-- Seed users for staff/club management. Password for all: Password123! -->
+    <!-- Seed users for staff/club management. Password for all: password -->
     <changeSet id="027-seed-users" author="admin">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM users WHERE email = 'khaled.mzoughi@ftn.tn'</sqlCheck>

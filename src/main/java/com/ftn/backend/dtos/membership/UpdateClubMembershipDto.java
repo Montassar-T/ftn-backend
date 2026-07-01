@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos.membership;
 
+import com.ftn.backend.enums.ClubMembershipRoleEnum;
 import java.time.LocalDate;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateClubMembershipDto {
-    private String role;
+    private ClubMembershipRoleEnum role;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isCurrent;

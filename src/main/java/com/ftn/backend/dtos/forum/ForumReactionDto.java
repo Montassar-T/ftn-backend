@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos.forum;
 
+import com.ftn.backend.enums.ForumReactionTypeEnum;
 import lombok.*;
 
 @Getter
@@ -13,5 +14,5 @@ public class ForumReactionDto {
     private Long postId;
     private Long userId;
     private String userEmail;
-    private String type;
+    private ForumReactionTypeEnum type;
 }

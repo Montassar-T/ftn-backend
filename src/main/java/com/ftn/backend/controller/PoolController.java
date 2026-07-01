@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,16 +38,19 @@ public class PoolController {
         return ResponseEntity.ok(new SingleResultDto<>(poolService.getById(id)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SingleResultDto<PoolDto>> create(@Valid @RequestBody CreatePoolDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(poolService.create(dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SingleResultDto<PoolDto>> update(@PathVariable Long id, @RequestBody UpdatePoolDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(poolService.update(id, dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         poolService.delete(id);

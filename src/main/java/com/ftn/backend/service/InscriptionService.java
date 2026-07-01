@@ -15,6 +15,7 @@ import com.ftn.backend.repository.InscriptionRepository;
 import com.ftn.backend.repository.LicenceRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -34,17 +35,18 @@ public class InscriptionService {
 
     @Transactional(readOnly = true)
     public InscriptionDto getById(Long id) {
-        Inscription inscription = inscriptionRepository
-                .findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Registration not found"));
-        return toDto(inscription);
+        return toDto(
+                inscriptionRepository
+                        .findByIdAndDeletedAtIsNull(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Registration not found")),
+                null);
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<PageDto<InscriptionDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Inscription> filters = new JpaQueryFilters<>(params, Inscription.class);
         Page<Inscription> page = inscriptionRepository.findAll(filters.getSpecification(), filters.getPageable());
-        List<InscriptionDto> data = page.stream().map(this::toDto).toList();
+        List<InscriptionDto> data = page.stream().map(i -> toDto(i, null)).toList();
         return ResponseEntity.ok(PageDto.<InscriptionDto>builder()
                 .data(data)
                 .total(page.getTotalElements())
@@ -60,10 +62,14 @@ public class InscriptionService {
                 .findByIdAndDeletedAtIsNull(dto.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
+        if (inscriptionRepository.existsByAthlete_IdAndEpreuve_IdAndDeletedAtIsNull(athlete.getId(), epreuve.getId())) {
+            throw new ConflictException("Athlete already registered for this event");
+        }
+
         boolean licenceActive = licenceRepository.findByAthlete_IdAndDeletedAtIsNull(athlete.getId()).stream()
-                .anyMatch(licence -> licence.getStatut() == StatutLicenceEnum.VALIDEE
-                        && (licence.getDateExpiration() == null
-                                || !licence.getDateExpiration().isBefore(java.time.LocalDate.now())));
+                .anyMatch(l -> l.getStatut() == StatutLicenceEnum.VALIDEE
+                        && (l.getDateExpiration() == null
+                                || !l.getDateExpiration().isBefore(java.time.LocalDate.now())));
         if (!licenceActive) {
             throw new ConflictException("Athlete has no active licence");
         }
@@ -75,7 +81,11 @@ public class InscriptionService {
                 .registeredAt(LocalDateTime.now())
                 .build();
 
-        return toDto(inscriptionRepository.save(inscription));
+        Inscription saved = inscriptionRepository.save(inscription);
+        List<Inscription> queue =
+                inscriptionRepository.findByEpreuve_IdAndDeletedAtIsNullOrderByRegisteredAtAsc(epreuve.getId());
+        int pos = computePosition(queue, saved.getId());
+        return toDto(saved, pos);
     }
 
     @Transactional
@@ -93,7 +103,7 @@ public class InscriptionService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found"));
         inscription.setStatus("VALIDEE");
-        return toDto(inscriptionRepository.save(inscription));
+        return toDto(inscriptionRepository.save(inscription), null);
     }
 
     @Transactional
@@ -102,31 +112,69 @@ public class InscriptionService {
                 .findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found"));
         inscription.setStatus("ANNULEE");
-        return toDto(inscriptionRepository.save(inscription));
+        return toDto(inscriptionRepository.save(inscription), null);
     }
 
     @Transactional(readOnly = true)
     public List<InscriptionDto> getByAthlete(Long athleteId) {
         return inscriptionRepository.findByAthlete_IdAndDeletedAtIsNull(athleteId).stream()
-                .map(this::toDto)
+                .map(i -> toDto(i, null))
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public List<InscriptionDto> getByEvent(Long eventId) {
-        return inscriptionRepository.findByEpreuve_IdAndDeletedAtIsNull(eventId).stream()
-                .map(this::toDto)
-                .toList();
+        List<Inscription> ordered =
+                inscriptionRepository.findByEpreuve_IdAndDeletedAtIsNullOrderByRegisteredAtAsc(eventId);
+        return withQueuePositions(ordered);
     }
 
     @Transactional(readOnly = true)
     public List<InscriptionDto> getByCompetition(Long competitionId) {
-        return inscriptionRepository.findByEpreuve_Competition_IdAndDeletedAtIsNull(competitionId).stream()
-                .map(this::toDto)
-                .toList();
+        List<Inscription> ordered =
+                inscriptionRepository.findByEpreuve_Competition_IdAndDeletedAtIsNullOrderByRegisteredAtAsc(
+                        competitionId);
+        return withQueuePositions(ordered);
     }
 
-    public InscriptionDto toDto(Inscription inscription) {
+    private List<InscriptionDto> withQueuePositions(List<Inscription> ordered) {
+        List<InscriptionDto> result = new ArrayList<>();
+        int queuePos = 0;
+        for (Inscription i : ordered) {
+            Integer pos = null;
+            if ("EN_ATTENTE".equals(i.getStatus())) {
+                pos = ++queuePos;
+            }
+            result.add(toDto(i, pos));
+        }
+        return result;
+    }
+
+    private int computePosition(List<Inscription> queue, Long targetId) {
+        int pos = 0;
+        for (Inscription i : queue) {
+            if ("EN_ATTENTE".equals(i.getStatus())) {
+                pos++;
+                if (i.getId().equals(targetId)) return pos;
+            }
+        }
+        return pos;
+    }
+
+    public InscriptionDto toDto(Inscription inscription, Integer queuePosition) {
+        String athleteNom = null;
+        String athletePrenom = null;
+        if (inscription.getAthlete() != null) {
+            athleteNom = inscription.getAthlete().getNom();
+            athletePrenom = inscription.getAthlete().getPrenom();
+        }
+        String epreuveLabel = null;
+        Long competitionId = null;
+        if (inscription.getEpreuve() != null) {
+            Epreuve e = inscription.getEpreuve();
+            epreuveLabel = e.getDistance() + "m " + e.getSwimStyle();
+            if (e.getCompetition() != null) competitionId = e.getCompetition().getId();
+        }
         return InscriptionDto.builder()
                 .id(inscription.getId())
                 .athleteId(inscription.getAthlete().getId())
@@ -135,6 +183,11 @@ public class InscriptionService {
                 .status(inscription.getStatus())
                 .registeredAt(inscription.getRegisteredAt())
                 .createdAt(inscription.getCreatedAt())
+                .athleteNom(athleteNom)
+                .athletePrenom(athletePrenom)
+                .epreuveLabel(epreuveLabel)
+                .queuePosition(queuePosition)
+                .competitionId(competitionId)
                 .build();
     }
 }

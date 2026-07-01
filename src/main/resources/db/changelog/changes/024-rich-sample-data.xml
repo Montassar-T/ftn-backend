@@ -343,36 +343,36 @@
         </preConditions>
         <sql>
             /* Record national — 100m NL Messieurs Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 5, e.id, 1, 50340, '50.34', '2025-03-10', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 5, e.id, 1, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (50340/1000)::INT, 50340, '50.34', '2025-03-10', '2025-03-10', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
             /* Record national — 100m NL Dames Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 2, e.id, 1, 54670, '54.67', '2025-03-10', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 2, e.id, 1, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (54670/1000)::INT, 54670, '54.67', '2025-03-10', '2025-03-10', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=1 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
             /* Record national — 200m NL Messieurs Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 5, e.id, 5, 108900, '1:48.90', '2025-10-05', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 5, e.id, 5, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (108900/1000)::INT, 108900, '1:48.90', '2025-10-05', '2025-10-05', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=5 AND e.swim_style='LIBRE' AND e.distance=200 AND e.gender='MASCULIN' LIMIT 1;
             /* Record national — 400m NL Messieurs Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 5, e.id, 3, 234120, '3:54.12', '2025-06-15', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 5, e.id, 3, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (234120/1000)::INT, 234120, '3:54.12', '2025-06-15', '2025-06-15', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=3 AND e.swim_style='LIBRE' AND e.distance=400 AND e.gender='MASCULIN' LIMIT 1;
             /* Record national — 100m Dos Messieurs Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 31, e.id, 1, 58200, '58.20', '2025-03-11', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 31, e.id, 1, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (58200/1000)::INT, 58200, '58.20', '2025-03-11', '2025-03-11', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=1 AND e.swim_style='DOS' AND e.distance=100 AND e.gender='MASCULIN' LIMIT 1;
             /* Record national — 200m 4 Nages Dames Senior */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 4, e.id, 3, 140340, '2:20.34', '2025-06-15', 'NATIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 4, e.id, 3, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (140340/1000)::INT, 140340, '2:20.34', '2025-06-15', '2025-06-15', 'NATIONAL', NOW()
             FROM events e WHERE e.competition_id=3 AND e.swim_style='QUATRE_NAGES' AND e.distance=200 AND e.gender='FEMININ' LIMIT 1;
             /* Record régional — 100m NL Dames Junior (Open Sfax) */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 35, e.id, 2, 57800, '57.80', '2025-04-05', 'REGIONAL', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 35, e.id, 2, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (57800/1000)::INT, 57800, '57.80', '2025-04-05', '2025-04-05', 'REGIONAL', NOW()
             FROM events e WHERE e.competition_id=2 AND e.swim_style='LIBRE' AND e.distance=100 AND e.gender='FEMININ' LIMIT 1;
             /* Record club — 50m NL Messieurs Cadet (Sahel) */
-            INSERT INTO records (athlete_id, event_id, competition_id, temps_ms, temps_display, record_date, type, created_at)
-            SELECT 1, e.id, 4, 23450, '23.45', '2025-08-20', 'CLUB', NOW()
+            INSERT INTO records (athlete_id, event_id, competition_id, swim_style, distance, time, temps_ms, temps_display, date, record_date, type, created_at)
+            SELECT 1, e.id, 4, e.swim_style::VARCHAR, CAST(e.distance AS VARCHAR), (23450/1000)::INT, 23450, '23.45', '2025-08-20', '2025-08-20', 'CLUB', NOW()
             FROM events e WHERE e.competition_id=4 AND e.swim_style='LIBRE' AND e.distance=50 AND e.gender='MASCULIN' LIMIT 1;
         </sql>
     </changeSet>

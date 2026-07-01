@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="032-competition-upstream-fields" author="ftn-dev">
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS name VARCHAR(255)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS start_date DATE</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS end_date DATE</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS registration_deadline TIMESTAMP</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS code VARCHAR(50)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS lane VARCHAR(10)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS age_categories VARCHAR(200)</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS source_url TEXT</sql>
+        <sql>ALTER TABLE competitions ADD COLUMN IF NOT EXISTS created_by BIGINT REFERENCES users(id)</sql>
+        <sql>UPDATE competitions SET name = nom WHERE name IS NULL AND nom IS NOT NULL</sql>
+        <sql>UPDATE competitions SET start_date = date_debut WHERE start_date IS NULL AND date_debut IS NOT NULL</sql>
+        <sql>UPDATE competitions SET end_date = date_fin WHERE end_date IS NULL AND date_fin IS NOT NULL</sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -81,10 +81,6 @@ public class Competition extends BaseEntity {
     @JoinColumn(name = "created_by")
     private User createdBy;
 
-    @Column(nullable = false, length = 50)
-    @Builder.Default
-    private String status = "PLANIFIEE";
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evenement_id")
     private Evenement evenement;

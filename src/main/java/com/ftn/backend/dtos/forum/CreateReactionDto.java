@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos.forum;
 
+import com.ftn.backend.enums.ForumReactionTypeEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -15,5 +16,5 @@ public class CreateReactionDto {
     private Long userId;
 
     @NotNull
-    private String type;
+    private ForumReactionTypeEnum type;
 }

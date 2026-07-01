@@ -20,8 +20,6 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long>,
 
     List<Competition> findByStatutAndDeletedAtIsNull(CompetitionStatutEnum statut);
 
-    List<Competition> findByStatusAndDeletedAtIsNull(String status);
-
     List<Competition> findByPool_IdAndDeletedAtIsNull(Long poolId);
 
     long countByDeletedAtIsNull();

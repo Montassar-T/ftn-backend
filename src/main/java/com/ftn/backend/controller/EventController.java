@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,16 +31,19 @@ public class EventController {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.getById(id)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/events")
     public ResponseEntity<SingleResultDto<EventDto>> create(@Valid @RequestBody CreateEventDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.create(dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/events/{id}")
     public ResponseEntity<SingleResultDto<EventDto>> update(@PathVariable Long id, @RequestBody UpdateEventDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(eventService.update(id, dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/events/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         eventService.delete(id);

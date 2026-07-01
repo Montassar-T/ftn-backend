@@ -110,6 +110,14 @@ public class AthleteService {
     }
 
     @Transactional(readOnly = true)
+    public AthleteDto getByUserId(Long userId) {
+        Athlete athlete = athleteRepository
+                .findByUser_IdAndDeletedAtIsNull(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Athlete not found for this user"));
+        return toDto(athlete);
+    }
+
+    @Transactional(readOnly = true)
     public List<LicenceDto> getLicences(Long athleteId) {
         athleteRepository
                 .findByIdAndDeletedAtIsNull(athleteId)

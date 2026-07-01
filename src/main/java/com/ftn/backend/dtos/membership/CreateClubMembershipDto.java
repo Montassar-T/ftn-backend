@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos.membership;
 
+import com.ftn.backend.enums.ClubMembershipRoleEnum;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.*;
@@ -15,7 +16,7 @@ public class CreateClubMembershipDto {
     @NotNull
     private Long clubId;
 
-    private String role;
+    private ClubMembershipRoleEnum role;
     private LocalDate startDate;
     private LocalDate endDate;
 }

@@ -10,6 +10,8 @@ public interface AthleteRepository extends JpaRepository<Athlete, Long>, JpaSpec
 
     Optional<Athlete> findByIdAndDeletedAtIsNull(Long id);
 
+    Optional<Athlete> findByUser_IdAndDeletedAtIsNull(Long userId);
+
     List<Athlete> findByClub_IdAndDeletedAtIsNull(Long clubId);
 
     long countByDeletedAtIsNull();

@@ -48,7 +48,6 @@ public class CompetitionDto {
     private String ageCategories;
     private String sourceUrl;
     private Long createdById;
-    private String status;
 
     @JsonProperty("created_at")
     private LocalDateTime createdAt;

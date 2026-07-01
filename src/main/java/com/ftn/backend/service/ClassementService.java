@@ -10,7 +10,6 @@ import com.ftn.backend.repository.ClassementRepository;
 import com.ftn.backend.repository.EpreuveRepository;
 import com.ftn.backend.repository.ResultatRepository;
 import com.ftn.backend.utils.JpaQueryFilters;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -55,7 +55,7 @@ public class ClassementService {
                 .toList();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<ClassementDto> rebuild(Long eventId, String season) {
         Epreuve epreuve = epreuveRepository
                 .findByIdAndDeletedAtIsNull(eventId)
@@ -64,6 +64,7 @@ public class ClassementService {
         List<Resultat> matchingResults = new ArrayList<>();
         for (Resultat r : resultatRepository.findByEpreuve_IdAndDeletedAtIsNull(eventId)) {
             if (r.getTempsMs() == null) continue;
+            if ("REJETE".equals(r.getStatus()) || "DQ".equals(r.getStatus()) || "DNS".equals(r.getStatus()) || "DNF".equals(r.getStatus())) continue;
             String resultSeason =
                     String.valueOf(r.getEpreuve().getScheduledDate().getYear());
             if (!season.equals(resultSeason)) continue;
@@ -87,9 +88,8 @@ public class ClassementService {
 
         List<Classement> oldRows =
                 classementRepository.findByEpreuve_IdAndSeasonAndDeletedAtIsNullOrderByRankAsc(eventId, season);
-        LocalDateTime now = LocalDateTime.now();
-        oldRows.forEach(row -> row.setDeletedAt(now));
-        classementRepository.saveAll(oldRows);
+        classementRepository.deleteAll(oldRows);
+        classementRepository.flush();
 
         List<Classement> refreshed = new ArrayList<>();
         int rank = 1;
@@ -120,7 +120,11 @@ public class ClassementService {
         Long clubId = null;
         String clubName = null;
         if (athlete != null) {
-            if (athlete.getUser() != null) {
+            String nom = athlete.getNom();
+            String prenom = athlete.getPrenom();
+            if (nom != null || prenom != null) {
+                athleteName = ((prenom != null ? prenom : "") + " " + (nom != null ? nom : "")).trim();
+            } else if (athlete.getUser() != null) {
                 String fn = athlete.getUser().getFirstName();
                 String ln = athlete.getUser().getLastName();
                 athleteName = ((fn != null ? fn : "") + " " + (ln != null ? ln : "")).trim();

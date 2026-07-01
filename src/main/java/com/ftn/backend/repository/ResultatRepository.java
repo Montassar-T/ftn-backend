@@ -17,4 +17,6 @@ public interface ResultatRepository extends JpaRepository<Resultat, Long>, JpaSp
     List<Resultat> findByEpreuve_IdAndDeletedAtIsNull(Long epreuveId);
 
     List<Resultat> findByEpreuve_Competition_IdAndDeletedAtIsNull(Long competitionId);
+
+    long countByDeletedAtIsNull();
 }

@@ -17,5 +17,7 @@ public interface CompetitionStaffRepository extends JpaRepository<CompetitionSta
 
     List<CompetitionStaff> findByUser_IdInAndDeletedAtIsNull(List<Long> userIds);
 
+    List<CompetitionStaff> findByDeletedAtIsNull();
+
     long countByDeletedAtIsNull();
 }

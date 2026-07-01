@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,17 +26,20 @@ public class ClubMembershipController {
         return ResponseEntity.ok(new SingleResultDto<>(membershipService.getByClub(clubId)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/club-memberships")
     public ResponseEntity<SingleResultDto<ClubMembershipDto>> create(@Valid @RequestBody CreateClubMembershipDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(membershipService.create(dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/club-memberships/{id}")
     public ResponseEntity<SingleResultDto<ClubMembershipDto>> update(
             @PathVariable Long id, @RequestBody UpdateClubMembershipDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(membershipService.update(id, dto)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/club-memberships/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         membershipService.delete(id);

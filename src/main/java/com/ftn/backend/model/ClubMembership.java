@@ -1,5 +1,6 @@
 package com.ftn.backend.model;
 
+import com.ftn.backend.enums.ClubMembershipRoleEnum;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
@@ -25,8 +26,9 @@ public class ClubMembership extends BaseEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String role;
+    private ClubMembershipRoleEnum role;
 
     @Column(name = "start_date")
     private LocalDate startDate;

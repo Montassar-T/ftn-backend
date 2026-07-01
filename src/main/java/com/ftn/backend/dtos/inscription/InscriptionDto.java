@@ -1,5 +1,6 @@
 package com.ftn.backend.dtos.inscription;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import lombok.*;
 
@@ -16,4 +17,19 @@ public class InscriptionDto {
     private String status;
     private LocalDateTime registeredAt;
     private LocalDateTime createdAt;
+
+    @JsonProperty("athlete_nom")
+    private String athleteNom;
+
+    @JsonProperty("athlete_prenom")
+    private String athletePrenom;
+
+    @JsonProperty("epreuve_label")
+    private String epreuveLabel;
+
+    @JsonProperty("queue_position")
+    private Integer queuePosition;
+
+    @JsonProperty("competition_id")
+    private Long competitionId;
 }

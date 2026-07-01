@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="031-create-evenements-table" author="ftn-dev">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="evenements"/></not>
+        </preConditions>
+        <createTable tableName="evenements">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)" defaultValue="AUTRE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="titre" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="date_debut" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_fin" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lieu" type="VARCHAR(255)"/>
+            <column name="capacite_max" type="INTEGER"/>
+            <column name="status" type="VARCHAR(50)" defaultValue="BROUILLON">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="evenements"
+                baseColumnNames="created_by"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_evenements_created_by"/>
+        <createIndex tableName="evenements" indexName="idx_evenements_type">
+            <column name="type"/>
+        </createIndex>
+        <createIndex tableName="evenements" indexName="idx_evenements_status">
+            <column name="status"/>
+        </createIndex>
+        <createIndex tableName="evenements" indexName="idx_evenements_date_debut">
+            <column name="date_debut"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="031-create-participations-table" author="ftn-dev">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="participations"/></not>
+        </preConditions>
+        <createTable tableName="participations">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="evenement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="TEXT"/>
+            <column name="status" type="VARCHAR(50)" defaultValue="EN_ATTENTE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="participations"
+                baseColumnNames="evenement_id"
+                referencedTableName="evenements"
+                referencedColumnNames="id"
+                constraintName="fk_participations_evenement"/>
+        <addForeignKeyConstraint
+                baseTableName="participations"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_participations_user"/>
+        <addUniqueConstraint
+                tableName="participations"
+                columnNames="evenement_id, user_id"
+                constraintName="uq_participations_evenement_user"/>
+    </changeSet>
+
+    <changeSet id="031-add-evenement-id-to-competitions" author="ftn-dev">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists tableName="competitions" columnName="evenement_id"/></not>
+        </preConditions>
+        <addColumn tableName="competitions">
+            <column name="evenement_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="competitions"
+                baseColumnNames="evenement_id"
+                referencedTableName="evenements"
+                referencedColumnNames="id"
+                constraintName="fk_competitions_evenement"/>
+    </changeSet>
+
+</databaseChangeLog>
