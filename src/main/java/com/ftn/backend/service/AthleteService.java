@@ -64,7 +64,9 @@ public class AthleteService {
                 .dateNaissance(dto.getDateNaissance())
                 .nationalite(dto.getNationalite())
                 .categorie(categorie)
-                .sexe(dto.getSexe());
+                .sexe(dto.getSexe())
+                .email(dto.getEmail())
+                .telephone(dto.getTelephone());
 
         if (dto.getClubId() != null) {
             Club club = clubRepository
@@ -101,6 +103,8 @@ public class AthleteService {
         if (dto.getNationalite() != null) athlete.setNationalite(dto.getNationalite());
         if (dto.getCategorie() != null) athlete.setCategorie(dto.getCategorie());
         if (dto.getSexe() != null) athlete.setSexe(dto.getSexe());
+        if (dto.getEmail() != null) athlete.setEmail(dto.getEmail());
+        if (dto.getTelephone() != null) athlete.setTelephone(dto.getTelephone());
         if (athlete.getCategorie() == null && athlete.getDateNaissance() != null) {
             athlete.setCategorie(deriveCategorie(athlete.getDateNaissance()));
         }
@@ -160,6 +164,8 @@ public class AthleteService {
                                 ? athlete.getCategorie()
                                 : deriveCategorie(athlete.getDateNaissance()))
                 .sexe(athlete.getSexe())
+                .email(athlete.getEmail())
+                .telephone(athlete.getTelephone())
                 .createdAt(athlete.getCreatedAt())
                 .build();
     }

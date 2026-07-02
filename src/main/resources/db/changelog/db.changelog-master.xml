@@ -67,4 +67,15 @@
     <!-- forum thread/reply image attachments -->
     <include file="db/changelog/changes/033-forum-images.xml" />
 
+    <!-- athlete contact fields (email, telephone) -->
+    <include file="db/changelog/changes/037-athlete-contact.xml" />
+
+    <!-- pool reservations module -->
+    <include file="db/changelog/changes/031-reservations.xml" />
+    <include file="db/changelog/changes/032-reservations-club-mode.xml" />
+    <include file="db/changelog/changes/033-reservations-add-nb-couloirs.xml" />
+    <include file="db/changelog/changes/034-reservation-conflict-index.xml" />
+    <include file="db/changelog/changes/035-reservations-seen-by-user.xml" />
+    <include file="db/changelog/changes/036-reservations-recurrence.xml" />
+
 </databaseChangeLog>

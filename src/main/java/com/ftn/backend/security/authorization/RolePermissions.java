@@ -39,6 +39,7 @@ public class RolePermissions {
         permissions.add(Permission.FORUM_CREATE);
         permissions.add(Permission.FORUM_UPDATE);
         permissions.add(Permission.FORUM_DELETE);
+        permissions.add(Permission.RESERVATION_APPROVE);
         return Collections.unmodifiableSet(permissions);
     }
 }

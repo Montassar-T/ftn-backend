@@ -28,7 +28,6 @@ public class CreateCompetitionDto {
     @NotBlank
     private String name;
 
-    @NotBlank
     private String typeStr;
 
     @NotNull

@@ -193,6 +193,7 @@ public class CompetitionService {
                 .registrationDeadline(competition.getRegistrationDeadline())
                 .poolId(competition.getPool() != null ? competition.getPool().getId() : null)
                 .poolNom(competition.getPool() != null ? competition.getPool().getNom() : null)
+                .poolVille(competition.getPool() != null ? competition.getPool().getVille() : null)
                 .lane(competition.getLane())
                 .ageCategories(competition.getAgeCategories())
                 .sourceUrl(competition.getSourceUrl())

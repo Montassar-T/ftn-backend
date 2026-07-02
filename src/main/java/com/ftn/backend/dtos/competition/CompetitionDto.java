@@ -23,6 +23,9 @@ public class CompetitionDto {
     @JsonProperty("pool_nom")
     private String poolNom;
 
+    @JsonProperty("pool_ville")
+    private String poolVille;
+
     private String description;
 
     @JsonProperty("nb_participants")

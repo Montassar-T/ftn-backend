@@ -24,4 +24,6 @@ public class UpdateAthleteDto {
     private String nationalite;
     private CategorieEnum categorie;
     private SexeEnum sexe;
+    private String email;
+    private String telephone;
 }

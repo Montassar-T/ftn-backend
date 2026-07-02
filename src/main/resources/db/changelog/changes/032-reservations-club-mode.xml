@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="reservations-02" author="pools">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="reservations"/>
+            <not><columnExists tableName="reservations" columnName="type_reservation"/></not>
+        </preConditions>
+        <addColumn tableName="reservations">
+            <column name="type_reservation" type="VARCHAR(20)" defaultValue="ATHLETE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="numeros_couloirs" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="reservations-03" author="pools">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="reservations"/>
+            <columnExists tableName="reservations" columnName="numero_couloir"/>
+            <columnExists tableName="reservations" columnName="numeros_couloirs"/>
+        </preConditions>
+        <sql>UPDATE reservations SET numeros_couloirs = CAST(numero_couloir AS VARCHAR) WHERE numero_couloir IS NOT NULL</sql>
+    </changeSet>
+
+</databaseChangeLog>

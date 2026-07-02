@@ -8,6 +8,12 @@ public class JpaQueryUtils {
 
     private static final Map<Class<?>, Map<String, JpaQueryDto>> correspondanceEntityMap = Map.ofEntries(
             Map.entry(
+                    Result.class,
+                    Map.ofEntries(
+                            Map.entry("athlete_nom", new JpaQueryDto("athlete", "nom", Athlete.class, null)),
+                            Map.entry("athlete_prenom", new JpaQueryDto("athlete", "prenom", Athlete.class, null)),
+                            Map.entry("athlete_sexe", new JpaQueryDto("athlete", "sexe", Athlete.class, null)))),
+            Map.entry(
                     Sujet.class,
                     Map.ofEntries(
                             Map.entry("forum_categorie", new JpaQueryDto("forum", "categorie", Forum.class, null)),

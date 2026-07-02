@@ -38,4 +38,7 @@ public class CreateAthleteDto {
 
     @NotNull(message = "Le sexe est obligatoire")
     private SexeEnum sexe;
+
+    private String email;
+    private String telephone;
 }

@@ -34,6 +34,9 @@ public class AthleteDto {
     private CategorieEnum categorie;
     private SexeEnum sexe;
 
+    private String email;
+    private String telephone;
+
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 }

@@ -46,4 +46,10 @@ public class Athlete extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private SexeEnum sexe;
+
+    @Column(length = 255)
+    private String email;
+
+    @Column(length = 50)
+    private String telephone;
 }
