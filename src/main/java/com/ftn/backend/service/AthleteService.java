@@ -44,6 +44,14 @@ public class AthleteService {
     }
 
     @Transactional(readOnly = true)
+    public AthleteDto getByUserId(Long userId) {
+        Athlete athlete = athleteRepository
+                .findByUser_IdAndDeletedAtIsNull(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Athlete not found for this user"));
+        return toDto(athlete);
+    }
+
+    @Transactional(readOnly = true)
     public ResponseEntity<PageDto<AthleteDto>> getAll(Map<String, String> params) {
         JpaQueryFilters<Athlete> filters = new JpaQueryFilters<>(params, Athlete.class);
         Page<Athlete> page = athleteRepository.findAll(filters.getSpecification(), filters.getPageable());

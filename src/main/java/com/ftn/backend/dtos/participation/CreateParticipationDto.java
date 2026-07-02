@@ -9,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateParticipationDto {
 
-    @NotNull
+    // Rempli par EvenementController#register() depuis le path variable {id} après validation :
+    // ne doit pas être @NotNull, sinon un appel conforme au contrat (sans evenementId dans le body) échoue.
     private Long evenementId;
 
     @NotNull

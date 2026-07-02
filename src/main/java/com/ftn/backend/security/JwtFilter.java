@@ -33,7 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.startsWith("/api/v1/auth")) {
+        // Seuls login/register/refresh n'ont pas besoin d'un token — /auth/me en a besoin
+        // pour résoudre l'utilisateur courant, d'où l'exclusion explicite ci-dessous.
+        boolean isPublicAuthEndpoint = path.equals("/api/v1/auth/login")
+                || path.equals("/api/v1/auth/register")
+                || path.equals("/api/v1/auth/refresh");
+
+        if (isPublicAuthEndpoint) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -33,6 +33,11 @@ public class AthleteController {
         return ResponseEntity.ok(new SingleResultDto<>(athleteService.getById(id)));
     }
 
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<SingleResultDto<AthleteDto>> getByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(new SingleResultDto<>(athleteService.getByUserId(userId)));
+    }
+
     @PostMapping
     public ResponseEntity<SingleResultDto<AthleteDto>> create(@Valid @RequestBody CreateAthleteDto dto) {
         return ResponseEntity.ok(new SingleResultDto<>(athleteService.create(dto)));
