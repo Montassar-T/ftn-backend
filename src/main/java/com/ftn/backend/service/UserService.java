@@ -105,10 +105,6 @@ public class UserService {
     @Transactional
     public UserDto register(RegisterRequestDto request) {
 
-
-            if (request.getRole() == UserRole.ROLE_ADMIN) {
-                throw new IllegalArgumentException("Admin cannot be self-registered");
-            }
             String keycloakId = null;
         try {
 
@@ -153,6 +149,19 @@ public class UserService {
         user.setLastName(dto.getLastName());
 
         return mapToDto(userRepository.save(user));
+    }
+
+    @Transactional
+    public void updatePassword(String keycloakId, UpdatePasswordDto dto) {
+
+        User user = userRepository.findByKeycloakIdAndDeletedAtIsNull(keycloakId)
+                .orElseThrow(() -> new AuthenticationException("User not found"));
+
+        keycloakService.changePassword(
+                user.getEmail(),
+                dto.getCurrentPassword(),
+                dto.getNewPassword()
+        );
     }
 
     @Transactional

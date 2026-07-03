@@ -76,4 +76,10 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="020-2" author="MontassarTayari">
+        <addColumn tableName="records">
+            <column name="record_type" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

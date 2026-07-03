@@ -1,4 +1,4 @@
-version: "3.8"
+giversion: "3.8"
 
 services:
   db:

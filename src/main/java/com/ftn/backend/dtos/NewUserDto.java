@@ -1,6 +1,6 @@
 package com.ftn.backend.dtos;
 
-import com.ftn.backend.enums.Role;
+import com.ftn.backend.enums.UserRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -20,5 +20,5 @@ public class NewUserDto {
     @NotNull
     private String password;
 
-    private Role role;
+    private UserRole role;
 }

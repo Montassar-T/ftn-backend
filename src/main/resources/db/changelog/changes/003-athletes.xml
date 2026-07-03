@@ -24,6 +24,10 @@
 
             <column name="nationalite" type="VARCHAR(100)"/>
 
+            <column name="nom" type="VARCHAR(100)"/>
+            <column name="prenom" type="VARCHAR(100)"/>
+
+
             <column name="categorie" type="VARCHAR(50)"/>
 
             <column name="sexe" type="VARCHAR(50)"/>

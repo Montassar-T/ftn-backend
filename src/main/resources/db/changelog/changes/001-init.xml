@@ -33,10 +33,6 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="role" type="VARCHAR(50)" defaultValue="USER">
-                <constraints nullable="false"/>
-            </column>
-
             <column name="status" type="VARCHAR(50)" defaultValue="ACTIVE">
                 <constraints nullable="false"/>
             </column>
@@ -63,25 +59,6 @@
             </column>
 
             <column name="speciality" type="VARCHAR(255)" />
-        </createTable>
-
-    </changeSet>
-
-    <changeSet id="3-create-athlete-table" author="MontassarTayari">
-
-        <createTable tableName="athletes">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true"
-                             nullable="false"
-                             foreignKeyName="fk_athlete_user"
-                             references="users(id)"/>
-            </column>
-
-            <column name="birth_date" type="DATE"/>
-
-            <column name="gender" type="VARCHAR(50)"/>
-
-            <column name="category" type="VARCHAR(100)"/>
         </createTable>
 
     </changeSet>

@@ -90,6 +90,34 @@ public class KeycloakService {
         }
     }
 
+    public void changePassword(
+            String email,
+            String currentPassword,
+            String newPassword
+    ) {
+        // Verify the current password
+        login(email, currentPassword);
+
+        RealmResource realmResource = keycloak.realm(realm);
+
+        List<UserRepresentation> users = realmResource.users().searchByEmail(email, true);
+
+        if (users.isEmpty()) {
+            throw new AuthenticationException("User not found");
+        }
+
+        String userId = users.get(0).getId();
+
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setTemporary(false);
+        credential.setValue(newPassword);
+
+        realmResource.users()
+                .get(userId)
+                .resetPassword(credential);
+    }
+
     public TokenResponseDto login(String email, String password) {
         return callTokenEndpoint(
                 "grant_type=password" +

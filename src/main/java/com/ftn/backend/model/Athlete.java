@@ -3,14 +3,11 @@ package com.ftn.backend.model;
 import com.ftn.backend.enums.CategorieEnum;
 import com.ftn.backend.enums.SexeEnum;
 
-import com.ftn.backend.enums.AthleteCategory;
-import com.ftn.backend.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import lombok.*;
 
 @Entity
 @Table(name = "athletes")

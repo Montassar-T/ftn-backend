@@ -22,8 +22,6 @@
     <include file="db/changelog/changes/012-pools.xml" />
     <include file="db/changelog/changes/013-competitions.xml" />
     <include file="db/changelog/changes/014-results.xml" />
-    <include file="db/changelog/changes/015-users-add-role.xml" />
-    <include file="db/changelog/changes/016-athletes-add-name.xml" />
     <include file="db/changelog/changes/017-seed-data.xml" />
     <include file="db/changelog/changes/018-events.xml" />
     <include file="db/changelog/changes/019-nations-ranking.xml" />
@@ -34,13 +32,11 @@
     <include file="db/changelog/changes/024-rich-sample-data.xml" />
     <include file="db/changelog/changes/025-fix-actualites-categories.xml" />
     <include file="db/changelog/changes/026-fix-licences-statut.xml" />
-    <include file="db/changelog/changes/027-seed-users.xml" />
     <include file="db/changelog/changes/028-seed-staff-and-links.xml" />
     <include file="db/changelog/changes/030-club-staff.xml" />
 
     <!-- mezen_branch: news + comments module -->
     <include file="db/changelog/changes/002-news.xml" />
-    <include file="db/changelog/changes/003-alter-users.xml" />
 
     <!-- feat/add-competition-managment-module -->
     <include file="db/changelog/changes/011-competitions.xml" />
@@ -55,7 +51,6 @@
     <include file="db/changelog/changes/021-alter-competitions-epreuves-resultats.xml" />
     <include file="db/changelog/changes/022-alter-classements.xml" />
     <include file="db/changelog/changes/023-alter-users-role.xml" />
-    <include file="db/changelog/changes/024-seed-ftn-data.sql" />
     <include file="db/changelog/changes/025-evenements.xml" />
 
     <!-- programs module (training programs by age group) -->

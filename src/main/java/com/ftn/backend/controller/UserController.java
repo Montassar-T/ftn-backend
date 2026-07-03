@@ -4,6 +4,7 @@ import com.ftn.backend.dtos.*;
 
 import com.ftn.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +33,19 @@ public class UserController {
                 new SingleResultDto<>(
                         userService.updateCurrentUser(keycloakId, dto)
                 )
+        );
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<InformativeMessage> updatePassword(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody @Valid UpdatePasswordDto dto
+    ) {
+
+        userService.updatePassword(jwt.getSubject(), dto);
+
+        return ResponseEntity.ok(
+                new InformativeMessage("Password updated successfully")
         );
     }
 
