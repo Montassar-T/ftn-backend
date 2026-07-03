@@ -18,8 +18,14 @@ public class LicenceDto {
     @JsonProperty("athlete_id")
     private Long athleteId;
 
+    @JsonProperty("athlete_name")
+    private String athleteName;
+
     @JsonProperty("club_id")
     private Long clubId;
+
+    @JsonProperty("club_name")
+    private String clubName;
 
     private String numero;
     private TypeLicenceEnum type;

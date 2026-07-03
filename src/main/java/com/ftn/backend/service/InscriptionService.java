@@ -127,10 +127,45 @@ public class InscriptionService {
     }
 
     public InscriptionDto toDto(Inscription inscription) {
+        Athlete athlete = inscription.getAthlete();
+        Epreuve epreuve = inscription.getEpreuve();
+
+        String athleteName = null;
+        String clubName = null;
+        if (athlete != null) {
+            String nom = athlete.getNom();
+            String prenom = athlete.getPrenom();
+            athleteName = ((prenom != null ? prenom : "") + " " + (nom != null ? nom : "")).trim();
+            if ((athleteName == null || athleteName.isEmpty()) && athlete.getUser() != null) {
+                String fn = athlete.getUser().getFirstName();
+                String ln = athlete.getUser().getLastName();
+                athleteName = ((fn != null ? fn : "") + " " + (ln != null ? ln : "")).trim();
+            }
+            if (athlete.getClub() != null) {
+                clubName = athlete.getClub().getNom();
+            }
+        }
+
+        String eventLabel = null;
+        Long competitionId = null;
+        String competitionName = null;
+        if (epreuve != null) {
+            eventLabel = epreuve.getDistance() + "m " + epreuve.getSwimStyle() + " " + epreuve.getGender();
+            if (epreuve.getCompetition() != null) {
+                competitionId = epreuve.getCompetition().getId();
+                competitionName = epreuve.getCompetition().getName();
+            }
+        }
+
         return InscriptionDto.builder()
                 .id(inscription.getId())
-                .athleteId(inscription.getAthlete().getId())
-                .eventId(inscription.getEpreuve().getId())
+                .athleteId(athlete != null ? athlete.getId() : null)
+                .athleteName(athleteName)
+                .clubName(clubName)
+                .eventId(epreuve != null ? epreuve.getId() : null)
+                .eventLabel(eventLabel)
+                .competitionId(competitionId)
+                .competitionName(competitionName)
                 .seedTime(inscription.getSeedTime())
                 .status(inscription.getStatus())
                 .registeredAt(inscription.getRegisteredAt())

@@ -117,9 +117,23 @@ public class LicenceService {
     }
 
     public LicenceDto toDto(Licence licence) {
+        var athlete = licence.getAthlete();
+        String athleteName = null;
+        if (athlete != null) {
+            String nom = athlete.getNom();
+            String prenom = athlete.getPrenom();
+            athleteName = ((prenom != null ? prenom : "") + " " + (nom != null ? nom : "")).trim();
+            if ((athleteName == null || athleteName.isEmpty()) && athlete.getUser() != null) {
+                String fn = athlete.getUser().getFirstName();
+                String ln = athlete.getUser().getLastName();
+                athleteName = ((fn != null ? fn : "") + " " + (ln != null ? ln : "")).trim();
+            }
+        }
         return LicenceDto.builder()
                 .id(licence.getId())
                 .athleteId(licence.getAthlete().getId())
+                .athleteName(athleteName)
+                .clubName(licence.getClub() != null ? licence.getClub().getNom() : null)
                 .clubId(licence.getClub().getId())
                 .numero(licence.getNumero())
                 .type(licence.getType())
