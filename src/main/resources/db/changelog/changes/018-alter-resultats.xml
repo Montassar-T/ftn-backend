@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="18-alter-resultats" author="Codex">
+        <!-- Drop old unique constraint and index -->
+        <sql>ALTER TABLE resultats DROP CONSTRAINT IF EXISTS uk_resultat_epreuve_athlete</sql>
+        <sql>DROP INDEX IF EXISTS idx_resultats_publie</sql>
+
+        <!-- Add new columns -->
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS lane INT</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS final_time INT</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'EN_ATTENTE'</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS rank INT</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS is_record BOOLEAN DEFAULT false</sql>
+        <sql>ALTER TABLE resultats ADD COLUMN IF NOT EXISTS validated_by BIGINT REFERENCES users(id)</sql>
+
+        <!-- Copy data -->
+        <sql>UPDATE resultats SET is_record = record WHERE is_record IS NULL AND record IS NOT NULL</sql>
+        <sql>UPDATE resultats SET rank = classement WHERE rank IS NULL AND classement IS NOT NULL</sql>
+        <sql>UPDATE resultats SET status = 'EN_ATTENTE' WHERE status IS NULL</sql>
+        <sql>UPDATE resultats SET rank = 0 WHERE rank IS NULL</sql>
+        <sql>UPDATE resultats SET is_record = false WHERE is_record IS NULL</sql>
+
+        <!-- Drop old columns -->
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS temps</sql>
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS classement</sql>
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS record</sql>
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS points</sql>
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS date_saisie</sql>
+        <sql>ALTER TABLE resultats DROP COLUMN IF EXISTS publie</sql>
+
+        <!-- Add NOT NULL constraints -->
+        <sql>ALTER TABLE resultats ALTER COLUMN status SET NOT NULL</sql>
+        <sql>ALTER TABLE resultats ALTER COLUMN rank SET NOT NULL</sql>
+        <sql>ALTER TABLE resultats ALTER COLUMN is_record SET NOT NULL</sql>
+
+        <!-- Add new indexes -->
+        <sql>CREATE INDEX IF NOT EXISTS idx_resultats_status ON resultats(status)</sql>
+        <sql>CREATE INDEX IF NOT EXISTS idx_resultats_validated_by ON resultats(validated_by)</sql>
+    </changeSet>
+
+</databaseChangeLog>
